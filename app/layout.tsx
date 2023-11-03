@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto_Flex } from "next/font/google";
 import "./globals.css";
 import StyledJsxRegistry from "./registry";
 import StyledComponentsRegistry from "../lib/registry";
+import Navbar from "../components/Navbar";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto_Flex({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,9 +21,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html>
+    <html className={roboto.className}>
       <body>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <StyledComponentsRegistry>
+          <Navbar />
+          {children}
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
