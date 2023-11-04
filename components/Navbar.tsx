@@ -4,10 +4,29 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SignUpForm, SignInForm } from "./AuthForm";
+import { UserAuth } from "../hooks/authContext";
 
 export default function Navbar() {
   const [modal, setModal] = useState(false);
   const [isSignUp, setIsSignUp] = useState(true);
+
+  const { user, googleSignIn, googleSignOut } = UserAuth();
+
+  const handleSignIn = async () => {
+    try {
+      await googleSignIn();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await googleSignOut();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const toggleModal = () => {
     setModal(!modal);
@@ -19,28 +38,58 @@ export default function Navbar() {
 
   return (
     <>
-      <NavbarContainer>
-        <NavBar>
-          <Ul>
-            <Li>
-              <Link href="/">
-                <Logo>PlanNLog</Logo>
-              </Link>
-            </Li>
-          </Ul>
-          <Ul>
-            <Li>
-              <GetStared onClick={toggleModal}>Get Started</GetStared>
-            </Li>
-          </Ul>
-        </NavBar>
-      </NavbarContainer>
+      {!user ? (
+        <NavbarContainer>
+          <NavBar>
+            <Ul>
+              <Li>
+                <Link href="/">
+                  <Logo>PlanNLog</Logo>
+                </Link>
+              </Li>
+            </Ul>
+            <Ul>
+              <Li>
+                <GetStared onClick={toggleModal}>Get Started</GetStared>
+              </Li>
+            </Ul>
+          </NavBar>
+        </NavbarContainer>
+      ) : (
+        <NavbarContainer>
+          <NavBar>
+            <Ul>
+              <Li>
+                <Link href="/">
+                  <Logo>PlanNLog</Logo>
+                </Link>
+              </Li>
+            </Ul>
+            <Ul>
+              <Li>
+                <GetStared>Welcome,{user.displayName}</GetStared>
+              </Li>
+              <Li>
+                <GetStared onClick={handleSignOut}>Sign Out</GetStared>
+              </Li>
+            </Ul>
+          </NavBar>
+        </NavbarContainer>
+      )}
 
       {modal &&
         (isSignUp ? (
-          <SignUpForm onClose={toggleModal} toggleForm={toggleForm} />
+          <SignUpForm
+            onClose={toggleModal}
+            handleSignIn={handleSignIn}
+            toggleForm={toggleForm}
+          />
         ) : (
-          <SignInForm onClose={toggleModal} toggleForm={toggleForm} />
+          <SignInForm
+            onClose={toggleModal}
+            handleSignIn={handleSignIn}
+            toggleForm={toggleForm}
+          />
         ))}
     </>
   );
@@ -64,6 +113,7 @@ const NavBar = styled.div`
 
 const Ul = styled.ul`
   list-style: none;
+  display: flex;
 `;
 
 const Li = styled.li``;

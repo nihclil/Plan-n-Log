@@ -1,14 +1,14 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export function SignUpForm({ onClose, toggleForm }) {
+export function SignUpForm({ onClose, toggleForm, handleSignIn }) {
   return (
     <Container>
       <Overlay onClick={onClose}></Overlay>
       <Content>
         <Caption>Join the Adventure!</Caption>
         <CloseButton onClick={onClose}>x</CloseButton>
-        <Button>Create an account with Google</Button>
+        <Button onClick={handleSignIn}>Create an account with Google</Button>
         <Prompt>
           Already a PlanNLog user?
           <AuthToggle onClick={toggleForm}> Sign in</AuthToggle>
@@ -18,14 +18,14 @@ export function SignUpForm({ onClose, toggleForm }) {
   );
 }
 
-export function SignInForm({ onClose, toggleForm }) {
+export function SignInForm({ onClose, toggleForm, handleSignIn }) {
   return (
     <Container>
       <Overlay onClick={onClose}></Overlay>
       <Content>
         <Caption>Keep on exploring!</Caption>
         <CloseButton onClick={onClose}>x</CloseButton>
-        <Button>Sign in with Google</Button>
+        <Button onClick={handleSignIn}>Sign in with Google</Button>
         <Prompt>
           Don&apos;t have an account?
           <AuthToggle onClick={toggleForm}> Create one</AuthToggle>

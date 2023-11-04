@@ -4,6 +4,7 @@ import "./globals.css";
 import StyledJsxRegistry from "./registry";
 import StyledComponentsRegistry from "../lib/registry";
 import Navbar from "../components/Navbar";
+import { AuthContextProvider } from "../hooks/authContext.js";
 
 const roboto = Roboto_Flex({
   subsets: ["latin"],
@@ -24,8 +25,10 @@ export default function RootLayout({
     <html className={roboto.className}>
       <body>
         <StyledComponentsRegistry>
-          <Navbar />
-          {children}
+          <AuthContextProvider>
+            <Navbar />
+            {children}
+          </AuthContextProvider>
         </StyledComponentsRegistry>
       </body>
     </html>
