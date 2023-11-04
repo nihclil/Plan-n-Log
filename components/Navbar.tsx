@@ -3,13 +3,18 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { SignUpForm } from "./AuthForm";
+import { SignUpForm, SignInForm } from "./AuthForm";
 
 export default function Navbar() {
   const [modal, setModal] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(true);
 
   const toggleModal = () => {
     setModal(!modal);
+  };
+
+  const toggleForm = () => {
+    setIsSignUp(!isSignUp);
   };
 
   return (
@@ -31,7 +36,12 @@ export default function Navbar() {
         </NavBar>
       </NavbarContainer>
 
-      {modal && <SignUpForm onClose={toggleModal} />}
+      {modal &&
+        (isSignUp ? (
+          <SignUpForm onClose={toggleModal} toggleForm={toggleForm} />
+        ) : (
+          <SignInForm onClose={toggleModal} toggleForm={toggleForm} />
+        ))}
     </>
   );
 }
