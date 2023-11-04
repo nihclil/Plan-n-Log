@@ -1,26 +1,38 @@
 "use client";
 
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { SignUpForm } from "./AuthForm";
 
 export default function Navbar() {
+  const [modal, setModal] = useState(false);
+
+  const toggleModal = () => {
+    setModal(!modal);
+  };
+
   return (
-    <NavbarContainer>
-      <NavBar>
-        <Ul>
-          <Li>
-            <Link href="/">
-              <Logo>PlanNLog</Logo>
-            </Link>
-          </Li>
-        </Ul>
-        <Ul>
-          <Li>
-            <GetStared>Get Started</GetStared>
-          </Li>
-        </Ul>
-      </NavBar>
-    </NavbarContainer>
+    <>
+      <NavbarContainer>
+        <NavBar>
+          <Ul>
+            <Li>
+              <Link href="/">
+                <Logo>PlanNLog</Logo>
+              </Link>
+            </Li>
+          </Ul>
+          <Ul>
+            <Li>
+              <GetStared onClick={toggleModal}>Get Started</GetStared>
+            </Li>
+          </Ul>
+        </NavBar>
+      </NavbarContainer>
+
+      {modal && <SignUpForm onClose={toggleModal} />}
+    </>
   );
 }
 
