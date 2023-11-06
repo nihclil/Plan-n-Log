@@ -107,7 +107,7 @@ const NavbarContainer = styled.nav`
 const NavBar = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 90%;
+  width: 1200px;
   margin: auto;
 `;
 
