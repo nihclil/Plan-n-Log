@@ -67,7 +67,7 @@ export default function Navbar() {
             </Ul>
             <Ul>
               <Li>
-                <GetStared>Welcome,{user.displayName}</GetStared>
+                <UserImg src={user.photoURL}></UserImg>
               </Li>
               <Li>
                 <GetStared onClick={handleSignOut}>Sign Out</GetStared>
@@ -116,7 +116,9 @@ const Ul = styled.ul`
   display: flex;
 `;
 
-const Li = styled.li``;
+const Li = styled.li`
+  margin-left: 20px;
+`;
 
 const Logo = styled.div`
   font-weight: 700;
@@ -129,4 +131,8 @@ const GetStared = styled.button`
   border: 0;
   padding: 5px;
   border-radius: 15px;
+`;
+
+const UserImg = styled.img`
+  width: 30px;
 `;
