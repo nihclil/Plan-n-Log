@@ -2,8 +2,61 @@
 
 import styled from "styled-components";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../lib/firebase";
+import { UserAuth } from "../hooks/authContext";
 
 export default function PlanForm() {
+  const [items, setItems] = useState([]);
+  const [tripName, setTripName] = useState("");
+  const [cityName, setCityName] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const { user } = UserAuth();
+  //Add item to database
+  const addItem = async (e) => {
+    e.preventDefault();
+    if (user) {
+      const newItems = {
+        tripName,
+        cityName,
+        startDate,
+        endDate,
+      };
+
+      try {
+        await addDoc(collection(db, "plan"), {
+          uid: user.uid,
+          tripName: newItems.tripName,
+          cityName: newItems.cityName,
+          startDate: newItems.startDate,
+          endDate: newItems.endDate,
+        });
+        setItems([...items, newItems]);
+      } catch (error) {
+        console.error("Error adding document:", error);
+      }
+    }
+  };
+
+  const handleTripNameChange = (e) => {
+    setTripName(e.target.value);
+  };
+
+  const handleDestinationCityChange = (e) => {
+    setCityName(e.target.value);
+  };
+
+  const handleStartDateChange = (e) => {
+    setStartDate(e.target.value);
+  };
+
+  const handleEndDateChange = (e) => {
+    setEndDate(e.target.value);
+  };
+
   return (
     <Main>
       <AddArea>
@@ -16,25 +69,38 @@ export default function PlanForm() {
             </Caption>
             <Column>
               <InputName>Trip Name</InputName>
-              <Input></Input>
+              <Input value={tripName} onChange={handleTripNameChange}></Input>
             </Column>
             <Column>
               <InputName>Destination City</InputName>
-              <Input></Input>
+              <Input
+                value={cityName}
+                onChange={handleDestinationCityChange}
+              ></Input>
             </Column>
             <DateColumn>
               <Column>
-                <InputName>Start Date</InputName>
-                <DateInput></DateInput>
+                <InputName type="date" value={startDate}>
+                  Start Date
+                </InputName>
+                <DateInput
+                  type="date"
+                  value={startDate}
+                  onChange={handleStartDateChange}
+                ></DateInput>
               </Column>
               <Column>
                 <InputName>End Date</InputName>
-                <DateInput></DateInput>
+                <DateInput
+                  type="date"
+                  value={endDate}
+                  onChange={handleEndDateChange}
+                ></DateInput>
               </Column>
             </DateColumn>
           </TripInfo>
           <ImageInfo>
-            <Image></Image>
+            <Image alt="trip-image"></Image>
             <ImageButton>Change Photo</ImageButton>
           </ImageInfo>
         </PlanArea>
@@ -44,7 +110,7 @@ export default function PlanForm() {
             <CancelButton>Cancel</CancelButton>
           </Link>
 
-          <SaveButton>Save</SaveButton>
+          <SaveButton onClick={addItem}>Save</SaveButton>
         </ConfirmArea>
       </AddArea>
     </Main>
