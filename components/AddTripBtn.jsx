@@ -5,29 +5,24 @@ import styled from "styled-components";
 
 export default function AddTripBtn() {
   return (
-    <Main>
-      <AddArea>
-        <Link href="/plan">
-          <AddLink>
-            <PlusImg src="/icon-plus-circle.png"></PlusImg>
-            <AddSpan>Add a trip</AddSpan>
-          </AddLink>
-        </Link>
-      </AddArea>
-    </Main>
+    <AddArea>
+      <Link href="/plan">
+        <AddLink>
+          <PlusImg src="/iconmonstr-plus-6-24.png"></PlusImg>
+          <AddSpan>Add a trip</AddSpan>
+        </AddLink>
+      </Link>
+    </AddArea>
   );
 }
 
-const Main = styled.main`
-  padding-top: 30px;
-  margin: auto;
-  width: 1200px;
+const AddArea = styled.div`
+  margin-bottom: 40px;
 `;
-
-const AddArea = styled.div``;
 
 const AddLink = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const PlusImg = styled.img``;
@@ -35,4 +30,11 @@ const PlusImg = styled.img``;
 const AddSpan = styled.span`
   cursor: pointer;
   padding-left: 5px;
+  color: #6a9066;
+  font-size: 24px;
+  font-weight: 600;
+
+  &:hover {
+    color: #70946c;
+  }
 `;

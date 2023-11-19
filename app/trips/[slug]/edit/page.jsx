@@ -3,29 +3,53 @@
 import styled from "styled-components";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
 import { CityName } from "components/CityName";
 
 import { storage } from "lib/firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 import { v4 } from "uuid";
-import { useRouter } from "next/navigation";
 
-export default function PlanForm() {
-  const [items, setItems] = useState([]);
-  const [tripName, setTripName] = useState("");
-  const [cityName, setCityName] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+export default function Page({ params }) {
   const [imageUpload, setImageUpload] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
   const [currentImage, setCurrentImage] = useState(
     "https://firebasestorage.googleapis.com/v0/b/plannlog-a64d2.appspot.com/o/duong-chung--cItKmBrXN8-unsplash.jpg?alt=media&token=60017cd9-4215-4e2d-85af-6135517b951b"
   );
-  const router = useRouter();
+  const [currentData, setCurrentData] = useState({
+    tripName: "",
+    cityName: "",
+    startDate: "",
+    endDate: "",
+    imageUrl: "",
+  });
+
   const { user } = UserAuth();
+
+  //Read data from firestore
+  useEffect(() => {
+    const docRef = doc(db, "trip", params.slug);
+    getDoc(docRef).then((docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const tripData = docSnapshot.data();
+
+        setCurrentData({
+          tripName: tripData.tripName,
+          cityName: tripData.cityName,
+          startDate: tripData.startDate,
+          endDate: tripData.endDate,
+          imageUrl: tripData.imageUrl,
+        });
+      }
+    });
+  }, [params.slug]);
 
   const uploadImage = () => {
     if (imageUpload == null) return;
@@ -36,60 +60,54 @@ export default function PlanForm() {
     uploadBytes(imageRef, imageUpload)
       .then(() => {
         getDownloadURL(imageRef).then((url) => {
-          setCurrentImage(url);
+          setCurrentData({ ...currentData, imageUrl: url });
         });
         setUploadStatus("Upload successful");
         setImageUpload(null);
+
+        // deleteOldImage();
       })
       .catch(() => {
         setUploadStatus("Upload failed");
       });
   };
 
-  //Add item to database
-  const addItem = async (e) => {
-    e.preventDefault();
-    if (user) {
-      const newItems = {
-        tripName,
-        cityName,
-        startDate,
-        endDate,
-        currentImage,
-      };
-
-      try {
-        await addDoc(collection(db, "trip"), {
-          uid: user.uid,
-          tripName: newItems.tripName,
-          cityName: newItems.cityName,
-          startDate: newItems.startDate,
-          endDate: newItems.endDate,
-          imageUrl: newItems.currentImage,
-          buildTime: serverTimestamp(),
-        });
-        setItems([...items, newItems]);
-        router.push("/trips");
-      } catch (error) {
-        console.error("Error adding document:", error);
-      }
-    }
+  const updateData = async () => {
+    const docRef = doc(db, "plan", params.slug);
+    updateDoc(docRef, currentData)
+      .then(() => {
+        console.log("Document successfully updated");
+      })
+      .catch((error) => {
+        console.error("Error updating document:", error);
+      });
   };
 
+  // const deleteOldImage = () => {
+  //   const imageRef = ref(storage, `trip/${user.uid}`);
+  //   deleteObject(imageRef)
+  //     .then(() => {
+  //       console.log("Old image deleted successfully");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error deleting old image:", error);
+  //     });
+  // };
+
   const handleTripNameChange = (e) => {
-    setTripName(e.target.value);
+    setCurrentData({ ...currentData, tripName: e.target.value });
   };
 
   const handleStartDateChange = (e) => {
-    setStartDate(e.target.value);
+    setCurrentData({ ...currentData, startDate: e.target.value });
   };
 
   const handleEndDateChange = (e) => {
-    setEndDate(e.target.value);
+    setCurrentData({ ...currentData, endDate: e.target.value });
   };
 
   const handleCitySelect = (city) => {
-    setCityName(city.label);
+    setCurrentData({ ...currentData, cityName: city.label });
   };
 
   return (
@@ -103,13 +121,16 @@ export default function PlanForm() {
             </Caption>
             <Column>
               <InputName>Trip Name</InputName>
-              <Input value={tripName} onChange={handleTripNameChange}></Input>
+              <Input
+                value={currentData.tripName}
+                onChange={handleTripNameChange}
+              ></Input>
             </Column>
             <Column>
               <InputName>Destination City</InputName>
               <CityName
                 onSelectCity={handleCitySelect}
-                defaultValue={cityName}
+                defaultValue={currentData.cityName}
               />
             </Column>
             <DateColumn>
@@ -117,7 +138,7 @@ export default function PlanForm() {
                 <InputName>Start Date</InputName>
                 <DateInput
                   type="date"
-                  value={startDate}
+                  value={currentData.startDate}
                   onChange={handleStartDateChange}
                 ></DateInput>
               </Column>
@@ -125,14 +146,14 @@ export default function PlanForm() {
                 <InputName>End Date</InputName>
                 <DateInput
                   type="date"
-                  value={endDate}
+                  value={currentData.endDate}
                   onChange={handleEndDateChange}
                 ></DateInput>
               </Column>
             </DateColumn>
           </TripInfo>
           <ImageInfo>
-            <Image src={currentImage} alt="Current image" />
+            <Image src={currentData.imageUrl} alt="Current image" />
 
             <ImageLabel>
               Change Photo
@@ -156,8 +177,9 @@ export default function PlanForm() {
           <Link href="/trips">
             <CancelButton>Cancel</CancelButton>
           </Link>
-
-          <SaveButton onClick={addItem}>Save</SaveButton>
+          <Link href="/trips">
+            <SaveButton onClick={updateData}>Save</SaveButton>
+          </Link>
         </ConfirmArea>
       </AddArea>
     </Main>
@@ -240,6 +262,7 @@ const Image = styled.img`
   width: 200px;
   height: 200px;
   margin-bottom: 30px;
+  object-fit: contain;
 `;
 
 const ConfirmArea = styled.div`

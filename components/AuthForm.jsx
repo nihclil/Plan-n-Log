@@ -57,7 +57,7 @@ const Overlay = styled.div`
 `;
 
 const Content = styled.div`
-  color: #283618;
+  color: #6d5b48;
   position: absolute;
   top: 40%;
   left: 50%;
@@ -65,7 +65,7 @@ const Content = styled.div`
   line-height: 1.4;
   background: #f1f1f1;
   padding: 14px 28px;
-  border-radius: 3px;
+  border-radius: 5px;
   max-width: 600px;
   min-width: 300px;
   display: flex;
@@ -87,9 +87,11 @@ const Caption = styled.h2`
 `;
 
 const Button = styled.button`
-  border: 0;
+  border: 1px solid #6d5b48;
+  padding: 10px 20px;
+  border-radius: 18px;
   cursor: pointer;
-  color: #283618;
+  color: #6d5b48;
 `;
 
 const Prompt = styled.div`
@@ -100,5 +102,6 @@ const AuthToggle = styled.button`
   border: 0;
   cursor: pointer;
   margin-left: 10px;
-  color: #dda15e;
+  color: #f2a365;
+  font-weight: 600;
 `;

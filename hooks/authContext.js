@@ -8,11 +8,14 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "../lib/firebase";
+import { useRouter } from "next/navigation";
 
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const router = useRouter();
+  const [initialLoad, setInitailLoad] = useState(null);
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
@@ -26,9 +29,13 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if (initialLoad && currentUser) {
+        router.push("/trips");
+        setInitailLoad(false);
+      }
     });
     return () => unsubscribe();
-  }, [user]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, googleSignIn, googleSignOut }}>

@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SignUpForm, SignInForm } from "./AuthForm";
 import { UserAuth } from "../hooks/authContext";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Navbar() {
   const [modal, setModal] = useState(false);
   const [isSignUp, setIsSignUp] = useState(true);
-
+  const router = useRouter();
   const { user, googleSignIn, googleSignOut } = UserAuth();
 
   const handleSignIn = async () => {
@@ -50,6 +52,8 @@ export default function Navbar() {
             </Ul>
             <Ul>
               <Li>
+                <NavbarButton>Home</NavbarButton>
+                <NavbarButton>Posts</NavbarButton>
                 <GetStared onClick={toggleModal}>Get Started</GetStared>
               </Li>
             </Ul>
@@ -67,13 +71,22 @@ export default function Navbar() {
             </Ul>
             <Ul>
               <Li>
-                <UserImg src={user.photoURL}></UserImg>
+                <UserImg>
+                  <Image src={user.photoURL} width={40} height={40} alt="" />
+                </UserImg>
               </Li>
               <Li>
-                <GetStared onClick={handleSignOut}>Sign Out</GetStared>
+                <NavbarButton onClick={handleSignOut}>Sign Out</NavbarButton>
               </Li>
             </Ul>
           </NavBar>
+          {/* <div>
+            <ul>
+              <li>
+                <div>trips</div>
+              </li>
+            </ul>
+          </div> */}
         </NavbarContainer>
       )}
 
@@ -96,12 +109,22 @@ export default function Navbar() {
 }
 
 const NavbarContainer = styled.nav`
-  height: 50px;
-  color: #283618;
-  font-size: 24px;
   display: flex;
   align-items: center;
   padding: 10px;
+  height: 80px;
+  position: relative;
+  background-color: #e4ddd6;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 1200px;
+    border-bottom: 1px solid #d1bea9;
+    height: 0;
+  }
 `;
 
 const NavBar = styled.div`
@@ -117,22 +140,46 @@ const Ul = styled.ul`
 `;
 
 const Li = styled.li`
-  margin-left: 20px;
+  display: flex;
+  align-items: center;
 `;
 
 const Logo = styled.div`
+  color: #6d5b48;
   font-weight: 700;
+  font-size: 30px;
 `;
 
 const GetStared = styled.button`
   background-color: transparent;
+
   cursor: pointer;
-  color: #283618;
+  color: #fff;
   border: 0;
-  padding: 5px;
-  border-radius: 15px;
+  font-size: 20px;
+  background-color: #6d5b48;
+  padding: 10px 20px;
+  border-radius: 18px;
+  margin-left: 30px;
+
+  &:hover {
+    background-color: #584a3b80;
+  }
 `;
 
-const UserImg = styled.img`
-  width: 30px;
+const UserImg = styled.div`
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+`;
+
+const NavbarButton = styled.button`
+  background-color: transparent;
+  cursor: pointer;
+  border: 0;
+  color: #6d5b48;
+  font-weight: 600;
+  font-size: 20px;
+  margin-left: 30px;
 `;
