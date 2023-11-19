@@ -73,7 +73,7 @@ export default function Page({ params }) {
   };
 
   const updateData = async () => {
-    const docRef = doc(db, "plan", params.slug);
+    const docRef = doc(db, "trip", params.slug);
     updateDoc(docRef, currentData)
       .then(() => {
         console.log("Document successfully updated");
