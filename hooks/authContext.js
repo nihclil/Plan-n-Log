@@ -15,7 +15,7 @@ const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const router = useRouter();
-  const [initialLoad, setInitailLoad] = useState(null);
+  const [initialLoad, setInitailLoad] = useState(true);
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
