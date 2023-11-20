@@ -2,21 +2,26 @@
 import styled from "styled-components";
 import Link from "next/link";
 import AddTripBtn from "components/AddTripBtn";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import {
   collection,
   query,
   onSnapshot,
   where,
   orderBy,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
 import TripBtn from "components/TripBtn";
+import DeleteModal from "./DeleteModal";
 
 export default function Home() {
   const [items, setItems] = useState([]);
   const { user } = UserAuth();
+  const [modal, setModal] = useState(false);
+  const [currentItemId, setCurrentItemId] = useState(null);
 
   // Read items from database
   useEffect(() => {
@@ -44,9 +49,25 @@ export default function Home() {
       month: "short",
       day: "numeric",
     };
-
     return new Date(dateString).toLocaleDateString("en-US", options);
   }
+
+  //delete trip data
+  const deleteData = async (id) => {
+    const docRef = doc(db, "trip", id);
+    deleteDoc(docRef).then(() => {
+      setItems((prevItems) => prevItems.filter((item) => id !== item.id));
+    });
+  };
+
+  const openDeleteModal = (id) => {
+    setCurrentItemId(id);
+    toggleModal();
+  };
+
+  const toggleModal = () => {
+    setModal(!modal);
+  };
 
   return (
     <Main>
@@ -86,6 +107,12 @@ export default function Home() {
                   </LinkArea>
                 </Link>
               </EditLink>
+
+              <DeleteArea onClick={() => openDeleteModal(item.id)}>
+                <LinkArea>
+                  <EditImg src="/iconmonstr-trash-can-lined-24.png"></EditImg>
+                </LinkArea>
+              </DeleteArea>
             </TripInfo>
             <TripImageContainer>
               <TripImage src={item.imageUrl}></TripImage>
@@ -93,6 +120,13 @@ export default function Home() {
           </TripColumn>
         ))}
       </TripsArea>
+      {modal && (
+        <DeleteModal
+          toggleModal={toggleModal}
+          deleteData={() => deleteData(currentItemId)}
+          id={currentItemId}
+        />
+      )}
     </Main>
   );
 }
@@ -116,8 +150,9 @@ const TripColumn = styled.div`
   height: 300px;
   margin: 60px auto;
   background-color: #fff;
-  padding: 40px;
+  padding: 40px 60px 40px 60px;
   border-radius: 20px;
+  position: relative;
 `;
 
 const TripInfo = styled.div``;
@@ -126,7 +161,7 @@ const TripTitle = styled.div`
   font-size: 30px;
   font-weight: 600;
   color: #c88756;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 `;
 
 const TripCity = styled.div`
@@ -172,4 +207,11 @@ const TripImageContainer = styled.div`
 const TripImage = styled.img`
   width: 90%;
   height: 90%;
+`;
+
+const DeleteArea = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
 `;
