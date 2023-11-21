@@ -14,8 +14,8 @@ const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [initialLoad, setInitialLoad] = useState(true);
   const router = useRouter();
-  const [initialLoad, setInitailLoad] = useState(true);
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
@@ -30,8 +30,10 @@ export const AuthContextProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (initialLoad && currentUser) {
-        router.push("/trips");
-        setInitailLoad(false);
+        if (router.pathname === "/") {
+          router.push("/trips");
+        }
+        setInitialLoad(false);
       }
     });
     return () => unsubscribe();
