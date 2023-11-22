@@ -73,6 +73,6 @@ const ToolBarButton = styled.button`
   cursor: pointer;
   &.is-active,
   &:hover {
-    background-color: #e2e2e2;
+    background-color: #b29a9a;
   }
 `;
