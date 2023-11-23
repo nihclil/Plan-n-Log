@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import activity from "public/iconmonstr-friend-4-32.png";
 import lodging from "public/iconmonstr-bed-2-32.png";
-import transportation from "public/iconmonstr-bus-8-32.png";
+import flight from "public/iconmonstr-airport-2-32.png";
 import styled from "styled-components";
 
 export default function Home({ params }) {
@@ -24,10 +24,10 @@ export default function Home({ params }) {
         </PlanButton>
       </Link>
 
-      <Link href={`/trips/${params.slug}/transportation/create`}>
+      <Link href={`/trips/${params.slug}/flight/create`}>
         <PlanButton>
-          <Image src={transportation} alt="" />
-          <PlanSpan>transportation</PlanSpan>
+          <Image src={flight} alt="" />
+          <PlanSpan>Flight</PlanSpan>
         </PlanButton>
       </Link>
     </PlansContainer>
