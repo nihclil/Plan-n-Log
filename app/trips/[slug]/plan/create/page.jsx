@@ -44,14 +44,14 @@ const PlansContainer = styled.div`
 const PlanButton = styled.button`
   display: flex;
   align-items: center;
-  border: 0;
+  border: 1px solid transparent;
   background-color: #fff;
   padding: 20px 30px;
   border-radius: 40px;
   color: #6d5b48;
-
+  transition: border 0.2s;
   &:hover {
-    border: 2px solid #6d5b48;
+    border: 1px solid #6d5b48;
   }
 `;
 
