@@ -169,6 +169,7 @@ const TripButton = styled.button`
   font-weight: 600;
   font-size: 20px;
   margin-right: 30px;
+  cursor: pointer;
 `;
 
 const TripsArea = styled.div``;
