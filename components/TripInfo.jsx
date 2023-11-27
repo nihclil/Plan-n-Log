@@ -14,7 +14,6 @@ import {
 } from "firebase/firestore";
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
-import TripBtn from "components/TripBtn";
 import DeleteModal from "./DeleteModal";
 
 export default function Home() {
@@ -22,6 +21,7 @@ export default function Home() {
   const { user } = UserAuth();
   const [modal, setModal] = useState(false);
   const [currentItemId, setCurrentItemId] = useState(null);
+  const [displayedTrips, setDisplayedTrips] = useState([]);
 
   // Read items from database
   useEffect(() => {
@@ -69,16 +69,36 @@ export default function Home() {
     setModal(!modal);
   };
 
+  useEffect(() => {
+    categorizeDate(true);
+  }, [items]);
+
+  function categorizeDate(upcoming) {
+    const todayDate = new Date();
+
+    const filteredTrips = items.filter((item) => {
+      const tripDate = new Date(item.startDate);
+
+      return upcoming ? tripDate >= todayDate : tripDate < todayDate;
+    });
+
+    setDisplayedTrips(filteredTrips);
+  }
+
   return (
     <Main>
       <TripsButtonContainer>
-        <TripBtn>Upcoming Trips</TripBtn>
-        <TripBtn>Past Trips</TripBtn>
+        <TripButton onClick={() => categorizeDate(true)}>
+          Upcoming Trips
+        </TripButton>
+        <TripButton onClick={() => categorizeDate(false)}>
+          Past Trips
+        </TripButton>
       </TripsButtonContainer>
 
       <TripsArea>
         <AddTripBtn />
-        {items.map((item) => (
+        {displayedTrips.map((item) => (
           <TripColumn key={item.id}>
             <TripInfo>
               <Link href={`/trips/${item.id}`}>
@@ -138,6 +158,17 @@ const Main = styled.main`
 
 const TripsButtonContainer = styled.div`
   margin-bottom: 40px;
+`;
+
+const TripButton = styled.button`
+  border: 0;
+  border-radius: 20px;
+  padding: 10px 20px;
+  background-color: #d1bea9;
+  color: #fff;
+  font-weight: 600;
+  font-size: 20px;
+  margin-right: 30px;
 `;
 
 const TripsArea = styled.div``;
