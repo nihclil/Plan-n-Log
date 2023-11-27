@@ -10,6 +10,7 @@ import {
   getDocs,
   query,
   where,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
@@ -20,6 +21,7 @@ export default function Page({ params }) {
   const [items, setItems] = useState([]);
   const { user } = UserAuth();
   const [plans, setPlans] = useState([]);
+  const [planButton, setPlanButton] = useState(false);
 
   // Read trip data from database
   useEffect(() => {
@@ -35,7 +37,11 @@ export default function Page({ params }) {
 
   // Read plan data from database
   useEffect(() => {
-    const q = query(collection(db, "trip", params.slug, "plan"));
+    const q = query(
+      collection(db, "trip", params.slug, "plan"),
+      orderBy("startDate"),
+      orderBy("startTime")
+    );
     getDocs(q).then((querySnapshot) => {
       const plansData = [];
       querySnapshot.forEach((doc) => {
@@ -44,6 +50,20 @@ export default function Page({ params }) {
       setPlans(plansData);
     });
   }, [params.slug]);
+
+  function formatData(dateString) {
+    const options = {
+      weekday: "short",
+      //year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+    return new Date(dateString).toLocaleDateString("en-US", options);
+  }
+
+  function dropDownMenu() {
+    setPlanButton(!planButton);
+  }
 
   return (
     <Main>
@@ -76,28 +96,43 @@ export default function Page({ params }) {
           </TripColumn>
         ))}
       </TripsArea>
+
       <PlanArea>
-        {plans.map((plan) => (
-          <PlanContainer key={plan.id}>
-            <InfoColumn>
-              <DateColumn>
-                <StartDate>{plan.startDate}</StartDate>
-                <StartTime>{plan.startTime}</StartTime>
-              </DateColumn>
-              <ImageColumn>
-                <Image src={plan.src} width={32} height={32} alt="" />
-              </ImageColumn>
-              <PlanTitle>{plan.eventName}</PlanTitle>
-              {/* <EditLink>
+        <ButtonContainer onClick={dropDownMenu}>
+          <PlansButton>
+            <PlansSpan>Current Plans</PlansSpan>
+            <Image
+              src={
+                planButton
+                  ? "/iconmonstr-caret-down-circle-lined-24.png"
+                  : "/iconmonstr-caret-up-circle-lined-24.png"
+              }
+              width={24}
+              height={24}
+              alt="caret"
+            />
+          </PlansButton>
+        </ButtonContainer>
+        <PlansInfo>
+          {planButton
+            ? plans.map((plan) => (
+                <PlanContainer key={plan.id}>
+                  <DateColumn>
+                    <StartDate>{formatData(plan.startDate)}</StartDate>
+                    <StartTime>{plan.startTime}</StartTime>
+                  </DateColumn>
+                  <ImageColumn>
+                    <Image src={plan.src} width={32} height={32} alt="" />
+                  </ImageColumn>
+                  <PlanTitle>{plan.eventName}</PlanTitle>
+                  {/* <EditLink>
                 <EditImg src="/iconmonstr-edit-11-24.png"></EditImg>
                 <EditSpan>Edit Trip Info</EditSpan>
               </EditLink> */}
-            </InfoColumn>
-          </PlanContainer>
-        ))}
-
-        <div></div>
-        <div></div>
+                </PlanContainer>
+              ))
+            : null}
+        </PlansInfo>
       </PlanArea>
     </Main>
   );
@@ -107,7 +142,7 @@ const Main = styled.main``;
 
 const TripsArea = styled.div`
   width: 1000px;
-  margin: 50px auto;
+  margin: 50px auto 0px auto;
 `;
 
 const TripColumn = styled.div`
@@ -116,7 +151,6 @@ const TripColumn = styled.div`
   box-shadow: 4px 4px 30px 0px #aaaaaa;
   width: 100%;
   height: 300px;
-  margin: 60px auto;
   background-color: #fff;
   padding: 40px;
   border-radius: 20px;
@@ -175,13 +209,23 @@ const TripImage = styled.img`
 `;
 
 const PlanArea = styled.div`
+  width: 1000px;
+  margin: 0 auto 50px auto;
+`;
+
+const PlansInfo = styled.div`
+  border-radius: 20px;
+  overflow: hidden;
   width: 800px;
-  margin: 0px auto 50px auto;
 `;
 
 const PlanContainer = styled.div`
   color: #6d5b48;
-  margin-bottom: 50px;
+  background-color: #fff;
+  width: 800px;
+  display: flex;
+  align-items: center;
+  padding: 20px;
 `;
 
 const DateColumn = styled.div`
@@ -189,21 +233,12 @@ const DateColumn = styled.div`
   flex-direction: column;
   align-items: center;
   margin-right: 20px;
+  width: 200px;
 `;
 
 const StartDate = styled.div`
   font-size: 24px;
   margin-bottom: 10px;
-`;
-
-const InfoColumn = styled.div`
-  background-color: #fff;
-  display: flex;
-  align-items: center;
-  /* justify-content: center; */
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: 4px 4px 30px 0px #aaaaaa;
 `;
 
 const StartTime = styled.div``;
@@ -219,8 +254,34 @@ const ImageColumn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   margin-right: 50px;
+`;
+
+const ButtonContainer = styled.div`
+  margin: 100px auto 0px auto;
+  cursor: pointer;
+`;
+
+const PlansButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 250px;
+  background-color: #fff;
+  padding: 20px 20px;
+  border-radius: 20px;
+`;
+
+const PlansSpan = styled.span`
+  margin-right: 10px;
+  color: #6a9066;
+  font-size: 24px;
+  font-weight: 600;
+
+  &:hover {
+    color: #70946c;
+  }
 `;
