@@ -11,6 +11,7 @@
   "dependencies": {
     "@reach/combobox": "^0.18.0",
     "@tiptap/extension-bold": "^2.1.12",
+    "@tiptap/extension-image": "^2.1.12",
     "@tiptap/extension-placeholder": "^2.1.12",
     "@tiptap/pm": "^2.1.12",
     "@tiptap/react": "^2.1.12",

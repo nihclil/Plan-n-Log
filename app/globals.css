@@ -23,6 +23,11 @@ body {
   padding-left: 20px;
 }
 
+.tiptap img {
+  max-width: 80%;
+  height: auto;
+}
+
 body {
 }
 

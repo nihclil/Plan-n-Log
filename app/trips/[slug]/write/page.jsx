@@ -1,5 +1,5 @@
 "use client";
-
+import { Editor } from "@tiptap/react";
 import Tiptap from "components/Tiptap";
 import styled from "styled-components";
 import { db } from "lib/firebase";
@@ -78,7 +78,7 @@ export default function Home({ params }) {
       <Container>
         {tripDetails && (
           <TripInfo>
-            <Title>Your Trip Details</Title>{" "}
+            <Title>Your Trip Details</Title>
             <TripImageContainer>
               <TripImage src={tripDetails.imageUrl}></TripImage>
             </TripImageContainer>
@@ -91,7 +91,11 @@ export default function Home({ params }) {
           </TripInfo>
         )}
 
-        <Tiptap onEditorUpdate={getTiptapContent} initialContent={content} />
+        <Tiptap
+          onEditorUpdate={getTiptapContent}
+          initialContent={content}
+          params={params}
+        />
       </Container>
       <SaveButtonContainer>
         <SaveButton onClick={saveData}>Save</SaveButton>

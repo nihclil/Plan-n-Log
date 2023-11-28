@@ -2,15 +2,17 @@
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Image from "@tiptap/extension-image";
 import ToolBar from "./ToolBar";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import Placeholder from "@tiptap/extension-placeholder";
 
-const Tiptap = ({ onEditorUpdate, initialContent }) => {
+const Tiptap = ({ onEditorUpdate, initialContent, params, onFileChange }) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      Image,
       Placeholder.configure({ placeholder: "Write your story..." }),
     ],
     content: initialContent,
@@ -39,7 +41,7 @@ const Tiptap = ({ onEditorUpdate, initialContent }) => {
 
   return (
     <TiptapContainer>
-      <ToolBar editor={editor} />
+      <ToolBar editor={editor} params={params} />
       <StyledEditor>
         <EditorContent editor={editor} />
       </StyledEditor>
