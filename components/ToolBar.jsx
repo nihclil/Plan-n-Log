@@ -85,6 +85,9 @@ export default function ToolBar({ editor, params }) {
 const ToolBarContainer = styled.div`
   display: flex;
   justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 `;
 
 const ToolBarButton = styled.button`
