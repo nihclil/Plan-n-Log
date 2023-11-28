@@ -8,7 +8,7 @@ import {
   Italic,
   List,
   ListOrdered,
-  Heading2,
+  Heading3,
 } from "lucide-react";
 
 export default function ToolBar({ editor }) {
@@ -19,10 +19,10 @@ export default function ToolBar({ editor }) {
     <ToolBarContainer>
       <ToolBarButton
         onClick={() => {
-          editor.chain().focus().toggleHeading({ level: 2 }).run();
+          editor.chain().focus().toggleHeading({ level: 3 }).run();
         }}
       >
-        <Heading2 className="h-4 w-4" />
+        <Heading3 className="h-4 w-4" />
       </ToolBarButton>
 
       <ToolBarButton
