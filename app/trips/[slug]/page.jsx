@@ -232,6 +232,7 @@ const PlanContainer = styled.div`
   display: flex;
   align-items: center;
   padding: 20px;
+  border-bottom: 1px solid #e6ddd4;
 `;
 
 const DateColumn = styled.div`
