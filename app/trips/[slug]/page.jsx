@@ -125,10 +125,16 @@ export default function Page({ params }) {
                     <Image src={plan.src} width={32} height={32} alt="" />
                   </ImageColumn>
                   <PlanTitle>{plan.eventName}</PlanTitle>
-                  {/* <EditLink>
-                <EditImg src="/iconmonstr-edit-11-24.png"></EditImg>
-                <EditSpan>Edit Trip Info</EditSpan>
-              </EditLink> */}
+
+                  <EditPlan>
+                    <Image
+                      src="/iconmonstr-edit-11-24.png"
+                      alt="caret-down-filled"
+                      width={24}
+                      height={24}
+                    ></Image>
+                    <EditPlanSpan>Edit</EditPlanSpan>
+                  </EditPlan>
                 </PlanContainer>
               ))
             : null}
@@ -284,4 +290,19 @@ const PlansSpan = styled.span`
   &:hover {
     color: #70946c;
   }
+`;
+
+const EditPlan = styled.div`
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+  margin-right: 20px;
+  cursor: pointer;
+  position: relative;
+`;
+
+const EditPlanSpan = styled.span`
+  padding-left: 5px;
+  color: #6a9066;
+  font-size: 20px;
 `;
