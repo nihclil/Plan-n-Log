@@ -9,36 +9,76 @@ import styled from "styled-components";
 
 export default function Home({ params }) {
   return (
-    <PlansContainer>
-      <Link href={`/trips/${params.slug}/activity/create`}>
-        <PlanButton>
-          <Image src={activity} alt="" />
-          <PlanSpan>Activity</PlanSpan>
-        </PlanButton>
-      </Link>
+    <Main>
+      <Nav>
+        <Link href={`/trips/${params.slug}`}>
+          <Image
+            src="/iconmonstr-arrow-left-lined-24.png"
+            width={24}
+            height={24}
+            alt="arrow"
+          ></Image>
+          <NavSpan>Back to Trip Summary</NavSpan>
+        </Link>
+      </Nav>
+      <Caption>Most Popular</Caption>
+      <PlansContainer>
+        <Link href={`/trips/${params.slug}/activity/create`}>
+          <PlanButton>
+            <Image src={activity} alt="" />
+            <PlanSpan>Activity</PlanSpan>
+          </PlanButton>
+        </Link>
 
-      <Link href={`/trips/${params.slug}/lodging/create`}>
-        <PlanButton>
-          <Image src={lodging} alt="" />
-          <PlanSpan>Lodging</PlanSpan>
-        </PlanButton>
-      </Link>
+        <Link href={`/trips/${params.slug}/lodging/create`}>
+          <PlanButton>
+            <Image src={lodging} alt="" />
+            <PlanSpan>Lodging</PlanSpan>
+          </PlanButton>
+        </Link>
 
-      <Link href={`/trips/${params.slug}/flight/create`}>
-        <PlanButton>
-          <Image src={flight} alt="" />
-          <PlanSpan>Flight</PlanSpan>
-        </PlanButton>
-      </Link>
-    </PlansContainer>
+        <Link href={`/trips/${params.slug}/flight/create`}>
+          <PlanButton>
+            <Image src={flight} alt="" />
+            <PlanSpan>Flight</PlanSpan>
+          </PlanButton>
+        </Link>
+      </PlansContainer>
+    </Main>
   );
 }
 
-const PlansContainer = styled.div`
+const Main = styled.div`
   width: 1000px;
   margin: 50px auto;
+`;
+
+const Nav = styled.div`
   display: flex;
-  gap: 20px;
+  align-items: center;
+  margin-bottom: 60px;
+`;
+
+const NavSpan = styled.span`
+  margin-left: 5px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #6a9066;
+  &:hover {
+    color: #70946c;
+  }
+`;
+
+const Caption = styled.div`
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #6d5b48;
+`;
+
+const PlansContainer = styled.div`
+  display: flex;
+  gap: 40px;
 `;
 
 const PlanButton = styled.button`
