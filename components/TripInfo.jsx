@@ -145,6 +145,7 @@ export default function Home() {
           toggleModal={toggleModal}
           deleteData={() => deleteData(currentItemId)}
           id={currentItemId}
+          caption="trip"
         />
       )}
     </Main>

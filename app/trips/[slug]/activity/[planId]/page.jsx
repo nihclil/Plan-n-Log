@@ -168,6 +168,7 @@ export default function Home({ params }) {
           toggleModal={toggleModal}
           deleteData={() => deleteData(currentItemId)}
           id={currentItemId}
+          caption="plan"
         />
       )}
     </Main>
