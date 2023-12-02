@@ -28,7 +28,7 @@ export default function Home({ params }) {
   const addLodging = async (formData) => {
     const ref = collection(db, "trip", params.slug, "plan");
     addDoc(ref, {
-      planName: "lodging",
+      planName: "flight",
       src: "/iconmonstr-airport-2-32.png",
       eventName: formData.airline,
       startDate: formData.departureDate,
