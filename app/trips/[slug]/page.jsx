@@ -12,7 +12,7 @@ import {
   where,
   orderBy,
 } from "firebase/firestore";
-import { db } from "lib/firebase";
+import { auth, db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
 import AddPlanBtn from "components/AddPlanBtn";
 import Image from "next/image";
@@ -25,31 +25,35 @@ export default function Page({ params }) {
 
   // Read trip data from database
   useEffect(() => {
-    const docRef = doc(db, "trip", params.slug);
-    getDoc(docRef).then((docSnapshot) => {
-      if (docSnapshot.exists()) {
-        setItems([{ ...docSnapshot.data(), id: docSnapshot.id }]);
-      } else {
-        console.log("No such document");
-      }
-    });
-  }, [params.slug]);
+    if (user && user.uid) {
+      const docRef = doc(db, "trip", params.slug);
+      getDoc(docRef).then((docSnapshot) => {
+        if (docSnapshot.exists()) {
+          setItems([{ ...docSnapshot.data(), id: docSnapshot.id }]);
+        } else {
+          console.log("No such document");
+        }
+      });
+    }
+  }, [user, params.slug]);
 
   // Read plan data from database
   useEffect(() => {
-    const q = query(
-      collection(db, "trip", params.slug, "plan"),
-      orderBy("startDate"),
-      orderBy("startTime")
-    );
-    getDocs(q).then((querySnapshot) => {
-      const plansData = [];
-      querySnapshot.forEach((doc) => {
-        plansData.push({ ...doc.data(), id: doc.id });
+    if (user && user.uid) {
+      const q = query(
+        collection(db, "trip", params.slug, "plan"),
+        orderBy("startDate"),
+        orderBy("startTime")
+      );
+      getDocs(q).then((querySnapshot) => {
+        const plansData = [];
+        querySnapshot.forEach((doc) => {
+          plansData.push({ ...doc.data(), id: doc.id });
+        });
+        setPlans(plansData);
       });
-      setPlans(plansData);
-    });
-  }, [params.slug]);
+    }
+  }, [user, params.slug]);
 
   function formatData(dateString) {
     const options = {
@@ -124,7 +128,9 @@ export default function Page({ params }) {
                   <ImageColumn>
                     <Image src={plan.src} width={32} height={32} alt="" />
                   </ImageColumn>
-                  <PlanTitle>{plan.eventName}</PlanTitle>
+                  <Link href={`${params.slug}/${plan.planName}/${plan.id}`}>
+                    <PlanTitle>{plan.eventName}</PlanTitle>
+                  </Link>
 
                   <EditPlan>
                     <Image
