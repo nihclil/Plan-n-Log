@@ -37,11 +37,13 @@ export default function Home({ params }) {
       endTime: formData.arrivalTime,
       confirmation: formData.confirmation,
       departureAirport: formData.departureAirport,
+      departureGate: formData.departureGate,
+      departureTerminal: formData.departureTerminal,
       flightNumber: formData.flightNumber,
-      seat: formData.seat,
+      seats: formData.seats,
       arrivalAirport: formData.arrivalAirport,
-      terminal: formData.terminal,
-      gate: formData.gate,
+      arrivalTerminal: formData.arrivalTerminal,
+      arrivalGate: formData.arrivalGate,
       uid: user.uid,
     })
       .then(() => {
@@ -103,8 +105,18 @@ export default function Home({ params }) {
                   <DateInput type="text" {...register("flightNumber")} />
                 </Column>
                 <Column>
-                  <InputName>Seat</InputName>
-                  <DateInput type="text" {...register("seat")} />
+                  <InputName>Seats</InputName>
+                  <DateInput type="text" {...register("seats")} />
+                </Column>
+              </DualInputColumn>
+              <DualInputColumn>
+                <Column>
+                  <InputName>Terminal</InputName>
+                  <DateInput type="text" {...register("departureTerminal")} />
+                </Column>
+                <Column>
+                  <InputName>Gate</InputName>
+                  <DateInput type="text" {...register("departureGate")} />
                 </Column>
               </DualInputColumn>
               <Caption>Arrival</Caption>
@@ -125,11 +137,11 @@ export default function Home({ params }) {
               <DualInputColumn>
                 <Column>
                   <InputName>Terminal</InputName>
-                  <DateInput type="text" {...register("terminal")} />
+                  <DateInput type="text" {...register("arrivalTerminal")} />
                 </Column>
                 <Column>
                   <InputName>Gate</InputName>
-                  <DateInput type="text" {...register("gate")} />
+                  <DateInput type="text" {...register("arrivalGate")} />
                 </Column>
               </DualInputColumn>
             </TripInfo>
