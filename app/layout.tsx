@@ -3,7 +3,6 @@ import { Roboto_Flex } from "next/font/google";
 import "./globals.css";
 import StyledJsxRegistry from "./registry";
 import StyledComponentsRegistry from "../lib/registry";
-import Navbar from "../components/Navbar";
 import { AuthContextProvider } from "../hooks/authContext.js";
 
 const roboto = Roboto_Flex({
@@ -25,10 +24,7 @@ export default function RootLayout({
     <html className={roboto.className}>
       <body>
         <StyledComponentsRegistry>
-          <AuthContextProvider>
-            <Navbar />
-            {children}
-          </AuthContextProvider>
+          <AuthContextProvider>{children}</AuthContextProvider>
         </StyledComponentsRegistry>
       </body>
     </html>
