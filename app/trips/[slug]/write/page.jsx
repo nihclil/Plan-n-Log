@@ -13,10 +13,15 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
+import Image from "next/image";
+import LoadingEffect from "components/LoadingEffect";
+import NavBar from "components/Navbar";
+import Link from "next/link";
 
 export default function Home({ params }) {
   const [content, setContent] = useState("");
   const [tripDetails, setTripDetails] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getTiptapContent = (data) => {
     setContent(data);
@@ -25,13 +30,23 @@ export default function Home({ params }) {
   //獲取過往文章內容
   useEffect(() => {
     const docRef = doc(db, "trip", params.slug);
-
     getDoc(docRef).then((docSnapshot) => {
       if (docSnapshot.exists()) {
         const docData = docSnapshot.data();
-        if (docData.storyContent) {
-          setContent(docData.storyContent);
-        }
+        setContent(docData.storyContent);
+        setTripDetails(docData);
+      }
+      setIsLoading(false);
+    });
+  }, [params.slug]);
+
+  //獲取行程資料
+  useEffect(() => {
+    const docRef = doc(db, "trip", params.slug);
+    getDoc(docRef).then((docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const tripData = docSnapshot.data();
+        setTripDetails({ ...tripData, id: docSnapshot.id });
       }
     });
   }, [params.slug]);
@@ -49,17 +64,6 @@ export default function Home({ params }) {
       });
   };
 
-  //獲取行程資料
-  useEffect(() => {
-    const docRef = doc(db, "trip", params.slug);
-    getDoc(docRef).then((docSnapshot) => {
-      if (docSnapshot.exists()) {
-        const tripData = docSnapshot.data();
-        setTripDetails(tripData);
-      }
-    });
-  }, [params.slug, tripDetails]);
-
   function formatData(dateString) {
     const options = {
       year: "numeric",
@@ -69,38 +73,43 @@ export default function Home({ params }) {
     return new Date(dateString).toLocaleDateString("en-US", options);
   }
 
-  if (!tripDetails) {
-    return <div>Loading trip details...</div>;
+  if (isLoading) {
+    return <LoadingEffect />;
   }
 
   return (
-    <Main>
-      <Container>
-        {tripDetails && (
-          <TripInfo>
-            <Title>Your Trip Details</Title>
-            <TripImageContainer>
-              <TripImage src={tripDetails.imageUrl}></TripImage>
-            </TripImageContainer>
-            <TripName>{tripDetails.tripName}</TripName>
-            <TripCity>{tripDetails.cityName}</TripCity>
-            <TripTime>
-              {formatData(tripDetails.startDate)} -
-              {formatData(tripDetails.endDate)}
-            </TripTime>
-          </TripInfo>
-        )}
+    <>
+      <NavBar />
+      <Main>
+        <Container>
+          {tripDetails && (
+            <TripInfo>
+              <Title>Your Trip Details</Title>
+              <TripImageContainer>
+                <TripImage src={tripDetails.imageUrl}></TripImage>
+              </TripImageContainer>
+              <Link href={`/trips/${tripDetails.id}`}>
+                <TripName>{tripDetails.tripName}</TripName>
+              </Link>
+              <TripCity>{tripDetails.cityName}</TripCity>
+              <TripTime>
+                {formatData(tripDetails.startDate)} -
+                {formatData(tripDetails.endDate)}
+              </TripTime>
+            </TripInfo>
+          )}
 
-        <Tiptap
-          onEditorUpdate={getTiptapContent}
-          initialContent={content}
-          params={params}
-        />
-      </Container>
-      <SaveButtonContainer>
-        <SaveButton onClick={saveData}>Save</SaveButton>
-      </SaveButtonContainer>
-    </Main>
+          <Tiptap
+            onEditorUpdate={getTiptapContent}
+            initialContent={content}
+            params={params}
+          />
+        </Container>
+        <SaveButtonContainer>
+          <SaveButton onClick={saveData}>Save</SaveButton>
+        </SaveButtonContainer>
+      </Main>
+    </>
   );
 }
 
@@ -115,8 +124,8 @@ const Container = styled.div`
 
 const TripInfo = styled.div`
   width: 500px;
-  padding: 10px;
-  background-color: #ded3d3;
+  padding: 10px 20px;
+  background-color: #e3d7d7;
 `;
 
 const Title = styled.div`
@@ -125,19 +134,34 @@ const Title = styled.div`
   font-weight: 600;
 `;
 
-const TripName = styled.div``;
+const TripName = styled.div`
+  font-size: 30px;
+  font-weight: 600;
+  color: #c88756;
+  margin-bottom: 15px;
+`;
 
-const TripCity = styled.div``;
+const TripCity = styled.div`
+  margin-bottom: 15px;
+  color: #6d5b48;
+  font-size: 20px;
+`;
 
-const TripTime = styled.div``;
+const TripTime = styled.div`
+  margin-bottom: 15px;
+  color: #6d5b48;
+  font-size: 20px;
+`;
 
 const TripImageContainer = styled.div`
   width: 220px;
   height: 220px;
+  background-color: #fff;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 20px 0 15px 0;
 `;
 
 const TripImage = styled.img`
