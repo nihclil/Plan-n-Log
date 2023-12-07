@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { SignUpForm, SignInForm } from "./AuthForm";
 import { UserAuth } from "../hooks/authContext";
@@ -11,7 +11,6 @@ import Image from "next/image";
 export default function Navbar() {
   const [modal, setModal] = useState(false);
   const [isSignUp, setIsSignUp] = useState(true);
-  const router = useRouter();
   const { user, googleSignIn, googleSignOut } = UserAuth();
 
   const handleSignIn = async () => {
@@ -83,13 +82,6 @@ export default function Navbar() {
               </Li>
             </Ul>
           </NavBar>
-          {/* <div>
-            <ul>
-              <li>
-                <div>trips</div>
-              </li>
-            </ul>
-          </div> */}
         </NavbarContainer>
       )}
 
