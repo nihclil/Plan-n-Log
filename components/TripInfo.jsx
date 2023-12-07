@@ -190,18 +190,6 @@ const TripButton = styled.button`
   cursor: pointer;
 `;
 
-// const Button = styled.button`
-//   border: 2px solid #928677;
-//   border-radius: 20px;
-//   padding: 10px 20px;
-//   background-color: #d1bea9;
-//   color: #fff;
-//   font-weight: 600;
-//   font-size: 20px;
-//   margin-right: 30px;
-//   cursor: pointer;
-// `;
-
 const TripsArea = styled.div``;
 
 const TripColumn = styled.div`
