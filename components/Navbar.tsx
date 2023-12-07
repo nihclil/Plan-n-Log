@@ -52,8 +52,6 @@ export default function Navbar() {
             </Ul>
             <Ul>
               <Li>
-                <NavbarButton>Home</NavbarButton>
-                <NavbarButton>Posts</NavbarButton>
                 <GetStared onClick={toggleModal}>Get Started</GetStared>
               </Li>
             </Ul>
@@ -70,6 +68,11 @@ export default function Navbar() {
               </Li>
             </Ul>
             <Ul>
+              <Li>
+                <Link href="/trips">
+                  <NavbarButton>Trips</NavbarButton>
+                </Link>
+              </Li>
               <Li>
                 <UserImg>
                   <Image src={user.photoURL} width={40} height={40} alt="" />
@@ -172,6 +175,7 @@ const UserImg = styled.div`
   width: 40px;
   height: 40px;
   overflow: hidden;
+  margin-left: 30px;
 `;
 
 const NavbarButton = styled.button`
