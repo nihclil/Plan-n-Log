@@ -15,6 +15,7 @@ import {
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
 import DeleteModal from "./DeleteModal";
+import Navbar from "components/Navbar";
 
 export default function Home() {
   const [items, setItems] = useState([]);
@@ -22,6 +23,7 @@ export default function Home() {
   const [modal, setModal] = useState(false);
   const [currentItemId, setCurrentItemId] = useState(null);
   const [displayedTrips, setDisplayedTrips] = useState([]);
+  const [selectedButton, setSelectedButton] = useState("upcoming");
 
   // Read items from database
   useEffect(() => {
@@ -86,69 +88,84 @@ export default function Home() {
   }
 
   return (
-    <Main>
-      <TripsButtonContainer>
-        <TripButton onClick={() => categorizeDate(true)}>
-          Upcoming Trips
-        </TripButton>
-        <TripButton onClick={() => categorizeDate(false)}>
-          Past Trips
-        </TripButton>
-      </TripsButtonContainer>
+    <>
+      <Navbar />
+      <Main>
+        <TripsButtonContainer>
+          <TripButton
+            onClick={() => {
+              categorizeDate(true);
+              setSelectedButton("upcoming");
+            }}
+            isSelected={selectedButton == "upcoming"}
+          >
+            Upcoming Trips
+          </TripButton>
+          <TripButton
+            onClick={() => {
+              categorizeDate(false);
+              setSelectedButton("past");
+            }}
+            isSelected={selectedButton == "past"}
+          >
+            Past Trips
+          </TripButton>
+        </TripsButtonContainer>
 
-      <TripsArea>
-        <AddTripBtn />
-        {displayedTrips.map((item) => (
-          <TripColumn key={item.id}>
-            <TripInfo>
-              <Link href={`/trips/${item.id}`}>
-                <TripTitle>{item.tripName}</TripTitle>
-              </Link>
-
-              <TripCity>{item.cityName}</TripCity>
-              <TripDate>
-                {formatData(item.startDate)} - {formatData(item.endDate)}
-              </TripDate>
-
-              <EditLink>
-                <Link href={`/trips/${item.id}/edit`}>
-                  <LinkArea>
-                    <EditImg src="/iconmonstr-edit-11-24.png"></EditImg>
-                    <EditSpan>Edit Trip Info</EditSpan>
-                  </LinkArea>
+        <TripsArea>
+          <AddTripBtn />
+          {displayedTrips.map((item) => (
+            <TripColumn key={item.id}>
+              <TripInfo>
+                <Link href={`/trips/${item.id}`}>
+                  <TripTitle>{item.tripName}</TripTitle>
                 </Link>
-              </EditLink>
 
-              <EditLink>
-                <Link href={`/trips/${item.id}/write`}>
+                <TripCity>{item.cityName}</TripCity>
+                <TripDate>
+                  {formatData(item.startDate)} - {formatData(item.endDate)}
+                </TripDate>
+
+                <EditLink>
+                  <Link href={`/trips/${item.id}/edit`}>
+                    <LinkArea>
+                      <EditImg src="/iconmonstr-edit-11-24.png"></EditImg>
+                      <EditSpan>Edit Trip Info</EditSpan>
+                    </LinkArea>
+                  </Link>
+                </EditLink>
+
+                <EditLink>
+                  <Link href={`/trips/${item.id}/write`}>
+                    <LinkArea>
+                      <EditImg src="/iconmonstr-edit-6-24.png"></EditImg>
+                      <EditSpan>Log Your Trip</EditSpan>
+                    </LinkArea>
+                  </Link>
+                </EditLink>
+
+                <DeleteArea onClick={() => openDeleteModal(item.id)}>
                   <LinkArea>
-                    <EditImg src="/iconmonstr-edit-6-24.png"></EditImg>
-                    <EditSpan>Log Your Trip</EditSpan>
+                    <EditImg src="/iconmonstr-trash-can-lined-24.png"></EditImg>
                   </LinkArea>
-                </Link>
-              </EditLink>
-
-              <DeleteArea onClick={() => openDeleteModal(item.id)}>
-                <LinkArea>
-                  <EditImg src="/iconmonstr-trash-can-lined-24.png"></EditImg>
-                </LinkArea>
-              </DeleteArea>
-            </TripInfo>
-            <TripImageContainer>
-              <TripImage src={item.imageUrl}></TripImage>
-            </TripImageContainer>
-          </TripColumn>
-        ))}
-      </TripsArea>
-      {modal && (
-        <DeleteModal
-          toggleModal={toggleModal}
-          deleteData={() => deleteData(currentItemId)}
-          id={currentItemId}
-          caption="trip"
-        />
-      )}
-    </Main>
+                </DeleteArea>
+              </TripInfo>
+              <TripImageContainer>
+                <TripImage src={item.imageUrl}></TripImage>
+              </TripImageContainer>
+            </TripColumn>
+          ))}
+        </TripsArea>
+        {modal && (
+          <DeleteModal
+            toggleModal={toggleModal}
+            deleteData={() => deleteData(currentItemId)}
+            id={currentItemId}
+            caption="trip"
+          />
+        )}
+      </Main>
+    </>
   );
 }
 
@@ -162,7 +179,7 @@ const TripsButtonContainer = styled.div`
 `;
 
 const TripButton = styled.button`
-  border: 0;
+  border: ${(props) => (props.isSelected ? "2px solid #928677" : "0")};
   border-radius: 20px;
   padding: 10px 20px;
   background-color: #d1bea9;
@@ -172,6 +189,18 @@ const TripButton = styled.button`
   margin-right: 30px;
   cursor: pointer;
 `;
+
+// const Button = styled.button`
+//   border: 2px solid #928677;
+//   border-radius: 20px;
+//   padding: 10px 20px;
+//   background-color: #d1bea9;
+//   color: #fff;
+//   font-weight: 600;
+//   font-size: 20px;
+//   margin-right: 30px;
+//   cursor: pointer;
+// `;
 
 const TripsArea = styled.div``;
 
