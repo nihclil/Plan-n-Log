@@ -1,8 +1,7 @@
 "use client";
 import styled from "styled-components";
-import Link from "next/link";
 import AddTripBtn from "components/AddTripBtn";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   collection,
   query,
@@ -15,9 +14,7 @@ import {
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
 import DeleteModal from "components/DeleteModal";
-import formatDate from "utils/formatDate";
 import TripsFilter from "components/TripsFilter";
-import TripTaskLink from "components/TripTaskLink";
 import TripList from "components/TripList";
 
 export default function Home() {
