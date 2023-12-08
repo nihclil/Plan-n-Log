@@ -9,19 +9,25 @@ import {
   getDoc,
   getDocs,
   query,
-  where,
   orderBy,
+  deleteDoc,
 } from "firebase/firestore";
-import { auth, db } from "lib/firebase";
+import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
 import AddPlanBtn from "components/AddPlanBtn";
 import Image from "next/image";
+import TripList from "components/TripList";
+import DeleteModal from "components/DeleteModal";
+import { useRouter } from "next/navigation";
 
 export default function Page({ params }) {
   const [items, setItems] = useState([]);
   const { user } = UserAuth();
   const [plans, setPlans] = useState([]);
   const [planButton, setPlanButton] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [currentItemId, setCurrentItemId] = useState(null);
+  const router = useRouter();
 
   // Read trip data from database
   useEffect(() => {
@@ -58,7 +64,7 @@ export default function Page({ params }) {
   function formatData(dateString) {
     const options = {
       weekday: "short",
-      //year: "numeric",
+      year: "numeric",
       month: "short",
       day: "numeric",
     };
@@ -69,36 +75,33 @@ export default function Page({ params }) {
     setPlanButton(!planButton);
   }
 
+  //delete trip data
+  const deleteData = async (id) => {
+    const docRef = doc(db, "trip", id);
+    deleteDoc(docRef).then(() => {
+      setItems((prevItems) => prevItems.filter((item) => id !== item.id));
+    });
+    router.push("/trips");
+  };
+
+  const openDeleteModal = (id) => {
+    setCurrentItemId(id);
+    toggleModal();
+  };
+
+  const toggleModal = () => {
+    setModal(!modal);
+  };
+
   return (
     <Main>
       <TripsArea>
         {items.map((item) => (
-          <TripColumn key={item.id}>
-            <TripInfo>
-              <Link href={`/trips/${item.id}`}>
-                <TripTitle>{item.tripName}</TripTitle>
-              </Link>
-              <TripCity>{item.cityName}</TripCity>
-              <TripDate>
-                {item.startDate} ～ {item.endDate}
-              </TripDate>
-              <Link href={`/trips/${item.id}/edit`}>
-                <EditLink>
-                  <EditImg src="/iconmonstr-edit-11-24.png"></EditImg>
-                  <EditSpan>Edit Trip Info</EditSpan>
-                </EditLink>
-              </Link>
-            </TripInfo>
-            <Link href={`/trips/${item.id}/plan/create`}>
-              <AddPlanBtnContainer>
-                <AddPlanBtn />
-              </AddPlanBtnContainer>
-            </Link>
-            <TripImageContainer>
-              <TripImage src={item.imageUrl}></TripImage>
-            </TripImageContainer>
-          </TripColumn>
+          <TripList key={item.id} item={item} onDelete={openDeleteModal} />
         ))}
+        <AddPlanBtnContainer>
+          <AddPlanBtn />
+        </AddPlanBtnContainer>
       </TripsArea>
 
       <PlanArea>
@@ -145,6 +148,14 @@ export default function Page({ params }) {
               ))
             : null}
         </PlansInfo>
+        {modal && (
+          <DeleteModal
+            toggleModal={toggleModal}
+            deleteData={() => deleteData(currentItemId)}
+            id={currentItemId}
+            caption="trip"
+          />
+        )}
       </PlanArea>
     </Main>
   );
@@ -155,6 +166,7 @@ const Main = styled.main``;
 const TripsArea = styled.div`
   width: 1000px;
   margin: 50px auto 0px auto;
+  position: relative;
 `;
 
 const TripColumn = styled.div`
