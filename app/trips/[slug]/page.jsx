@@ -203,6 +203,8 @@ const EditSpan = styled.span`
 const AddPlanBtnContainer = styled.div`
   position: absolute;
   bottom: 20px;
+  left: 50%;
+  transform: translate(-50%);
 `;
 
 const TripImageContainer = styled.div`
