@@ -5,7 +5,6 @@ import TripDate from "./TripDate";
 import TripImage from "./TripImage";
 import TripTaskLink from "./TripTaskLink";
 import DeleteButton from "./DeleteButton";
-import DeleteModal from "./DeleteModal";
 
 export default function TripList({ item, onDelete }) {
   return (
