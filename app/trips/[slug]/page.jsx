@@ -19,6 +19,7 @@ import Image from "next/image";
 import TripList from "components/TripList";
 import DeleteModal from "components/DeleteModal";
 import { useRouter } from "next/navigation";
+import formatDate from "utils/formatDate";
 
 export default function Page({ params }) {
   const [items, setItems] = useState([]);
@@ -61,16 +62,6 @@ export default function Page({ params }) {
     }
   }, [user, params.slug]);
 
-  function formatData(dateString) {
-    const options = {
-      weekday: "short",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
-
   function dropDownMenu() {
     setPlanButton(!planButton);
   }
@@ -97,11 +88,16 @@ export default function Page({ params }) {
     <Main>
       <TripsArea>
         {items.map((item) => (
-          <TripList key={item.id} item={item} onDelete={openDeleteModal} />
+          <>
+            <TripList key={item.id} item={item} onDelete={openDeleteModal} />
+
+            <Link href={`/trips/${item.id}/plan/create`}>
+              <AddPlanBtnContainer>
+                <AddPlanBtn />
+              </AddPlanBtnContainer>
+            </Link>
+          </>
         ))}
-        <AddPlanBtnContainer>
-          <AddPlanBtn />
-        </AddPlanBtnContainer>
       </TripsArea>
 
       <PlanArea>
@@ -125,7 +121,7 @@ export default function Page({ params }) {
             ? plans.map((plan) => (
                 <PlanContainer key={plan.id}>
                   <DateColumn>
-                    <StartDate>{formatData(plan.startDate)}</StartDate>
+                    <StartDate>{formatDate(plan.startDate, false)}</StartDate>
                     <StartTime>{plan.startTime}</StartTime>
                   </DateColumn>
                   <ImageColumn>
