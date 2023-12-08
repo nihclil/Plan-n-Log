@@ -83,46 +83,10 @@ export default function Home() {
         selectedButton={selectedButton}
         setSelectedButton={setSelectedButton}
       />
-      <TripsArea>
-        <AddTripBtn />
-        {displayedTrips.map((item) => (
-          <TripList key={item.id} item={item} />
-        ))}
-        {/* {displayedTrips.map((item) => (
-          <TripColumn key={item.id}>
-            <TripInfo>
-              <Link href={`/trips/${item.id}`}>
-                <TripTitle>{item.tripName}</TripTitle>
-              </Link>
-
-              <TripCity>{item.cityName}</TripCity>
-              <TripDate>
-                {formatDate(item.startDate)} - {formatDate(item.endDate)}
-              </TripDate>
-              <TripTaskLink
-                tripId={item.id}
-                iconSrc="/iconmonstr-edit-11-24.png"
-                linkTo="edit"
-                text="Edit Trip Info"
-              />
-              <TripTaskLink
-                tripId={item.id}
-                iconSrc="/iconmonstr-edit-6-24.png"
-                linkTo="write"
-                text="Log Your Trip"
-              />
-              <DeleteArea onClick={() => openDeleteModal(item.id)}>
-                <LinkArea>
-                  <EditImg src="/iconmonstr-trash-can-lined-24.png"></EditImg>
-                </LinkArea>
-              </DeleteArea>
-            </TripInfo>
-            <TripImageContainer>
-              <TripImage src={item.imageUrl}></TripImage>
-            </TripImageContainer>
-          </TripColumn>
-        ))} */}
-      </TripsArea>
+      <AddTripBtn />
+      {displayedTrips.map((item) => (
+        <TripList key={item.id} item={item} onDelete={openDeleteModal} />
+      ))}
       {modal && (
         <DeleteModal
           toggleModal={toggleModal}
@@ -138,70 +102,4 @@ export default function Home() {
 const Main = styled.main`
   width: 1000px;
   margin: 50px auto;
-`;
-
-const TripsArea = styled.div``;
-
-const TripColumn = styled.div`
-  display: flex;
-  justify-content: space-between;
-  box-shadow: 4px 4px 30px 0px #aaaaaa;
-  width: 100%;
-  height: 300px;
-  margin: 60px auto;
-  background-color: #fff;
-  padding: 40px 60px 40px 60px;
-  border-radius: 20px;
-  position: relative;
-`;
-
-const TripInfo = styled.div``;
-
-const TripTitle = styled.div`
-  font-size: 30px;
-  font-weight: 600;
-  color: #c88756;
-  margin-bottom: 20px;
-`;
-
-const TripCity = styled.div`
-  margin-bottom: 15px;
-  color: #6d5b48;
-  font-size: 20px;
-`;
-
-const TripDate = styled.div`
-  margin-bottom: 15px;
-  color: #6d5b48;
-  font-size: 20px;
-`;
-
-const EditImg = styled.img``;
-
-const LinkArea = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-
-const TripImageContainer = styled.div`
-  width: 220px;
-  height: 220px;
-  background-color: #e4ddd6;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const TripImage = styled.img`
-  width: 90%;
-  height: 90%;
-`;
-
-const DeleteArea = styled.div`
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  cursor: pointer;
 `;

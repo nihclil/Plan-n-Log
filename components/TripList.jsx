@@ -4,8 +4,10 @@ import TripCity from "./TripCity";
 import TripDate from "./TripDate";
 import TripImage from "./TripImage";
 import TripTaskLink from "./TripTaskLink";
+import DeleteButton from "./DeleteButton";
+import DeleteModal from "./DeleteModal";
 
-export default function TripList({ item }) {
+export default function TripList({ item, onDelete }) {
   return (
     <TripListContainer>
       <TripInfo>
@@ -24,6 +26,9 @@ export default function TripList({ item }) {
           linkTo="write"
           text="Log Your Trip"
         />
+        <DeleteButtonWrapper>
+          <DeleteButton onClick={() => onDelete(item.id)} />
+        </DeleteButtonWrapper>
       </TripInfo>
       <TripImage item={item} />
     </TripListContainer>
@@ -44,3 +49,10 @@ const TripListContainer = styled.div`
 `;
 
 const TripInfo = styled.div``;
+
+const DeleteButtonWrapper = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+`;
