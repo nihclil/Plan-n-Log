@@ -78,38 +78,35 @@ export default function Home({ params }) {
   }
 
   return (
-    <>
-      <NavBar />
-      <Main>
-        <Container>
-          {tripDetails && (
-            <TripInfo>
-              <Title>Your Trip Details</Title>
-              <TripImageContainer>
-                <TripImage src={tripDetails.imageUrl}></TripImage>
-              </TripImageContainer>
-              <Link href={`/trips/${tripDetails.id}`}>
-                <TripName>{tripDetails.tripName}</TripName>
-              </Link>
-              <TripCity>{tripDetails.cityName}</TripCity>
-              <TripTime>
-                {formatData(tripDetails.startDate)} -
-                {formatData(tripDetails.endDate)}
-              </TripTime>
-            </TripInfo>
-          )}
+    <Main>
+      <Container>
+        {tripDetails && (
+          <TripInfo>
+            <Title>Your Trip Details</Title>
+            <TripImageContainer>
+              <TripImage src={tripDetails.imageUrl}></TripImage>
+            </TripImageContainer>
+            <Link href={`/trips/${tripDetails.id}`}>
+              <TripName>{tripDetails.tripName}</TripName>
+            </Link>
+            <TripCity>{tripDetails.cityName}</TripCity>
+            <TripTime>
+              {formatData(tripDetails.startDate)} -
+              {formatData(tripDetails.endDate)}
+            </TripTime>
+          </TripInfo>
+        )}
 
-          <Tiptap
-            onEditorUpdate={getTiptapContent}
-            initialContent={content}
-            params={params}
-          />
-        </Container>
-        <SaveButtonContainer>
-          <SaveButton onClick={saveData}>Save</SaveButton>
-        </SaveButtonContainer>
-      </Main>
-    </>
+        <Tiptap
+          onEditorUpdate={getTiptapContent}
+          initialContent={content}
+          params={params}
+        />
+      </Container>
+      <SaveButtonContainer>
+        <SaveButton onClick={saveData}>Save</SaveButton>
+      </SaveButtonContainer>
+    </Main>
   );
 }
 

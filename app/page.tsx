@@ -5,39 +5,36 @@ import Navbar from "components/Navbar";
 
 export default function Home() {
   return (
-    <>
-      <Navbar />
-      <Main>
-        <Wrapper>
-          <ProductInfo>
-            <Title>PlanNLog</Title>
-            <Caption>
-              PlanNLog helps you keep track of your travels, ensuring you
-              remember the important details of your journey.
-            </Caption>
-          </ProductInfo>
-          <DemoContainer></DemoContainer>
-        </Wrapper>
-        <Wrapper>
-          <ProductInfo>
-            <Caption>
-              Add details to your travel plans like where you&apos;ll stay, your
-              flight info, and the fun stuff you&apos;ll do.
-            </Caption>
-          </ProductInfo>
-          <DemoContainer></DemoContainer>
-        </Wrapper>
-        <Wrapper>
-          <ProductInfo>
-            <Caption>
-              You can write down your travel stories and record the beautiful
-              memories
-            </Caption>
-          </ProductInfo>
-          <DemoContainer></DemoContainer>
-        </Wrapper>
-      </Main>
-    </>
+    <Main>
+      <Wrapper>
+        <ProductInfo>
+          <Title>PlanNLog</Title>
+          <Caption>
+            PlanNLog helps you keep track of your travels, ensuring you remember
+            the important details of your journey.
+          </Caption>
+        </ProductInfo>
+        <DemoContainer></DemoContainer>
+      </Wrapper>
+      <Wrapper>
+        <ProductInfo>
+          <Caption>
+            Add details to your travel plans like where you&apos;ll stay, your
+            flight info, and the fun stuff you&apos;ll do.
+          </Caption>
+        </ProductInfo>
+        <DemoContainer></DemoContainer>
+      </Wrapper>
+      <Wrapper>
+        <ProductInfo>
+          <Caption>
+            You can write down your travel stories and record the beautiful
+            memories
+          </Caption>
+        </ProductInfo>
+        <DemoContainer></DemoContainer>
+      </Wrapper>
+    </Main>
   );
 }
 
