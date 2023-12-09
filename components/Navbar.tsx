@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { SignUpForm, SignInForm } from "./AuthForm";
 import { UserAuth } from "../hooks/authContext";
@@ -11,7 +11,6 @@ import Image from "next/image";
 export default function Navbar() {
   const [modal, setModal] = useState(false);
   const [isSignUp, setIsSignUp] = useState(true);
-  const router = useRouter();
   const { user, googleSignIn, googleSignOut } = UserAuth();
 
   const handleSignIn = async () => {
@@ -52,8 +51,6 @@ export default function Navbar() {
             </Ul>
             <Ul>
               <Li>
-                <NavbarButton>Home</NavbarButton>
-                <NavbarButton>Posts</NavbarButton>
                 <GetStared onClick={toggleModal}>Get Started</GetStared>
               </Li>
             </Ul>
@@ -71,6 +68,11 @@ export default function Navbar() {
             </Ul>
             <Ul>
               <Li>
+                <Link href="/trips">
+                  <NavbarButton>Trips</NavbarButton>
+                </Link>
+              </Li>
+              <Li>
                 <UserImg>
                   <Image src={user.photoURL} width={40} height={40} alt="" />
                 </UserImg>
@@ -80,13 +82,6 @@ export default function Navbar() {
               </Li>
             </Ul>
           </NavBar>
-          {/* <div>
-            <ul>
-              <li>
-                <div>trips</div>
-              </li>
-            </ul>
-          </div> */}
         </NavbarContainer>
       )}
 
@@ -172,6 +167,7 @@ const UserImg = styled.div`
   width: 40px;
   height: 40px;
   overflow: hidden;
+  margin-left: 30px;
 `;
 
 const NavbarButton = styled.button`

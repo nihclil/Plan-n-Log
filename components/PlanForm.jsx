@@ -7,18 +7,14 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
 import { CityName } from "components/CityName";
-
 import { storage } from "lib/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import { useRouter } from "next/navigation";
+import { useForm, Controller } from "react-hook-form";
 
 export default function PlanForm() {
-  const [items, setItems] = useState([]);
-  const [tripName, setTripName] = useState("");
   const [cityName, setCityName] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
   const [imageUpload, setImageUpload] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
   const [currentImage, setCurrentImage] = useState(
@@ -26,6 +22,12 @@ export default function PlanForm() {
   );
   const router = useRouter();
   const { user } = UserAuth();
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
 
   const uploadImage = () => {
     if (imageUpload == null) return;
@@ -46,119 +48,118 @@ export default function PlanForm() {
       });
   };
 
-  //Add item to database
-  const addItem = async (e) => {
-    e.preventDefault();
-    if (user) {
-      const newItems = {
-        tripName,
-        cityName,
-        startDate,
-        endDate,
-        currentImage,
-      };
-
-      try {
-        await addDoc(collection(db, "trip"), {
-          uid: user.uid,
-          tripName: newItems.tripName,
-          cityName: newItems.cityName,
-          startDate: newItems.startDate,
-          endDate: newItems.endDate,
-          imageUrl: newItems.currentImage,
-          buildTime: serverTimestamp(),
-        });
-        setItems([...items, newItems]);
-        router.push("/trips");
-      } catch (error) {
-        console.error("Error adding document:", error);
-      }
+  const addItem = async (formData) => {
+    try {
+      await addDoc(collection(db, "trip"), {
+        uid: user.uid,
+        tripName: formData.tripName,
+        cityName: formData.cityName,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        imageUrl: currentImage,
+        buildTime: serverTimestamp(),
+      });
+      console.log(formData);
+      router.push("/trips");
+    } catch (error) {
+      console.error("Error adding document:", error);
     }
-  };
-
-  const handleTripNameChange = (e) => {
-    setTripName(e.target.value);
-  };
-
-  const handleStartDateChange = (e) => {
-    setStartDate(e.target.value);
-  };
-
-  const handleEndDateChange = (e) => {
-    setEndDate(e.target.value);
-  };
-
-  const handleCitySelect = (city) => {
-    setCityName(city.label);
   };
 
   return (
     <Main>
       <AddArea>
-        <Title>Add trip</Title>
-        <PlanArea>
-          <TripInfo>
-            <Caption>
-              Add a trip manually below, and we&apos;ll create the trip for you.
-            </Caption>
-            <Column>
-              <InputName>Trip Name</InputName>
-              <Input value={tripName} onChange={handleTripNameChange}></Input>
-            </Column>
-            <Column>
-              <InputName>Destination City</InputName>
-              <CityName
-                onSelectCity={handleCitySelect}
-                defaultValue={cityName}
-              />
-            </Column>
-            <DateColumn>
+        <form onSubmit={handleSubmit(addItem)}>
+          <Title>Add trip</Title>
+          <PlanArea>
+            <TripInfo>
+              <Caption>
+                Add a trip manually below, and we&apos;ll create the trip for
+                you.
+              </Caption>
               <Column>
-                <InputName>Start Date</InputName>
-                <DateInput
-                  type="date"
-                  value={startDate}
-                  onChange={handleStartDateChange}
-                ></DateInput>
+                <InputName>Trip Name</InputName>
+                <Input
+                  type="text"
+                  {...register("tripName", { required: true })}
+                />
+                {errors.tripName && (
+                  <ErrorMessage>This field is required</ErrorMessage>
+                )}
               </Column>
               <Column>
-                <InputName>End Date</InputName>
-                <DateInput
-                  type="date"
-                  value={endDate}
-                  onChange={handleEndDateChange}
-                ></DateInput>
+                <InputName>Destination City</InputName>
+                <Controller
+                  control={control}
+                  name="cityName"
+                  render={({ field }) => (
+                    <CityName
+                      onSelectCity={(city) => field.onChange(city.label)}
+                      defaultValue={field.value}
+                    />
+                  )}
+                />
               </Column>
-            </DateColumn>
-          </TripInfo>
-          <ImageInfo>
-            <Image src={currentImage} alt="Current image" />
+              <DateColumn>
+                <Column>
+                  <InputName>Start Date</InputName>
+                  <DateInput
+                    type="date"
+                    {...register("startDate", { required: true })}
+                  />
+                  {errors.startDate && (
+                    <ErrorMessage>This field is required</ErrorMessage>
+                  )}
+                </Column>
+                <Column>
+                  <InputName>End Date</InputName>
+                  <DateInput
+                    type="date"
+                    {...register("endDate", { required: true })}
+                  />
+                  {errors.endDate && (
+                    <ErrorMessage>This field is required</ErrorMessage>
+                  )}
+                </Column>
+              </DateColumn>
+            </TripInfo>
+            <ImageInfo>
+              <Image src={currentImage} alt="Current image" />
+              <ImageLabel>
+                Change Photo
+                <Controller
+                  control={control}
+                  name="tripImage"
+                  render={({ field }) => (
+                    <ImageInput
+                      type="file"
+                      onChange={(event) => {
+                        setImageUpload(event.target.files[0]);
+                        setUploadStatus("");
+                        field.onChange(event.target.files[0]);
+                      }}
+                    />
+                  )}
+                />
+              </ImageLabel>
+              {imageUpload && !uploadStatus && (
+                <ImagePrompt>{imageUpload.name}</ImagePrompt>
+              )}
+              {uploadStatus && <ImagePrompt>{uploadStatus}</ImagePrompt>}
+              <PhotoButton type="button" onClick={uploadImage}>
+                Upload image
+              </PhotoButton>
+            </ImageInfo>
+          </PlanArea>
 
-            <ImageLabel>
-              Change Photo
-              <ImageInput
-                type="file"
-                onChange={(event) => {
-                  setImageUpload(event.target.files[0]);
-                  setUploadStatus("");
-                }}
-              />
-            </ImageLabel>
-            {imageUpload && !uploadStatus && (
-              <ImagePrompt>{imageUpload.name}</ImagePrompt>
-            )}
-            {uploadStatus && <ImagePrompt>{uploadStatus}</ImagePrompt>}
-            <PhotoButton onClick={uploadImage}>Upload image</PhotoButton>
-          </ImageInfo>
-        </PlanArea>
+          <ConfirmArea>
+            <Link href="/trips">
+              <CancelButton>Cancel</CancelButton>
+            </Link>
 
-        <ConfirmArea>
-          <Link href="/trips">
-            <CancelButton>Cancel</CancelButton>
-          </Link>
-
-          <SaveButton onClick={addItem}>Save</SaveButton>
-        </ConfirmArea>
+            <SaveButton type="submit">Save</SaveButton>
+          </ConfirmArea>
+        </form>
       </AddArea>
     </Main>
   );
@@ -294,5 +295,10 @@ const ImageInput = styled.input`
 
 const ImagePrompt = styled.div`
   color: #6a9066;
+  margin-top: 10px;
+`;
+
+const ErrorMessage = styled.div`
+  color: #de6161;
   margin-top: 10px;
 `;

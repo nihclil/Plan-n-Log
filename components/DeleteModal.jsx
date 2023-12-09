@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 
-export default function DeleteModal({ toggleModal, deleteData, id }) {
+export default function DeleteModal({ toggleModal, deleteData, id, caption }) {
   const handleDelete = () => {
     deleteData(id);
     toggleModal();
@@ -12,17 +12,17 @@ export default function DeleteModal({ toggleModal, deleteData, id }) {
     <Container>
       <Overlay onClick={toggleModal}></Overlay>
       <Content>
-        <Caption>Delete the Trip</Caption>
+        <Caption>Delete the {caption}</Caption>
         <CloseButton onClick={toggleModal}>x</CloseButton>
         <Prompt>
-          This will permanently delete this trip and its contents from PlanNLog.
-          You will not be able to access the trip or any trip plans. Once
-          deleted, this data cannot be recovered.
+          This will permanently delete this {caption} and its contents from
+          PlanNLog. You will not be able to access the {caption}. Once deleted,
+          this data cannot be recovered.
         </Prompt>
         <ButtonsColumn>
           <CancelButton onClick={toggleModal}>Cancel</CancelButton>
 
-          <DeleteButton onClick={handleDelete}>Delete trip</DeleteButton>
+          <DeleteButton onClick={handleDelete}>Delete {caption}</DeleteButton>
         </ButtonsColumn>
       </Content>
     </Container>

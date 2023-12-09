@@ -4,43 +4,38 @@ import Link from "next/link";
 import { useState } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "lib/firebase";
+import { useForm } from "react-hook-form";
 import { UserAuth } from "hooks/authContext";
 import { useRouter } from "next/navigation";
 
 export default function Page({ params }) {
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
+
   const router = useRouter();
   const { user } = UserAuth();
-  const [planData, setPlanData] = useState({
-    eventName: "",
-    startDate: "",
-    startTime: "",
-    endDate: "",
-    endTime: "",
-    confirmation: "",
-    venue: "",
-    address: "",
-    phone: "",
-    website: "",
-    email: "",
-  });
 
   //Add data to firebase
-  const addActivity = async () => {
+  const addActivity = async (formData) => {
     const ref = collection(db, "trip", params.slug, "plan");
     addDoc(ref, {
       planName: "activity",
       src: "/iconmonstr-friend-4-32.png",
-      eventName: planData.eventName,
-      startDate: planData.startDate,
-      startTime: planData.startTime,
-      endDate: planData.endDate,
-      endTime: planData.endTime,
-      confirmation: planData.confirmation,
-      venue: planData.venue,
-      address: planData.address,
-      phone: planData.phone,
-      website: planData.website,
-      email: planData.email,
+      eventName: formData.eventName,
+      startDate: formData.startDate,
+      startTime: formData.startTime,
+      endDate: formData.endDate,
+      endTime: formData.endTime,
+      confirmation: formData.confirmation,
+      venue: formData.venue,
+      address: formData.address,
+      phone: formData.phone,
+      website: formData.website,
+      email: formData.email,
       uid: user.uid,
     })
       .then(() => {
@@ -52,133 +47,89 @@ export default function Page({ params }) {
       });
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-
-    setPlanData((prevPlanData) => ({
-      ...prevPlanData,
-      [name]: value,
-    }));
-  };
-
   return (
     <Main>
       <AddArea>
-        <Title>Add Activity</Title>
-        <PlanArea>
-          <TripInfo>
-            <Column>
-              <InputName>Event Name</InputName>
-              <Input
-                value={planData.eventName}
-                name="eventName"
-                onChange={handleInputChange}
-              ></Input>
-            </Column>
-            <DateColumn>
+        <form onSubmit={handleSubmit(addActivity)}>
+          <Title>Add Activity</Title>
+          <PlanArea>
+            <TripInfo>
               <Column>
-                <InputName>Start Date</InputName>
-                <DateInput
-                  type="date"
-                  value={planData.startDate}
-                  name="startDate"
-                  onChange={handleInputChange}
-                ></DateInput>
+                <InputName>Event Name</InputName>
+                <Input
+                  type="text"
+                  {...register("eventName", { required: true })}
+                />
+                {errors.eventName && (
+                  <ErrorMessage>This field is required</ErrorMessage>
+                )}
               </Column>
-              <Column>
-                <InputName>Start Time</InputName>
-                <DateInput
-                  type="time"
-                  value={planData.startTime}
-                  name="startTime"
-                  onChange={handleInputChange}
-                ></DateInput>
-              </Column>
-            </DateColumn>
-            <DateColumn>
-              <Column>
-                <InputName>End Date</InputName>
-                <DateInput
-                  type="date"
-                  value={planData.endDate}
-                  name="endDate"
-                  onChange={handleInputChange}
-                ></DateInput>
-              </Column>
+              <DateColumn>
+                <Column>
+                  <InputName>Start Date</InputName>
+                  <DateInput
+                    type="date"
+                    {...register("startDate", { required: true })}
+                  />
+                  {errors.startDate && (
+                    <ErrorMessage>This field is required</ErrorMessage>
+                  )}
+                </Column>
+                <Column>
+                  <InputName>Start Time</InputName>
+                  <DateInput
+                    type="time"
+                    {...register("startTime", { required: true })}
+                  />
+                  {errors.startTime && (
+                    <ErrorMessage>This field is required</ErrorMessage>
+                  )}
+                </Column>
+              </DateColumn>
+              <DateColumn>
+                <Column>
+                  <InputName>End Date</InputName>
+                  <DateInput type="date" {...register("endDate")} />
+                </Column>
 
+                <Column>
+                  <InputName>End Time</InputName>
+                  <DateInput type="time" {...register("endTime")} />
+                </Column>
+              </DateColumn>
               <Column>
-                <InputName>End Time</InputName>
-                <DateInput
-                  type="time"
-                  value={planData.endTime}
-                  name="endTime"
-                  onChange={handleInputChange}
-                ></DateInput>
+                <InputName>Confirmation</InputName>
+                <Input type="text" {...register("confirmation")} />
               </Column>
-            </DateColumn>
-            <Column>
-              <InputName>Confirmation</InputName>
-              <Input
-                type="text"
-                value={planData.confirmation}
-                name="confirmation"
-                onChange={handleInputChange}
-              ></Input>
-            </Column>
-            <Column>
-              <InputName>Venue</InputName>
-              <Input
-                type="text"
-                value={planData.venue}
-                name="venue"
-                onChange={handleInputChange}
-              ></Input>
-            </Column>
-            <Column>
-              <InputName>Address</InputName>
-              <Input
-                type="text"
-                value={planData.address}
-                name="address"
-                onChange={handleInputChange}
-              ></Input>
-            </Column>
-            <Column>
-              <InputName>Phone</InputName>
-              <Input
-                type="text"
-                value={planData.phone}
-                name="phone"
-                onChange={handleInputChange}
-              ></Input>
-            </Column>
-            <Column>
-              <InputName>Website</InputName>
-              <Input
-                type="text"
-                value={planData.website}
-                name="website"
-                onChange={handleInputChange}
-              ></Input>
-            </Column>
-            <Column>
-              <InputName>Email</InputName>
-              <Input
-                type="email"
-                value={planData.email}
-                name="email"
-                onChange={handleInputChange}
-              ></Input>
-            </Column>
-          </TripInfo>
-        </PlanArea>
-
-        <ConfirmArea>
-          <Link href={`/trips/${params.slug}/plan/create`}>
-            <CancelButton>Cancel</CancelButton>
-          </Link>
-          <SaveButton onClick={addActivity}>Save</SaveButton>
-        </ConfirmArea>
+              <Column>
+                <InputName>Venue</InputName>
+                <Input type="text" {...register("venue")} />
+              </Column>
+              <Column>
+                <InputName>Address</InputName>
+                <Input type="text" {...register("address")} />
+              </Column>
+              <Column>
+                <InputName>Phone</InputName>
+                <Input type="text" {...register("phone")} />
+              </Column>
+              <Column>
+                <InputName>Website</InputName>
+                <Input type="text" {...register("website")} />
+              </Column>
+              <Column>
+                <InputName>Email</InputName>
+                <Input type="email" {...register("email")} />
+              </Column>
+            </TripInfo>
+          </PlanArea>
+          <ConfirmArea>
+            <Link href={`/trips/${params.slug}/plan/create`}>
+              <CancelButton>Cancel</CancelButton>
+            </Link>
+            <SaveButton type="submit">Save</SaveButton>
+          </ConfirmArea>
+        </form>
       </AddArea>
     </Main>
   );
@@ -270,4 +221,9 @@ const SaveButton = styled.button`
   border-radius: 20px;
   border: 0;
   color: #6d5b48;
+`;
+
+const ErrorMessage = styled.div`
+  color: #de6161;
+  margin-top: 10px;
 `;

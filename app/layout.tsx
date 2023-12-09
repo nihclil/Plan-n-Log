@@ -3,8 +3,8 @@ import { Roboto_Flex } from "next/font/google";
 import "./globals.css";
 import StyledJsxRegistry from "./registry";
 import StyledComponentsRegistry from "../lib/registry";
-import Navbar from "../components/Navbar";
 import { AuthContextProvider } from "../hooks/authContext.js";
+import Navbar from "components/Navbar";
 
 const roboto = Roboto_Flex({
   subsets: ["latin"],

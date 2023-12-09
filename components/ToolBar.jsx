@@ -2,27 +2,42 @@
 
 import { Editor } from "@tiptap/react";
 import styled from "styled-components";
-import {
-  Bold,
-  Strikethrough,
-  Italic,
-  List,
-  ListOrdered,
-  Heading2,
-} from "lucide-react";
+import { Bold, Italic, List, ListOrdered, Heading3, Image } from "lucide-react";
+import { storage } from "lib/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { UserAuth } from "hooks/authContext";
+import { v4 } from "uuid";
 
-export default function ToolBar({ editor }) {
+export default function ToolBar({ editor, params }) {
   if (!editor) {
     return null;
   }
+
+  const { user } = UserAuth();
+  //上傳照片到資料庫
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    const imageRef = ref(
+      storage,
+      `trip/${user.uid}/${params.slug}/write/${file.name + v4()}`
+    );
+    uploadBytes(imageRef, file).then(() => {
+      getDownloadURL(imageRef).then((url) => {
+        if (editor) {
+          editor.chain().focus().setImage({ src: url }).run();
+        }
+      });
+    });
+  };
+
   return (
     <ToolBarContainer>
       <ToolBarButton
         onClick={() => {
-          editor.chain().focus().toggleHeading({ level: 2 }).run();
+          editor.chain().focus().toggleHeading({ level: 3 }).run();
         }}
       >
-        <Heading2 className="h-4 w-4" />
+        <Heading3 className="h-4 w-4" />
       </ToolBarButton>
 
       <ToolBarButton
@@ -56,6 +71,13 @@ export default function ToolBar({ editor }) {
       >
         <ListOrdered className="h-4 w-4" />
       </ToolBarButton>
+
+      <ToolBarButton onChange={handleFileChange}>
+        <label htmlFor="file">
+          <Image className="h-4 w-4" alt="image" />
+          <input id="file" type="file" style={{ display: "none" }} />
+        </label>
+      </ToolBarButton>
     </ToolBarContainer>
   );
 }
@@ -63,6 +85,9 @@ export default function ToolBar({ editor }) {
 const ToolBarContainer = styled.div`
   display: flex;
   justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 `;
 
 const ToolBarButton = styled.button`
@@ -73,6 +98,6 @@ const ToolBarButton = styled.button`
   cursor: pointer;
   &.is-active,
   &:hover {
-    background-color: #e2e2e2;
+    background-color: #b29a9a;
   }
 `;
