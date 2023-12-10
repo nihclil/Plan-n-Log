@@ -12,6 +12,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
+import Image from "next/image";
 
 export default function PlanForm() {
   const [cityName, setCityName] = useState("");
@@ -59,7 +60,6 @@ export default function PlanForm() {
         imageUrl: currentImage,
         buildTime: serverTimestamp(),
       });
-      console.log(formData);
       router.push("/trips");
     } catch (error) {
       console.error("Error adding document:", error);
@@ -124,7 +124,12 @@ export default function PlanForm() {
               </DateColumn>
             </TripInfo>
             <ImageInfo>
-              <Image src={currentImage} alt="Current image" />
+              <Image
+                src={currentImage}
+                width={200}
+                height={200}
+                alt="Current image"
+              />
               <ImageLabel>
                 Change Photo
                 <Controller
@@ -237,12 +242,6 @@ const ImageInfo = styled.div`
   align-items: center;
 `;
 
-const Image = styled.img`
-  width: 200px;
-  height: 200px;
-  margin-bottom: 30px;
-`;
-
 const ConfirmArea = styled.div`
   padding-top: 20px;
 `;
@@ -287,6 +286,7 @@ const ImageLabel = styled.label`
   color: #c88756;
   font-weight: 600;
   cursor: pointer;
+  margin-top: 30px;
 `;
 
 const ImageInput = styled.input`

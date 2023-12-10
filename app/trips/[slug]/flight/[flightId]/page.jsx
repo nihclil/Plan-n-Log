@@ -8,12 +8,13 @@ import Image from "next/image";
 import Link from "next/link";
 import DeleteModal from "components/DeleteModal";
 import { Terminal } from "lucide-react";
+import LoadingEffect from "components/LoadingEffect";
 
 export default function Page({ params }) {
   const [plan, setPlan] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [currentItemId, setCurrentItemId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const docRef = doc(db, "trip", params.slug, "plan", params.flightId);
@@ -21,7 +22,7 @@ export default function Page({ params }) {
       if (docSnapshot.exists()) {
         setPlan([{ ...docSnapshot.data(), id: docSnapshot.id }]);
       }
-      setLoading(false);
+      setIsLoading(false);
     });
   }, [params.slug, params.flightId]);
 
@@ -69,8 +70,8 @@ export default function Page({ params }) {
     });
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (isLoading) {
+    return <LoadingEffect />;
   }
 
   return (
