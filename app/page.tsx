@@ -9,7 +9,7 @@ export default function Home() {
       <ImageContainer>
         <Overlay></Overlay>
         <ImageTitle>PlanNLog</ImageTitle>
-        <ImageText>ｇｉｔPlan and Capture Your Adventures</ImageText>
+        <ImageText>Plan and Capture Your Adventures</ImageText>
         <Image
           src="/neom-gOqBe7ropxM-unsplash.jpg"
           fill={true}
