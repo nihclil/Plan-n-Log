@@ -7,12 +7,13 @@ import { collection, doc, getDoc, deleteDoc } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import DeleteModal from "components/DeleteModal";
+import LoadingEffect from "components/LoadingEffect";
 
 export default function Home({ params }) {
   const [plan, setPlan] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [currentItemId, setCurrentItemId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const docRef = doc(db, "trip", params.slug, "plan", params.planId);
@@ -20,7 +21,7 @@ export default function Home({ params }) {
       if (docSnapshot.exists()) {
         setPlan([{ ...docSnapshot.data(), id: docSnapshot.id }]);
       }
-      setLoading(false);
+      setIsLoading(false);
     });
   }, [params.slug, params.planId]);
 
@@ -73,8 +74,8 @@ export default function Home({ params }) {
     });
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (isLoading) {
+    return <LoadingEffect />;
   }
 
   return (
@@ -142,9 +143,7 @@ export default function Home({ params }) {
                 height={16}
                 alt="globe"
               ></Image>
-              <DetailsContent>
-                <Link href={`https://www.google.com.tw/`}>{item.website}</Link>
-              </DetailsContent>
+              <DetailsContent>{item.website}</DetailsContent>
             </Details>
             <PlanDuration>
               Duration {calculateDateDiff(item.startDate, item.endDate)} day,
