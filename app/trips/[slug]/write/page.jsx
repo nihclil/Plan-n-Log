@@ -84,7 +84,12 @@ export default function Home({ params }) {
           <TripInfo>
             <Title>Your Trip Details</Title>
             <TripImageContainer>
-              <TripImage src={tripDetails.imageUrl}></TripImage>
+              <Image
+                src={tripDetails.imageUrl}
+                width={198}
+                height={198}
+                alt="trip-image"
+              ></Image>
             </TripImageContainer>
             <Link href={`/trips/${tripDetails.id}`}>
               <TripName>{tripDetails.tripName}</TripName>
@@ -159,11 +164,6 @@ const TripImageContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin: 20px 0 15px 0;
-`;
-
-const TripImage = styled.img`
-  width: 90%;
-  height: 90%;
 `;
 
 const SaveButtonContainer = styled.div`
