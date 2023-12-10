@@ -59,7 +59,6 @@ export default function PlanForm() {
         imageUrl: currentImage,
         buildTime: serverTimestamp(),
       });
-      console.log(formData);
       router.push("/trips");
     } catch (error) {
       console.error("Error adding document:", error);
