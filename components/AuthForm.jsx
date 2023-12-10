@@ -43,6 +43,7 @@ const Container = styled.div`
   right: 0;
   bottom: 0;
   position: fixed;
+  z-index: 5;
 `;
 
 const Overlay = styled.div`
