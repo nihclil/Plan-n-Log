@@ -130,16 +130,6 @@ export default function Page({ params }) {
                   <Link href={`${params.slug}/${plan.planName}/${plan.id}`}>
                     <PlanTitle>{plan.eventName}</PlanTitle>
                   </Link>
-
-                  <EditPlan>
-                    <Image
-                      src="/iconmonstr-edit-11-24.png"
-                      alt="caret-down-filled"
-                      width={24}
-                      height={24}
-                    ></Image>
-                    <EditPlanSpan>Edit</EditPlanSpan>
-                  </EditPlan>
                 </PlanContainer>
               ))
             : null}
@@ -165,69 +155,11 @@ const TripsArea = styled.div`
   position: relative;
 `;
 
-const TripColumn = styled.div`
-  display: flex;
-  justify-content: space-between;
-  box-shadow: 4px 4px 30px 0px #aaaaaa;
-  width: 100%;
-  height: 300px;
-  background-color: #fff;
-  padding: 40px;
-  border-radius: 20px;
-  position: relative;
-`;
-
-const TripInfo = styled.div``;
-
-const TripTitle = styled.div`
-  font-size: 30px;
-  font-weight: 600;
-  color: #c88756;
-  margin-bottom: 30px;
-`;
-
-const TripCity = styled.div`
-  margin-bottom: 15px;
-  color: #6d5b48;
-  font-size: 20px;
-`;
-
-const TripDate = styled.div`
-  margin-bottom: 15px;
-  color: #6d5b48;
-  font-size: 20px;
-`;
-
-const EditLink = styled.div`
-  display: flex;
-`;
-const EditImg = styled.img``;
-const EditSpan = styled.span`
-  padding-left: 5px;
-  color: #6a9066;
-  font-size: 20px;
-`;
-
 const AddPlanBtnContainer = styled.div`
   position: absolute;
   bottom: 20px;
   left: 50%;
   transform: translate(-50%);
-`;
-
-const TripImageContainer = styled.div`
-  width: 220px;
-  height: 220px;
-  background-color: #e4ddd6;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const TripImage = styled.img`
-  width: 90%;
-  height: 90%;
 `;
 
 const PlanArea = styled.div`
@@ -307,19 +239,4 @@ const PlansSpan = styled.span`
   &:hover {
     color: #70946c;
   }
-`;
-
-const EditPlan = styled.div`
-  display: flex;
-  flex-grow: 1;
-  justify-content: flex-end;
-  margin-right: 20px;
-  cursor: pointer;
-  position: relative;
-`;
-
-const EditPlanSpan = styled.span`
-  padding-left: 5px;
-  color: #6a9066;
-  font-size: 20px;
 `;
