@@ -16,6 +16,7 @@ import { UserAuth } from "hooks/authContext";
 import DeleteModal from "components/DeleteModal";
 import TripsFilter from "components/TripsFilter";
 import TripList from "components/TripList";
+import LoadingEffect from "components/LoadingEffect";
 
 export default function Home() {
   const [items, setItems] = useState([]);
@@ -24,6 +25,7 @@ export default function Home() {
   const [currentItemId, setCurrentItemId] = useState(null);
   const [displayedTrips, setDisplayedTrips] = useState([]);
   const [selectedButton, setSelectedButton] = useState("upcoming");
+  const [isLoading, setIsLoading] = useState(true);
 
   // Read items from database
   useEffect(() => {
@@ -41,6 +43,7 @@ export default function Home() {
         });
 
         setItems(itemsArr);
+        setIsLoading(false);
       });
     }
   }, [user]);
@@ -73,6 +76,10 @@ export default function Home() {
     });
     setDisplayedTrips(filteredTrips);
   }, [items, selectedButton]);
+
+  if (isLoading) {
+    return <LoadingEffect />;
+  }
 
   return (
     <Main>
