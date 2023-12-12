@@ -133,4 +133,5 @@ const ImageText = styled.div`
   color: #e8e4e4;
   font-size: 20px;
   font-weight: 600;
+  text-align: center;
 `;
