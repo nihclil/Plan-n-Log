@@ -168,6 +168,9 @@ const UserImg = styled.div`
   height: 40px;
   overflow: hidden;
   margin-left: 30px;
+  @media (min-width: 360px) and (max-width: 600px) {
+    margin-left: 10px;
+  }
 `;
 
 const NavbarButton = styled.button`
@@ -178,4 +181,8 @@ const NavbarButton = styled.button`
   font-weight: 600;
   font-size: 20px;
   margin-left: 30px;
+
+  @media (min-width: 360px) and (max-width: 600px) {
+    margin-left: 10px;
+  }
 `;
