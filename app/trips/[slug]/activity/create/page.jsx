@@ -7,6 +7,7 @@ import { db } from "lib/firebase";
 import { useForm } from "react-hook-form";
 import { UserAuth } from "hooks/authContext";
 import { useRouter } from "next/navigation";
+import useAuthRedirect from "hooks/useAuthRedirect";
 
 export default function Page({ params }) {
   const {
@@ -18,6 +19,8 @@ export default function Page({ params }) {
 
   const router = useRouter();
   const { user } = UserAuth();
+
+  useAuthRedirect();
 
   //Add data to firebase
   const addActivity = async (formData) => {

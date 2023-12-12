@@ -7,6 +7,7 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
 import { useRouter } from "next/navigation";
+import useAuthRedirect from "hooks/useAuthRedirect";
 
 export default function Home({ params }) {
   const {
@@ -23,6 +24,8 @@ export default function Home({ params }) {
 
   const router = useRouter();
   const { user } = UserAuth();
+
+  useAuthRedirect();
 
   //Add data to firebase
   const addLodging = async (formData) => {

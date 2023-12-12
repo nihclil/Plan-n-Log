@@ -7,6 +7,7 @@ import { collection, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
 import { CityName } from "components/CityName";
+import useAuthRedirect from "hooks/useAuthRedirect";
 
 import { storage } from "lib/firebase";
 import {
@@ -32,6 +33,8 @@ export default function Page({ params }) {
   });
 
   const { user } = UserAuth();
+
+  useAuthRedirect();
 
   //Read data from firestore
   useEffect(() => {

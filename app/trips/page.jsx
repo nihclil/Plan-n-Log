@@ -17,6 +17,7 @@ import DeleteModal from "components/DeleteModal";
 import TripsFilter from "components/TripsFilter";
 import TripList from "components/TripList";
 import LoadingEffect from "components/LoadingEffect";
+import useAuthRedirect from "hooks/useAuthRedirect";
 
 export default function Home() {
   const [items, setItems] = useState([]);
@@ -27,6 +28,7 @@ export default function Home() {
   const [selectedButton, setSelectedButton] = useState("upcoming");
   const [isLoading, setIsLoading] = useState(true);
 
+  useAuthRedirect();
   // Read items from database
   useEffect(() => {
     if (user) {

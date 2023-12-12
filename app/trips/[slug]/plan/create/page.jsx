@@ -6,8 +6,11 @@ import activity from "public/iconmonstr-friend-4-32.png";
 import lodging from "public/iconmonstr-bed-2-32.png";
 import flight from "public/iconmonstr-airport-2-32.png";
 import styled from "styled-components";
+import useAuthRedirect from "hooks/useAuthRedirect";
 
 export default function Home({ params }) {
+  useAuthRedirect();
+
   return (
     <Main>
       <Nav>

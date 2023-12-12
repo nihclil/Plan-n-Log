@@ -17,6 +17,7 @@ import Image from "next/image";
 import LoadingEffect from "components/LoadingEffect";
 import NavBar from "components/Navbar";
 import Link from "next/link";
+import useAuthRedirect from "hooks/useAuthRedirect";
 
 export default function Home({ params }) {
   const [content, setContent] = useState("");
@@ -26,6 +27,8 @@ export default function Home({ params }) {
   const getTiptapContent = (data) => {
     setContent(data);
   };
+
+  useAuthRedirect();
 
   //獲取過往文章內容
   useEffect(() => {

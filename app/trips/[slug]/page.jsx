@@ -20,6 +20,7 @@ import TripList from "components/TripList";
 import DeleteModal from "components/DeleteModal";
 import { useRouter } from "next/navigation";
 import formatDate from "utils/formatDate";
+import useAuthRedirect from "hooks/useAuthRedirect";
 
 export default function Page({ params }) {
   const [items, setItems] = useState([]);
@@ -29,6 +30,8 @@ export default function Page({ params }) {
   const [modal, setModal] = useState(false);
   const [currentItemId, setCurrentItemId] = useState(null);
   const router = useRouter();
+
+  useAuthRedirect();
 
   // Read trip data from database
   useEffect(() => {
