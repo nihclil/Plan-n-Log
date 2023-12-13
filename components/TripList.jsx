@@ -45,6 +45,22 @@ const TripListContainer = styled.div`
   padding: 40px 60px 40px 60px;
   border-radius: 20px;
   position: relative;
+
+  @media (min-width: 800px) and (max-width: 1200px) {
+    width: 80%;
+  }
+  @media (min-width: 600px) and (max-width: 800px) {
+    width: 80%;
+    padding: 40px 20px;
+  }
+  @media (min-width: 360px) and (max-width: 600px) {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    padding: 40px 20px;
+  }
 `;
 
 const TripInfo = styled.div``;

@@ -7,6 +7,9 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
 import { useRouter } from "next/navigation";
+import useAuthRedirect from "hooks/useAuthRedirect";
+import FormInput from "components/FormInput";
+import FormConfirmArea from "components/FormConfirmArea";
 
 export default function Home({ params }) {
   const {
@@ -23,6 +26,8 @@ export default function Home({ params }) {
 
   const router = useRouter();
   const { user } = UserAuth();
+
+  useAuthRedirect();
 
   //Add data to firebase
   const addLodging = async (formData) => {
@@ -61,98 +66,149 @@ export default function Home({ params }) {
           <Title>Add Flight</Title>
           <PlanArea>
             <TripInfo>
-              <Column>
-                <InputName>Confirmation</InputName>
-                <Input type="text" {...register("confirmation")}></Input>
-              </Column>
+              <FormInput
+                label="Confirmation"
+                name="confirmation"
+                type="text"
+                register={register}
+                errors={errors}
+                width="600px"
+                isRequired={false}
+              />
               <Caption>Departure</Caption>
-              <DualInputColumn>
-                <Column>
-                  <InputName>Departure Date</InputName>
-                  <DateInput
-                    type="Date"
-                    {...register("departureDate", { required: true })}
-                  />
-                  {errors.departureDate && (
-                    <ErrorMessage>This field is required</ErrorMessage>
-                  )}
-                </Column>
-                <Column>
-                  <InputName>Departure Time</InputName>
-                  <DateInput
-                    type="time"
-                    {...register("departureTime", { required: true })}
-                  />
-                  {errors.departureTime && (
-                    <ErrorMessage>This field is required</ErrorMessage>
-                  )}
-                </Column>
-              </DualInputColumn>
-              <Column>
-                <InputName>Airline</InputName>
-                <Input {...register("airline", { required: true })}></Input>
-                {errors.airline && (
-                  <ErrorMessage>This field is required</ErrorMessage>
-                )}
-              </Column>
-              <Column>
-                <InputName>Departure Airport</InputName>
-                <Input {...register("departureAirport")}></Input>
-              </Column>
-              <DualInputColumn>
-                <Column>
-                  <InputName>Flight Number</InputName>
-                  <DateInput type="text" {...register("flightNumber")} />
-                </Column>
-                <Column>
-                  <InputName>Seats</InputName>
-                  <DateInput type="text" {...register("seats")} />
-                </Column>
-              </DualInputColumn>
-              <DualInputColumn>
-                <Column>
-                  <InputName>Terminal</InputName>
-                  <DateInput type="text" {...register("departureTerminal")} />
-                </Column>
-                <Column>
-                  <InputName>Gate</InputName>
-                  <DateInput type="text" {...register("departureGate")} />
-                </Column>
-              </DualInputColumn>
+              <FlexContainer>
+                <FormInput
+                  label="Departure Date"
+                  name="departureDate"
+                  type="date"
+                  register={register}
+                  errors={errors}
+                  width="295px"
+                  isRequired={true}
+                />
+                <FormInput
+                  label="Departure Time"
+                  name="departureTime"
+                  type="time"
+                  register={register}
+                  errors={errors}
+                  width="295px"
+                  isRequired={true}
+                />
+              </FlexContainer>
+              <FormInput
+                label="Airline"
+                name="airline"
+                type="text"
+                register={register}
+                errors={errors}
+                width="600px"
+                isRequired={true}
+              />
+              <FormInput
+                label="Departure Airport"
+                name="departureAirport"
+                type="text"
+                register={register}
+                errors={errors}
+                width="600px"
+                isRequired={false}
+              />
+              <FlexContainer>
+                <FormInput
+                  label="Flight Number"
+                  name="flightNumber"
+                  type="text"
+                  register={register}
+                  errors={errors}
+                  width="295px"
+                  isRequired={false}
+                />
+                <FormInput
+                  label="Seats"
+                  name="seats"
+                  type="text"
+                  register={register}
+                  errors={errors}
+                  width="295px"
+                  isRequired={false}
+                />
+              </FlexContainer>
+              <FlexContainer>
+                <FormInput
+                  label="Terminal"
+                  name="departureTerminal"
+                  type="text"
+                  register={register}
+                  errors={errors}
+                  width="295px"
+                  isRequired={false}
+                />
+                <FormInput
+                  label="Gate"
+                  name="departureGate"
+                  type="text"
+                  register={register}
+                  errors={errors}
+                  width="295px"
+                  isRequired={false}
+                />
+              </FlexContainer>
               <Caption>Arrival</Caption>
-              <DualInputColumn>
-                <Column>
-                  <InputName>Arrival Date</InputName>
-                  <DateInput type="Date" {...register("arrivalDate")} />
-                </Column>
-                <Column>
-                  <InputName>Arrival Time</InputName>
-                  <DateInput type="time" {...register("arrivalTime")} />
-                </Column>
-              </DualInputColumn>
-              <Column>
-                <InputName>Arrival Airport</InputName>
-                <Input {...register("arrivalAirport")}></Input>
-              </Column>
-              <DualInputColumn>
-                <Column>
-                  <InputName>Terminal</InputName>
-                  <DateInput type="text" {...register("arrivalTerminal")} />
-                </Column>
-                <Column>
-                  <InputName>Gate</InputName>
-                  <DateInput type="text" {...register("arrivalGate")} />
-                </Column>
-              </DualInputColumn>
+              <FlexContainer>
+                <FormInput
+                  label="Arrival Date"
+                  name="arrivalDate"
+                  type="date"
+                  register={register}
+                  errors={errors}
+                  width="295px"
+                  isRequired={false}
+                />
+                <FormInput
+                  label="Arrival Time"
+                  name="arrivalTime"
+                  type="time"
+                  register={register}
+                  errors={errors}
+                  width="295px"
+                  isRequired={false}
+                />
+              </FlexContainer>
+              <FormInput
+                label="Arrival Airport"
+                name="arrivalAirport"
+                type="text"
+                register={register}
+                errors={errors}
+                width="600px"
+                isRequired={false}
+              />
+              <FlexContainer>
+                <FormInput
+                  label="Terminal"
+                  name="arrivalTerminal"
+                  type="text"
+                  register={register}
+                  errors={errors}
+                  width="295px"
+                  isRequired={false}
+                />
+                <FormInput
+                  label="Gate"
+                  name="arrivalGate"
+                  type="text"
+                  register={register}
+                  errors={errors}
+                  width="295px"
+                  isRequired={false}
+                />
+              </FlexContainer>
             </TripInfo>
           </PlanArea>
-
-          <ConfirmArea>
-            <Link href={`/trips/${params.slug}/plan/create`}>
-              <CancelButton>Cancel</CancelButton>
-            </Link>
-            <SaveButton type="submit">Save</SaveButton>
-          </ConfirmArea>
+          <FormConfirmWrapper>
+            <FormConfirmArea cancelLink={`/trips/${params.slug}/plan/create`} />
+          </FormConfirmWrapper>
         </form>
       </AddArea>
     </Main>
@@ -193,68 +249,11 @@ const PlanArea = styled.div`
 
 const TripInfo = styled.div``;
 
-const Column = styled.div`
-  margin-bottom: 40px;
-  margin-right: 10px;
-`;
-
-const InputName = styled.div`
-  margin-bottom: 10px;
-  color: #6d5b48;
-  font-size: 20px;
-`;
-
-const Input = styled.input`
-  width: 600px;
-  height: 50px;
-  padding: 10px;
-  font-size: 20px;
-  border: 1px solid #e4ddd6;
-  border-radius: 4px;
-`;
-
-const DateInput = styled.input`
-  width: 295px;
-  height: 50px;
-  padding: 10px;
-  font-size: 18px;
-  border: 1px solid #e4ddd6;
-  border-radius: 4px;
-`;
-
-const DualInputColumn = styled.div`
+const FlexContainer = styled.div`
   display: flex;
 `;
 
-const ConfirmArea = styled.div`
-  padding-top: 20px;
+const FormConfirmWrapper = styled.div`
   display: flex;
   justify-content: center;
-`;
-
-const CancelButton = styled.button`
-  border: 0;
-  background-color: transparent;
-  margin-right: 40px;
-  font-size: 20px;
-  cursor: pointer;
-  color: #d1bea9;
-  padding: 10px 20px;
-  border-radius: 20px;
-`;
-
-const SaveButton = styled.button`
-  background-color: transparent;
-  font-size: 20px;
-  cursor: pointer;
-  background-color: #d1bea9;
-  padding: 10px 20px;
-  border-radius: 20px;
-  border: 0;
-  color: #6d5b48;
-`;
-
-const ErrorMessage = styled.div`
-  color: #de6161;
-  margin-top: 10px;
 `;

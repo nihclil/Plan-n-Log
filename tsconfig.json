@@ -29,7 +29,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "components/AuthForm.jsx",
-    "app/layout.tsx"
+    "app/layout.tsx",
+    "app/plan/page.jsx"
   ],
   "exclude": ["node_modules"]
 }

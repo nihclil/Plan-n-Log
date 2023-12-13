@@ -8,12 +8,15 @@ import Image from "next/image";
 import Link from "next/link";
 import DeleteModal from "components/DeleteModal";
 import LoadingEffect from "components/LoadingEffect";
+import useAuthRedirect from "hooks/useAuthRedirect";
 
 export default function Home({ params }) {
   const [plan, setPlan] = useState([]);
   const [modal, setModal] = useState(false);
   const [currentItemId, setCurrentItemId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  useAuthRedirect();
 
   useEffect(() => {
     const docRef = doc(db, "trip", params.slug, "plan", params.planId);

@@ -23,5 +23,16 @@ export default function TripsFilter({ selectedButton, setSelectedButton }) {
 }
 
 const TripsButtonContainer = styled.div`
-  margin-bottom: 40px;
+  margin: 40px auto;
+  width: 100%;
+
+  @media (min-width: 600px) and (max-width: 1200px) {
+    width: 80%;
+  }
+  @media (min-width: 360px) and (max-width: 600px) {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 `;

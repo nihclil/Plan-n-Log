@@ -65,13 +65,20 @@ const Content = styled.div`
   transform: translate(-50%, -50%);
   line-height: 1.4;
   background: #f1f1f1;
-  padding: 14px 28px;
+  padding: 30px;
   border-radius: 5px;
-  max-width: 600px;
-  min-width: 300px;
+  width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (min-width: 360px) and (max-width: 600px) {
+    width: 300px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -84,7 +91,9 @@ const CloseButton = styled.button`
 `;
 
 const Caption = styled.h2`
-  padding: 30px;
+  margin-bottom: 30px;
+  @media (min-width: 360px) and (max-width: 600px) {
+  }
 `;
 
 const Button = styled.button`
@@ -93,16 +102,17 @@ const Button = styled.button`
   border-radius: 18px;
   cursor: pointer;
   color: #6d5b48;
+  margin-bottom: 30px;
 `;
 
 const Prompt = styled.div`
-  padding: 30px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const AuthToggle = styled.button`
   border: 0;
   cursor: pointer;
-  margin-left: 10px;
   color: #f2a365;
   font-weight: 600;
 `;
