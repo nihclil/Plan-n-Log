@@ -108,4 +108,7 @@ export default function Home() {
 const Main = styled.main`
   width: 1000px;
   margin: 50px auto;
+  @media (min-width: 360px) and (max-width: 1200px) {
+    width: auto;
+  }
 `;

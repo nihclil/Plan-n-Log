@@ -17,7 +17,11 @@ export default function AddTripBtn() {
 }
 
 const AddArea = styled.div`
-  margin-bottom: 40px;
+  margin: 40px auto;
+  width: 100%;
+  @media (min-width: 360px) and (max-width: 1200px) {
+    width: 80%;
+  }
 `;
 
 const AddLink = styled.div`
