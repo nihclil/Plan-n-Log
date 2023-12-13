@@ -26,7 +26,13 @@ const TripsButtonContainer = styled.div`
   margin: 40px auto;
   width: 100%;
 
-  @media (min-width: 360px) and (max-width: 1200px) {
+  @media (min-width: 600px) and (max-width: 1200px) {
     width: 80%;
+  }
+  @media (min-width: 360px) and (max-width: 600px) {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
 `;
