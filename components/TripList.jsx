@@ -49,8 +49,12 @@ const TripListContainer = styled.div`
   @media (min-width: 800px) and (max-width: 1200px) {
     width: 80%;
   }
-  @media (min-width: 600px) and (max-width: 800px) {
+  @media (min-width: 600px) and (max-width: 950px) {
     width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
     padding: 40px 20px;
   }
   @media (min-width: 360px) and (max-width: 600px) {
