@@ -6,8 +6,8 @@ import { db } from "lib/firebase";
 import { collection, doc, getDoc, deleteDoc } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
-import DeleteModal from "components/DeleteModal";
-import LoadingEffect from "components/LoadingEffect";
+import DeleteModal from "components/Common/Modals/DeleteModal";
+import LoadingEffect from "components/Common/Loading/LoadingEffect";
 import useAuthRedirect from "hooks/useAuthRedirect";
 
 export default function Home({ params }) {

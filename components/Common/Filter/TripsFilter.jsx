@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import TripStatusButton from "./TripStatusButton";
+import TripStatusButton from "components/Common/Buttons/TripStatusButton";
 
 export default function TripsFilter({ selectedButton, setSelectedButton }) {
   return (

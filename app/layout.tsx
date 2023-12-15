@@ -4,7 +4,7 @@ import "./globals.css";
 import StyledJsxRegistry from "./registry";
 import StyledComponentsRegistry from "../lib/registry";
 import { AuthContextProvider } from "../hooks/authContext.js";
-import Navbar from "components/Navbar";
+import Navbar from "components/Layouts/Navbar";
 
 const roboto = Roboto_Flex({
   subsets: ["latin"],

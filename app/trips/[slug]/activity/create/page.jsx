@@ -8,8 +8,8 @@ import { useForm } from "react-hook-form";
 import { UserAuth } from "hooks/authContext";
 import { useRouter } from "next/navigation";
 import useAuthRedirect from "hooks/useAuthRedirect";
-import FormInput from "components/FormInput";
-import FormConfirmArea from "components/FormConfirmArea";
+import FormInput from "components/Common/Form/FormInput";
+import FormConfirmArea from "components/Common/Form/FormConfirmArea";
 
 export default function Page({ params }) {
   const {

@@ -14,14 +14,14 @@ import {
 } from "firebase/firestore";
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
-import AddPlanBtn from "components/AddPlanBtn";
-import TripList from "components/TripList";
-import DeleteModal from "components/DeleteModal";
+import AddPlanButton from "components/Common/Buttons/AddPlanButton";
+import TripList from "components/Common/DataDisplay/TripList";
+import DeleteModal from "components/Common/Modals/DeleteModal";
 import { useRouter } from "next/navigation";
 import useAuthRedirect from "hooks/useAuthRedirect";
-import CurrentPlansButton from "components/CurrentPlansButton";
-import PlanList from "components/PlanList";
-import LoadingEffect from "components/LoadingEffect";
+import CurrentPlansButton from "components/Common/Buttons/CurrentPlansButton";
+import PlanList from "components/Common/DataDisplay/PlanList";
+import LoadingEffect from "components/Common/Loading/LoadingEffect";
 
 export default function Page({ params }) {
   const [items, setItems] = useState([]);
@@ -103,7 +103,7 @@ export default function Page({ params }) {
 
             <Link href={`/trips/${item.id}/plan/create`}>
               <AddPlanBtnContainer>
-                <AddPlanBtn />
+                <AddPlanButton />
               </AddPlanBtnContainer>
             </Link>
           </>

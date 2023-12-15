@@ -3,7 +3,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
-import ToolBar from "./ToolBar";
+import ToolBar from "components/TiptapEditor/ToolBar";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import Placeholder from "@tiptap/extension-placeholder";

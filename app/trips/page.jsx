@@ -1,6 +1,6 @@
 "use client";
 import styled from "styled-components";
-import AddTripBtn from "components/AddTripBtn";
+import AddTripButton from "components/Common/Buttons/AddTripButton";
 import { useEffect, useState } from "react";
 import {
   collection,
@@ -13,10 +13,10 @@ import {
 } from "firebase/firestore";
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
-import DeleteModal from "components/DeleteModal";
-import TripsFilter from "components/TripsFilter";
-import TripList from "components/TripList";
-import LoadingEffect from "components/LoadingEffect";
+import DeleteModal from "components/Common/Modals/DeleteModal";
+import TripsFilter from "components/Common/Filter/TripsFilter";
+import TripList from "components/Common/DataDisplay/TripList";
+import LoadingEffect from "components/Common/Loading/LoadingEffect";
 import useAuthRedirect from "hooks/useAuthRedirect";
 
 export default function Home() {
@@ -89,7 +89,7 @@ export default function Home() {
         selectedButton={selectedButton}
         setSelectedButton={setSelectedButton}
       />
-      <AddTripBtn />
+      <AddTripButton />
       {displayedTrips.map((item) => (
         <TripList key={item.id} item={item} onDelete={openDeleteModal} />
       ))}

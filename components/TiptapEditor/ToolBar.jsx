@@ -1,6 +1,5 @@
 "use client";
 
-import { Editor } from "@tiptap/react";
 import styled from "styled-components";
 import { Bold, Italic, List, ListOrdered, Heading3, Image } from "lucide-react";
 import { storage } from "lib/firebase";

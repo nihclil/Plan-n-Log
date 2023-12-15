@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import TripTitle from "./TripTitle";
-import TripCity from "./TripCity";
-import TripDate from "./TripDate";
-import TripImage from "./TripImage";
-import TripTaskLink from "./TripTaskLink";
-import DeleteButton from "./DeleteButton";
+import TripTitle from "components/Common/DataDisplay/TripTitle";
+import TripCity from "components/Common/DataDisplay/TripCity";
+import TripDate from "components/Common/DataDisplay/TripDate";
+import TripImage from "components/Common/DataDisplay/TripImage";
+import TripTaskButton from "components/Common/Buttons/TripTaskButton";
+import DeleteButton from "components/Common/Buttons/DeleteButton";
 
 export default function TripList({ item, onDelete }) {
   return (
@@ -13,13 +13,13 @@ export default function TripList({ item, onDelete }) {
         <TripTitle item={item} />
         <TripCity item={item} />
         <TripDate item={item} />
-        <TripTaskLink
+        <TripTaskButton
           tripId={item.id}
           iconSrc="/iconmonstr-edit-11-24.png"
           linkTo="edit"
           text="Edit Trip Info"
         />
-        <TripTaskLink
+        <TripTaskButton
           tripId={item.id}
           iconSrc="/iconmonstr-edit-6-24.png"
           linkTo="write"

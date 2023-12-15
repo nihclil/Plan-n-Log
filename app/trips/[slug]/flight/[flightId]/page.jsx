@@ -6,9 +6,9 @@ import { db } from "lib/firebase";
 import { collection, doc, getDoc, deleteDoc } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
-import DeleteModal from "components/DeleteModal";
+import DeleteModal from "components/Common/Modals/DeleteModal";
 import { Terminal } from "lucide-react";
-import LoadingEffect from "components/LoadingEffect";
+import LoadingEffect from "components/Common/Loading/LoadingEffect";
 import useAuthRedirect from "hooks/useAuthRedirect";
 
 export default function Page({ params }) {

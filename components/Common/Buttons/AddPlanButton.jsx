@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 
-export default function AddPlanBtn() {
+export default function AddPlanButton() {
   return (
     <PlanContainer>
       <PlanImg src="/iconmonstr-plus-6-24.png"></PlanImg>

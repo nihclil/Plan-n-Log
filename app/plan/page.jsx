@@ -2,20 +2,19 @@
 
 import useAuthRedirect from "hooks/useAuthRedirect";
 import styled from "styled-components";
-import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
-import { CityName } from "components/CityName";
+import { CityName } from "components/Common/Form/CityName";
 import { storage } from "lib/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import Image from "next/image";
-import FormInput from "components/FormInput";
-import FormConfirmArea from "components/FormConfirmArea";
+import FormInput from "components/Common/Form/FormInput";
+import FormConfirmArea from "components/Common/Form/FormConfirmArea";
 
 export default function Page() {
   const [cityName, setCityName] = useState("");

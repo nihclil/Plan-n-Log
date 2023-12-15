@@ -1,6 +1,6 @@
 "use client";
-import { Editor } from "@tiptap/react";
-import Tiptap from "components/Tiptap";
+
+import Tiptap from "components/TiptapEditor/Tiptap";
 import styled from "styled-components";
 import { db } from "lib/firebase";
 import {
@@ -14,8 +14,7 @@ import {
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import LoadingEffect from "components/LoadingEffect";
-import NavBar from "components/Navbar";
+import LoadingEffect from "components/Common/Loading/LoadingEffect";
 import Link from "next/link";
 import useAuthRedirect from "hooks/useAuthRedirect";
 
