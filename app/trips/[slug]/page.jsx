@@ -110,10 +110,8 @@ export default function Page({ params }) {
         ))}
       </TripsArea>
 
-      <PlanArea>
-        <ButtonWrapper>
-          <CurrentPlansButton onClick={dropDownMenu} isOpen={planButton} />
-        </ButtonWrapper>
+      <PlansArea>
+        <CurrentPlansButton onClick={dropDownMenu} isOpen={planButton} />
 
         <PlansWrapper>
           {planButton &&
@@ -130,7 +128,7 @@ export default function Page({ params }) {
             caption="trip"
           />
         )}
-      </PlanArea>
+      </PlansArea>
     </Main>
   );
 }
@@ -154,9 +152,16 @@ const AddPlanBtnContainer = styled.div`
   transform: translate(-50%);
 `;
 
-const PlanArea = styled.div`
+const PlansArea = styled.div`
+  margin: 150px 0px 50px 0px;
   width: 1000px;
-  margin: 0 auto 50px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  @media (min-width: 360px) and (max-width: 1200px) {
+    width: 80%;
+    margin: 150px auto 50px auto;
+  }
 `;
 
 const PlansWrapper = styled.div`
@@ -164,8 +169,7 @@ const PlansWrapper = styled.div`
   overflow: hidden;
   width: 800px;
   margin-top: 20px;
-`;
-
-const ButtonWrapper = styled.div`
-  margin: 100px auto 0px auto;
+  @media (min-width: 360px) and (max-width: 1000px) {
+    width: 100%;
+  }
 `;

@@ -23,19 +23,21 @@ export default function PlanList({ plan, params }) {
 const PlanContainer = styled.div`
   color: #6d5b48;
   background-color: #fff;
-  width: 800px;
   display: flex;
   align-items: center;
   padding: 20px;
   border-bottom: 1px solid #e6ddd4;
+  @media (min-width: 360px) and (max-width: 700px) {
+    padding: 10px;
+  }
 `;
 
 const DateColumn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 20px;
-  width: 200px;
+  margin-right: 10px;
+  width: 150px;
 `;
 
 const StartDate = styled.div`
@@ -53,7 +55,10 @@ const ImageColumn = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin-right: 50px;
+  margin-right: 30px;
+  @media (min-width: 360px) and (max-width: 700px) {
+    display: none;
+  }
 `;
 
 const PlanTitle = styled.div`
