@@ -127,6 +127,15 @@ export default function Page({ params }) {
                 isRequired={false}
               />
               <FormInput
+                label="Address"
+                name="address"
+                type="text"
+                register={register}
+                errors={errors}
+                width="600px"
+                isRequired={false}
+              />
+              <FormInput
                 label="Phone"
                 name="phone"
                 type="text"
