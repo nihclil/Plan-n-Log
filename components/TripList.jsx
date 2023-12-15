@@ -46,7 +46,7 @@ const TripListContainer = styled.div`
   border-radius: 20px;
   position: relative;
 
-  @media (min-width: 800px) and (max-width: 1200px) {
+  @media (min-width: 950px) and (max-width: 1200px) {
     width: 80%;
   }
   @media (min-width: 600px) and (max-width: 950px) {
