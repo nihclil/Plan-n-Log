@@ -74,88 +74,90 @@ export default function Page() {
     <Main>
       <AddArea>
         <form onSubmit={handleSubmit(addItem)}>
-          <Title>Add trip</Title>
           <PlanArea>
-            <TripInfo>
-              <Caption>
-                Add a trip manually below, and we&apos;ll create the trip for
-                you.
-              </Caption>
-              <FormInput
-                label="Trip Name"
-                name="tripName"
-                type="text"
-                width="600px"
-                register={register}
-                errors={errors}
-                isRequired={true}
-              />
-              <Column>
-                <InputName>Destination City</InputName>
-                <Controller
-                  control={control}
-                  name="cityName"
-                  render={({ field }) => (
-                    <CityName
-                      onSelectCity={(city) => field.onChange(city.label)}
-                      defaultValue={field.value}
-                    />
-                  )}
-                />
-              </Column>
-              <FlexContainer>
+            <Title>Add trip</Title>
+            <FormArea>
+              <TripInfo>
+                <Caption>
+                  Add a trip manually below, and we&apos;ll create the trip for
+                  you.
+                </Caption>
                 <FormInput
-                  label="Start Date"
-                  name="startDate"
-                  type="date"
-                  width="295px"
+                  label="Trip Name"
+                  name="tripName"
+                  type="text"
+                  width="600px"
                   register={register}
                   errors={errors}
                   isRequired={true}
                 />
-                <FormInput
-                  label="End Date"
-                  name="endDate"
-                  type="date"
-                  width="295px"
-                  register={register}
-                  errors={errors}
-                  isRequired={true}
+                <Column>
+                  <InputName>Destination City</InputName>
+                  <Controller
+                    control={control}
+                    name="cityName"
+                    render={({ field }) => (
+                      <CityName
+                        onSelectCity={(city) => field.onChange(city.label)}
+                        defaultValue={field.value}
+                      />
+                    )}
+                  />
+                </Column>
+                <FlexContainer>
+                  <FormInput
+                    label="Start Date"
+                    name="startDate"
+                    type="date"
+                    width="295px"
+                    register={register}
+                    errors={errors}
+                    isRequired={true}
+                  />
+                  <FormInput
+                    label="End Date"
+                    name="endDate"
+                    type="date"
+                    width="295px"
+                    register={register}
+                    errors={errors}
+                    isRequired={true}
+                  />
+                </FlexContainer>
+              </TripInfo>
+              <ImageInfo>
+                <Image
+                  src={currentImage}
+                  width={200}
+                  height={200}
+                  alt="Current image"
                 />
-              </FlexContainer>
-            </TripInfo>
-            <ImageInfo>
-              <Image
-                src={currentImage}
-                width={200}
-                height={200}
-                alt="Current image"
-              />
-              <ImageLabel>
-                Change Photo
-                <Controller
-                  control={control}
-                  name="tripImage"
-                  render={({ field }) => (
-                    <ImageInput
-                      type="file"
-                      onChange={(event) => {
-                        setImageUpload(event.target.files[0]);
-                        setUploadStatus("");
-                        field.onChange(event.target.files[0]);
-                      }}
-                    />
-                  )}
-                />
-              </ImageLabel>
-              {imageUpload && !uploadStatus && (
-                <ImagePrompt>{imageUpload.name}</ImagePrompt>
-              )}
-              {uploadStatus && <ImagePrompt>{uploadStatus}</ImagePrompt>}
-              <PhotoButton type="button" onClick={uploadImage}>
-                Upload image
-              </PhotoButton>
-            </ImageInfo>
+                <ImageLabel>
+                  Change Photo
+                  <Controller
+                    control={control}
+                    name="tripImage"
+                    render={({ field }) => (
+                      <ImageInput
+                        type="file"
+                        onChange={(event) => {
+                          setImageUpload(event.target.files[0]);
+                          setUploadStatus("");
+                          field.onChange(event.target.files[0]);
+                        }}
+                      />
+                    )}
+                  />
+                </ImageLabel>
+                {imageUpload && !uploadStatus && (
+                  <ImagePrompt>{imageUpload.name}</ImagePrompt>
+                )}
+                {uploadStatus && <ImagePrompt>{uploadStatus}</ImagePrompt>}
+                <PhotoButton type="button" onClick={uploadImage}>
+                  Upload image
+                </PhotoButton>
+              </ImageInfo>
+            </FormArea>
           </PlanArea>
 
           <FormConfirmArea cancelLink="/trips" />
@@ -168,12 +170,23 @@ export default function Page() {
 const Main = styled.main`
   margin: 50px auto;
   width: 1000px;
+  @media (max-width: 1200px) {
+    width: auto;
+  }
 `;
 
 const AddArea = styled.div`
   background-color: #fff;
   border-radius: 18px;
   padding: 50px;
+  @media (min-width: 900px) and (max-width: 1200px) {
+    width: 800px;
+    margin: auto;
+  }
+  @media (min-width: 360px) and (max-width: 900px) {
+    width: 80%;
+    margin: auto;
+  }
 `;
 
 const Title = styled.div`
@@ -191,15 +204,28 @@ const Caption = styled.div`
 
 const PlanArea = styled.div`
   display: flex;
+  flex-direction: column;
 `;
 
 const TripInfo = styled.div`
   margin-right: 50px;
 `;
 
+const FormArea = styled.div`
+  display: flex;
+  flex-direction: row;
+  @media (min-width: 360px) and (max-width: 1200px) {
+    flex-direction: column;
+  }
+`;
+
 const Column = styled.div`
   margin-bottom: 40px;
   margin-right: 10px;
+  width: 600px;
+  @media (min-width: 360px) and (max-width: 900px) {
+    width: 100%;
+  }
 `;
 
 const InputName = styled.div`
@@ -210,6 +236,9 @@ const InputName = styled.div`
 
 const FlexContainer = styled.div`
   display: flex;
+  @media (min-width: 360px) and (max-width: 900px) {
+    display: block;
+  }
 `;
 
 const ImageInfo = styled.div`
@@ -217,6 +246,10 @@ const ImageInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @media (min-width: 360px) and (max-width: 1200px) {
+    align-items: flex-start;
+    margin-bottom: 40px;
+  }
 `;
 
 const PhotoButton = styled.button`
@@ -246,10 +279,5 @@ const ImageInput = styled.input`
 
 const ImagePrompt = styled.div`
   color: #6a9066;
-  margin-top: 10px;
-`;
-
-const ErrorMessage = styled.div`
-  color: #de6161;
   margin-top: 10px;
 `;

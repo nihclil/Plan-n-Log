@@ -26,6 +26,9 @@ const InputContainer = styled.div`
   width: ${({ width }) => width};
   margin-bottom: 40px;
   margin-right: 10px;
+  @media (min-width: 360px) and (max-width: 900px) {
+    width: 100%;
+  }
 `;
 
 const Label = styled.label`
