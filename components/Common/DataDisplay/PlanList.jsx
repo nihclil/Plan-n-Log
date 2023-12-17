@@ -41,7 +41,6 @@ const DateColumn = styled.div`
 `;
 
 const StartDate = styled.div`
-  font-size: 24px;
   margin-bottom: 10px;
 `;
 
