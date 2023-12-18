@@ -96,20 +96,18 @@ export default function Page({ params }) {
 
   return (
     <Main>
-      <TripsArea>
+      <>
         {items.map((item) => (
-          <>
-            <TripList key={item.id} item={item} onDelete={openDeleteModal} />
-
+          <TripsArea key={item.id}>
+            <TripList item={item} onDelete={openDeleteModal} />
             <Link href={`/trips/${item.id}/plan/create`}>
               <AddPlanBtnContainer>
                 <AddPlanButton />
               </AddPlanBtnContainer>
             </Link>
-          </>
+          </TripsArea>
         ))}
-      </TripsArea>
-
+      </>
       <PlansArea>
         <CurrentPlansButton onClick={dropDownMenu} isOpen={planButton} />
 
