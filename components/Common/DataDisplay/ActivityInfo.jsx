@@ -18,11 +18,11 @@ export default function ActivityInfo({ item, onDelete }) {
         <PlanDetailsTitle />
         <FlexContainer>
           <PlanScheduleContainer>
-            <PlanDate date={item.startDate} />
+            <PlanDate date={item.startDate} option={true} />
             <PlanTime time={item.startTime} />
           </PlanScheduleContainer>
           <PlanScheduleContainer>
-            <PlanDate date={item.endDate} />
+            <PlanDate date={item.endDate} option={true} />
             <PlanTime time={item.endTime} />
           </PlanScheduleContainer>
         </FlexContainer>

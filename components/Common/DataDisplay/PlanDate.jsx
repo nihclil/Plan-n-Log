@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import formatDate from "utils/formatDate";
 
-export default function PlanDate({ date }) {
-  return <PlanDateContainer>{formatDate(date, true)}</PlanDateContainer>;
+export default function PlanDate({ date, option }) {
+  return <PlanDateContainer>{formatDate(date, option)}</PlanDateContainer>;
 }
 
 const PlanDateContainer = styled.div`
