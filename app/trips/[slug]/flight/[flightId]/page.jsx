@@ -3,13 +3,15 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { db } from "lib/firebase";
-import { collection, doc, getDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
-import DeleteModal from "components/DeleteModal";
-import { Terminal } from "lucide-react";
-import LoadingEffect from "components/LoadingEffect";
+import DeleteModal from "components/Common/Modals/DeleteModal";
+import LoadingEffect from "components/Common/Loading/LoadingEffect";
 import useAuthRedirect from "hooks/useAuthRedirect";
+import calculateTimeUntil from "utils/calculateTimeUntil";
+import formatDate from "utils/formatDate";
+import FlightInfo from "components/Common/DataDisplay/FlightInfo";
 
 export default function Page({ params }) {
   const [plan, setPlan] = useState([]);
@@ -28,33 +30,6 @@ export default function Page({ params }) {
       setIsLoading(false);
     });
   }, [params.slug, params.flightId]);
-
-  function formatData(dateString) {
-    const options = {
-      weekday: "short",
-
-      month: "short",
-      day: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
-
-  function calculateDateDiff(startDate, startTime) {
-    const now = new Date();
-    console.log(now);
-    const target = new Date(`${startDate}T${startTime}`);
-    console.log(target);
-    const diff = target - now;
-    console.log(diff);
-    const minutesTotal = Math.floor(diff / (1000 * 60));
-    const hoursTotal = Math.floor(minutesTotal / 60);
-    const days = Math.floor(hoursTotal / 24);
-
-    const hours = hoursTotal % 24;
-    const minutes = minutesTotal % 60;
-
-    return `${days} days, ${hours} hours, ${minutes} minutes `;
-  }
 
   const openDeleteModal = (id) => {
     setCurrentItemId(id);
@@ -91,50 +66,7 @@ export default function Page({ params }) {
         </Link>
       </Nav>
       {plan.map((item) => (
-        <PlanContainer key={item.id}>
-          <PlanTitle>{item.eventName}</PlanTitle>
-
-          <PlanType>{item.planName}</PlanType>
-          <PlanDuration>
-            Departs in {calculateDateDiff(item.startDate, item.startTime)} day
-          </PlanDuration>
-          <PlanDetails>
-            <DetailsTitle>Primary Details</DetailsTitle>
-
-            <Start>
-              <PlanDate>
-                Depart {item.departureAirport} {formatData(item.startDate)}
-                <Details>
-                  {` Terminal ${item.departureTerminal} • Gate ${item.departureGate}`}
-                </Details>
-              </PlanDate>
-              <PlanTime>{item.startTime}</PlanTime>
-              <Details>{` Seats ${item.seats} `}</Details>
-            </Start>
-            <Start>
-              <PlanDate>
-                Arrive {item.arrivalAirport} {formatData(item.endDate)}
-                <Details>
-                  {` Terminal ${item.arrivalTerminal} • Gate ${item.arrivalGate}`}
-                </Details>
-              </PlanDate>
-
-              <PlanTime>{item.endTime}</PlanTime>
-            </Start>
-
-            <PlanInfo>confirmation：{item.confirmation}</PlanInfo>
-          </PlanDetails>
-          <DeleteArea onClick={() => openDeleteModal(item.id)}>
-            <LinkArea>
-              <Image
-                src="/iconmonstr-trash-can-lined-24.png"
-                width={24}
-                height={24}
-                alt="trash-can"
-              ></Image>
-            </LinkArea>
-          </DeleteArea>
-        </PlanContainer>
+        <FlightInfo key={item.id} item={item} onDelete={openDeleteModal} />
       ))}
       {modal && (
         <DeleteModal
@@ -151,11 +83,18 @@ export default function Page({ params }) {
 const Main = styled.div`
   width: 1200px;
   margin: 50px auto;
+  @media (min-width: 360px) and (max-width: 1200px) {
+    width: 90%;
+  }
 `;
 
 const Nav = styled.div`
   display: flex;
   align-items: center;
+  @media (min-width: 360px) and (max-width: 1200px) {
+    width: 90%;
+    margin: auto;
+  }
 `;
 
 const NavSpan = styled.span`
@@ -175,65 +114,4 @@ const PlanContainer = styled.div`
   margin-top: 50px;
   border-radius: 10px;
   position: relative;
-`;
-const PlanTitle = styled.div`
-  font-size: 36px;
-  font-weight: 600;
-  margin-bottom: 20px;
-`;
-
-const PlanType = styled.div`
-  margin-bottom: 20px;
-`;
-
-const PlanDetails = styled.div`
-  width: 1000px;
-  border: 1px solid #e0e0e0;
-  padding: 40px 30px;
-`;
-
-const DetailsTitle = styled.div`
-  font-weight: 600;
-  font-size: 24px;
-  margin-bottom: 40px;
-`;
-
-const PlanInfo = styled.div`
-  margin-bottom: 40px;
-  font-weight: 600;
-`;
-
-const PlanDate = styled.div`
-  font-weight: 600;
-  margin-bottom: 10px;
-`;
-
-const PlanTime = styled.div`
-  font-weight: 600;
-  font-size: 30px;
-  margin-bottom: 20px;
-`;
-
-const Start = styled.div`
-  margin-bottom: 40px;
-`;
-
-const DeleteArea = styled.div`
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  cursor: pointer;
-`;
-
-const LinkArea = styled.div``;
-
-const PlanDuration = styled.div`
-  font-weight: 400;
-  color: #8f8989;
-  margin-bottom: 20px;
-`;
-
-const Details = styled.span`
-  font-weight: 400;
-  color: #8f8989;
 `;

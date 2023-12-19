@@ -3,7 +3,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 
-export default function AddTripBtn() {
+export default function AddTripButton() {
   return (
     <AddArea>
       <Link href="/plan">

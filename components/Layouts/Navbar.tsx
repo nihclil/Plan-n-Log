@@ -3,9 +3,8 @@
 import styled from "styled-components";
 import { useState } from "react";
 import Link from "next/link";
-import { SignUpForm, SignInForm } from "./AuthForm";
-import { UserAuth } from "../hooks/authContext";
-import { useRouter } from "next/navigation";
+import { SignUpForm, SignInForm } from "components/Common/Modals/AuthModal";
+import { UserAuth } from "hooks/authContext";
 import Image from "next/image";
 
 export default function Navbar() {

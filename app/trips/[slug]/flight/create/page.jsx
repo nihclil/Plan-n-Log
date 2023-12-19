@@ -8,8 +8,8 @@ import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
 import { useRouter } from "next/navigation";
 import useAuthRedirect from "hooks/useAuthRedirect";
-import FormInput from "components/FormInput";
-import FormConfirmArea from "components/FormConfirmArea";
+import FormInput from "components/Common/Form/FormInput";
+import FormConfirmArea from "components/Common/Form/FormConfirmArea";
 
 export default function Home({ params }) {
   const {
@@ -215,14 +215,33 @@ export default function Home({ params }) {
   );
 }
 
-const Main = styled.main``;
+const Main = styled.main`
+  margin: 50px auto;
+  width: 900px;
+  @media (max-width: 1200px) {
+    width: auto;
+  }
+`;
 
 const AddArea = styled.div`
-  width: 900px;
-  margin: 50px auto;
   background-color: #fff;
   border-radius: 18px;
   padding: 50px;
+  @media (min-width: 900px) and (max-width: 1200px) {
+    width: 800px;
+    margin: auto;
+    padding: 40px;
+  }
+  @media (min-width: 600px) and (max-width: 900px) {
+    width: 80%;
+    margin: auto;
+    padding: 40px;
+  }
+  @media (min-width: 360px) and (max-width: 600px) {
+    width: 80%;
+    margin: auto;
+    padding: 30px;
+  }
 `;
 
 const Title = styled.div`
@@ -245,12 +264,22 @@ const Caption = styled.div`
 const PlanArea = styled.div`
   display: flex;
   justify-content: center;
+  @media (min-width: 900px) and (max-width: 1200px) {
+    margin: auto;
+  }
 `;
 
-const TripInfo = styled.div``;
+const TripInfo = styled.div`
+  @media (min-width: 360px) and (max-width: 900px) {
+    width: 100%;
+  }
+`;
 
 const FlexContainer = styled.div`
   display: flex;
+  @media (min-width: 360px) and (max-width: 900px) {
+    flex-direction: column;
+  }
 `;
 
 const FormConfirmWrapper = styled.div`

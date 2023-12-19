@@ -8,6 +8,8 @@ import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
 import { useRouter } from "next/navigation";
 import useAuthRedirect from "hooks/useAuthRedirect";
+import FormInput from "components/Common/Form/FormInput";
+import FormConfirmArea from "components/Common/Form/FormConfirmArea";
 
 export default function Home({ params }) {
   const {
@@ -43,7 +45,6 @@ export default function Home({ params }) {
       supplierPhone: formData.supplierPhone,
       supplierWebsite: formData.supplierWebsite,
       supplierEmail: formData.supplierEmail,
-      supplierContact: formData.supplierContact,
       uid: user.uid,
     })
       .then(() => {
@@ -61,94 +62,138 @@ export default function Home({ params }) {
           <Title>Add Lodging</Title>
           <PlanArea>
             <TripInfo>
-              <DateColumn>
-                <Column>
-                  <InputName>Check-in Date</InputName>
-                  <DateInput
-                    type="Date"
-                    {...register("checkInDate", { required: true })}
-                  />
-
-                  {errors.checkInDate && (
-                    <ErrorMessage>This field is required</ErrorMessage>
-                  )}
-                </Column>
-                <Column>
-                  <InputName>Check-in Time</InputName>
-                  <DateInput {...register("checkInTime")} type="time" />
-                </Column>
-              </DateColumn>
-
-              <DateColumn>
-                <Column>
-                  <InputName>Checkout Date</InputName>
-                  <DateInput
-                    type="Date"
-                    {...register("checkOutDate", { required: true })}
-                  />
-                  {errors.checkOutDate && (
-                    <ErrorMessage>This field is required</ErrorMessage>
-                  )}
-                </Column>
-                <Column>
-                  <InputName>Checkout Time</InputName>
-                  <DateInput
-                    type="time"
-                    {...register("checkOutTime")}
-                  ></DateInput>
-                </Column>
-              </DateColumn>
-              <Column>
-                <InputName>Lodging Name</InputName>
-                <Input {...register("lodgingName")}></Input>
-              </Column>
-              <Column>
-                <InputName>Address</InputName>
-                <Input {...register("address")}></Input>
-              </Column>
-              <Column>
-                <InputName>Confirmation</InputName>
-                <Input type="text" {...register("confirmation")}></Input>
-              </Column>
-              <Column>
-                <InputName>Supplier Phone</InputName>
-                <Input {...register("supplierPhone")}></Input>
-              </Column>
-              <Column>
-                <InputName>Supplier Website</InputName>
-                <Input {...register("supplierWebsite")}></Input>
-              </Column>
-              <Column>
-                <InputName>Supplier Email</InputName>
-                <Input type="email" {...register("supplierEmail")}></Input>
-              </Column>
-              <Column>
-                <InputName>Supplier Contact</InputName>
-                <Input {...register("supplierContact")}></Input>
-              </Column>
+              <FlexContainer>
+                <FormInput
+                  label="Check-in Date"
+                  name="checkInDate"
+                  type="date"
+                  register={register}
+                  errors={errors}
+                  width="295px"
+                  isRequired={true}
+                />
+                <FormInput
+                  label="Check-in Time"
+                  name="checkInTime"
+                  type="time"
+                  register={register}
+                  errors={errors}
+                  width="295px"
+                  isRequired={false}
+                />
+              </FlexContainer>
+              <FlexContainer>
+                <FormInput
+                  label="Checkout Date"
+                  name="checkOutDate"
+                  type="date"
+                  register={register}
+                  errors={errors}
+                  width="295px"
+                  isRequired={true}
+                />
+                <FormInput
+                  label="Checkout Time"
+                  name="checkOutTime"
+                  type="time"
+                  register={register}
+                  errors={errors}
+                  width="295px"
+                  isRequired={false}
+                />
+              </FlexContainer>
+              <FormInput
+                label="Lodging Name"
+                name="lodgingName"
+                type="text"
+                register={register}
+                errors={errors}
+                width="600px"
+                isRequired={false}
+              />
+              <FormInput
+                label="Address"
+                name="address"
+                type="text"
+                register={register}
+                errors={errors}
+                width="600px"
+                isRequired={false}
+              />
+              <FormInput
+                label="Confirmation"
+                name="confirmation"
+                type="text"
+                register={register}
+                errors={errors}
+                width="600px"
+                isRequired={false}
+              />
+              <FormInput
+                label="Supplier Phone"
+                name="supplierPhone"
+                type="text"
+                register={register}
+                errors={errors}
+                width="600px"
+                isRequired={false}
+              />
+              <FormInput
+                label="Supplier Website"
+                name="supplierWebsite"
+                type="text"
+                register={register}
+                errors={errors}
+                width="600px"
+                isRequired={false}
+              />
+              <FormInput
+                label="Supplier Email"
+                name="supplierEmail"
+                type="email"
+                register={register}
+                errors={errors}
+                width="600px"
+                isRequired={false}
+              />
             </TripInfo>
           </PlanArea>
-
-          <ConfirmArea>
-            <Link href={`/trips/${params.slug}/plan/create`}>
-              <CancelButton>Cancel</CancelButton>
-            </Link>
-            <SaveButton type="submit">Save</SaveButton>
-          </ConfirmArea>
+          <FormConfirmWrapper>
+            <FormConfirmArea cancelLink={`/trips/${params.slug}/plan/create`} />
+          </FormConfirmWrapper>
         </form>
       </AddArea>
     </Main>
   );
 }
 
-const Main = styled.main``;
+const Main = styled.main`
+  margin: 50px auto;
+  width: 900px;
+  @media (max-width: 1200px) {
+    width: auto;
+  }
+`;
 
 const AddArea = styled.div`
-  width: 900px;
-  margin: 50px auto;
   background-color: #fff;
   border-radius: 18px;
   padding: 50px;
+  @media (min-width: 900px) and (max-width: 1200px) {
+    width: 800px;
+    margin: auto;
+    padding: 40px;
+  }
+  @media (min-width: 600px) and (max-width: 900px) {
+    width: 80%;
+    margin: auto;
+    padding: 40px;
+  }
+  @media (min-width: 360px) and (max-width: 600px) {
+    width: 80%;
+    margin: auto;
+    padding: 30px;
+  }
 `;
 
 const Title = styled.div`
@@ -166,70 +211,20 @@ const PlanArea = styled.div`
   justify-content: center;
 `;
 
-const TripInfo = styled.div``;
-
-const Column = styled.div`
-  margin-bottom: 40px;
-  margin-right: 10px;
+const TripInfo = styled.div`
+  @media (min-width: 360px) and (max-width: 900px) {
+    width: 100%;
+  }
 `;
 
-const InputName = styled.div`
-  margin-bottom: 10px;
-  color: #6d5b48;
-  font-size: 20px;
-`;
-
-const Input = styled.input`
-  width: 600px;
-  height: 50px;
-  padding: 10px;
-  font-size: 20px;
-  border: 1px solid #e4ddd6;
-  border-radius: 4px;
-`;
-
-const DateInput = styled.input`
-  width: 295px;
-  height: 50px;
-  padding: 10px;
-  font-size: 18px;
-  border: 1px solid #e4ddd6;
-  border-radius: 4px;
-`;
-
-const DateColumn = styled.div`
+const FlexContainer = styled.div`
   display: flex;
+  @media (min-width: 360px) and (max-width: 900px) {
+    flex-direction: column;
+  }
 `;
 
-const ConfirmArea = styled.div`
-  padding-top: 20px;
+const FormConfirmWrapper = styled.div`
   display: flex;
   justify-content: center;
-`;
-
-const CancelButton = styled.button`
-  border: 0;
-  background-color: transparent;
-  margin-right: 40px;
-  font-size: 20px;
-  cursor: pointer;
-  color: #d1bea9;
-  padding: 10px 20px;
-  border-radius: 20px;
-`;
-
-const SaveButton = styled.button`
-  background-color: transparent;
-  font-size: 20px;
-  cursor: pointer;
-  background-color: #d1bea9;
-  padding: 10px 20px;
-  border-radius: 20px;
-  border: 0;
-  color: #6d5b48;
-`;
-
-const ErrorMessage = styled.div`
-  color: #de6161;
-  margin-top: 10px;
 `;
