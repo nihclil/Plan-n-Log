@@ -151,7 +151,7 @@ const AddPlanBtnContainer = styled.div`
 `;
 
 const PlansArea = styled.div`
-  margin: 150px 0px 50px 0px;
+  margin: 100px 0px 50px 0px;
   width: 1000px;
   display: flex;
   flex-direction: column;
