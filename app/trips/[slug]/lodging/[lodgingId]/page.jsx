@@ -104,12 +104,3 @@ const NavSpan = styled.span`
     color: #70946c;
   }
 `;
-
-const PlanContainer = styled.div`
-  padding: 40px 30px;
-  background-color: #fff;
-  color: #6d5b48;
-  margin-top: 50px;
-  border-radius: 10px;
-  position: relative;
-`;
