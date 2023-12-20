@@ -4,11 +4,11 @@ import { UserAuth } from "hooks/authContext";
 
 export default function useAuthRedirect() {
   const router = useRouter();
-  const { user } = UserAuth();
+  const { user, loading } = UserAuth();
 
   useEffect(() => {
-    if (!user) {
+    if (!loading && !user) {
       router.push("/");
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 }
