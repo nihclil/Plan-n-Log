@@ -2,7 +2,19 @@ import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function PlanTypeButton({ linkHref, ImageSrc, ImageAlt, span }) {
+interface Props {
+  linkHref: string;
+  ImageSrc: string;
+  ImageAlt: string;
+  span: string;
+}
+
+export default function PlanTypeButton({
+  linkHref,
+  ImageSrc,
+  ImageAlt,
+  span,
+}: Props) {
   return (
     <PlanTypeButtonContainer>
       <Link href={linkHref}>
