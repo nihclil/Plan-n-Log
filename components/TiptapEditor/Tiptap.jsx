@@ -5,7 +5,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import ToolBar from "components/TiptapEditor/ToolBar";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Placeholder from "@tiptap/extension-placeholder";
 
 const Tiptap = ({ onEditorUpdate, initialContent, params, onFileChange }) => {
@@ -19,7 +19,7 @@ const Tiptap = ({ onEditorUpdate, initialContent, params, onFileChange }) => {
     editorProps: {
       attributes: {
         style:
-          "outline: none; margin:auto; width:800px;  padding:20px 10px 10px 40px;line-height: 1.6; ",
+          "outline: none; margin: auto; width: 90%; padding: 20px 10px 10px 20px; line-height: 1.6;",
       },
     },
 
@@ -50,19 +50,21 @@ const Tiptap = ({ onEditorUpdate, initialContent, params, onFileChange }) => {
 };
 
 const TiptapContainer = styled.div`
-  height: 700px;
-  max-height: 800px;
-  background-color: aliceblue;
-  overflow-y: auto;
+  height: 600px;
+  width: 800px;
+  background-color: #fff;
 
-  overflow-x: hidden;
+  overflow-y: auto;
+  @media (min-width: 360px) and (max-width: 1300px) {
+    width: 80%;
+  }
 `;
 
 const StyledEditor = styled.div`
   .ProseMirror .is-editor-empty::before {
     content: attr(data-placeholder);
     float: left;
-    color: #234d78;
+    color: #8b8282;
     pointer-events: none;
     height: 0;
   }
