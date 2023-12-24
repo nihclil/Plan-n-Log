@@ -3,20 +3,11 @@
 import Tiptap from "components/TiptapEditor/Tiptap";
 import styled from "styled-components";
 import { db } from "lib/firebase";
-import {
-  doc,
-  addDoc,
-  getDoc,
-  collection,
-  documentId,
-  query,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import LoadingEffect from "components/Common/Loading/LoadingEffect";
-import Link from "next/link";
 import useAuthRedirect from "hooks/useAuthRedirect";
+import TripColumn from "components/Common/DataDisplay/TripColumn";
 
 export default function Home({ params }) {
   const [content, setContent] = useState("");
@@ -66,50 +57,20 @@ export default function Home({ params }) {
       });
   };
 
-  function formatData(dateString) {
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  }
-
   if (isLoading) {
     return <LoadingEffect />;
   }
 
   return (
     <Main>
-      <Container>
-        {tripDetails && (
-          <TripInfo>
-            <Title>Your Trip Details</Title>
-            <TripImageContainer>
-              <Image
-                src={tripDetails.imageUrl}
-                width={198}
-                height={198}
-                alt="trip-image"
-              ></Image>
-            </TripImageContainer>
-            <Link href={`/trips/${tripDetails.id}`}>
-              <TripName>{tripDetails.tripName}</TripName>
-            </Link>
-            <TripCity>{tripDetails.cityName}</TripCity>
-            <TripTime>
-              {formatData(tripDetails.startDate)} -
-              {formatData(tripDetails.endDate)}
-            </TripTime>
-          </TripInfo>
-        )}
-
+      <FlexContainer>
+        <TripColumn item={tripDetails} />
         <Tiptap
           onEditorUpdate={getTiptapContent}
           initialContent={content}
           params={params}
         />
-      </Container>
+      </FlexContainer>
       <SaveButtonContainer>
         <SaveButton onClick={saveData}>Save</SaveButton>
       </SaveButtonContainer>
@@ -119,59 +80,26 @@ export default function Home({ params }) {
 
 const Main = styled.div`
   width: 1200px;
-  margin: 50px auto 0px auto;
+  margin: 20px auto 0px auto;
+  @media (min-width: 360px) and (max-width: 1300px) {
+    width: auto;
+    margin: 20px 20px 0px 20px;
+  }
 `;
 
-const Container = styled.div`
+const FlexContainer = styled.div`
   display: flex;
-`;
-
-const TripInfo = styled.div`
-  width: 500px;
-  padding: 10px 20px;
-  background-color: #e3d7d7;
-`;
-
-const Title = styled.div`
-  color: #6d5b48;
-  font-size: 24px;
-  font-weight: 600;
-`;
-
-const TripName = styled.div`
-  font-size: 30px;
-  font-weight: 600;
-  color: #c88756;
-  margin-bottom: 15px;
-`;
-
-const TripCity = styled.div`
-  margin-bottom: 15px;
-  color: #6d5b48;
-  font-size: 20px;
-`;
-
-const TripTime = styled.div`
-  margin-bottom: 15px;
-  color: #6d5b48;
-  font-size: 20px;
-`;
-
-const TripImageContainer = styled.div`
-  width: 220px;
-  height: 220px;
-  background-color: #fff;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 20px 0 15px 0;
+  @media (min-width: 360px) and (max-width: 600px) {
+    width: auto;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const SaveButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin: 30px;
+  margin: 20px;
 `;
 
 const SaveButton = styled.button`
