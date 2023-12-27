@@ -1,9 +1,8 @@
 "use client";
+
 import styled from "styled-components";
-import { useForm, Controller } from "react-hook-form";
-import Link from "next/link";
-import { useState } from "react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { collection, addDoc } from "firebase/firestore";
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
 import { useRouter } from "next/navigation";
@@ -11,26 +10,36 @@ import useAuthRedirect from "hooks/useAuthRedirect";
 import FormInput from "components/Common/Form/FormInput";
 import FormConfirmArea from "components/Common/Form/FormConfirmArea";
 
-export default function Home({ params }) {
+type FormValues = {
+  airline: string;
+  departureDate: string;
+  departureTime: string;
+  arrivalDate: string;
+  arrivalTime: string;
+  confirmation: string;
+  departureAirport: string;
+  departureGate: string;
+  departureTerminal: string;
+  flightNumber: string;
+  seats: string;
+  arrivalAirport: string;
+  arrivalTerminal: string;
+  arrivalGate: string;
+};
+
+export default function Home({ params }: { params: { slug: string } }) {
+  useAuthRedirect();
+
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      checkInDate: "",
-      checkOutDate: "",
-    },
-  });
+  } = useForm<FormValues>();
 
   const router = useRouter();
   const { user } = UserAuth();
 
-  useAuthRedirect();
-
-  //Add data to firebase
-  const addLodging = async (formData) => {
+  const addLodging: SubmitHandler<FormValues> = async (formData) => {
     const ref = collection(db, "trip", params.slug, "plan");
     addDoc(ref, {
       planName: "flight",
