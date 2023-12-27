@@ -3,23 +3,23 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { db } from "lib/firebase";
-import { collection, doc, getDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import DeleteModal from "components/Common/Modals/DeleteModal";
 import LoadingEffect from "components/Common/Loading/LoadingEffect";
 import useAuthRedirect from "hooks/useAuthRedirect";
-import ContactInfo from "components/Common/DataDisplay/ContactInfo";
-import DeleteButton from "components/Common/Buttons/DeleteButton";
-import formatDate from "utils/formatDate";
-import calculateDuration from "utils/calculateDuration";
 import ActivityInfo from "components/Common/DataDisplay/ActivityInfo";
 
-export default function Home({ params }) {
-  const [plan, setPlan] = useState([]);
-  const [modal, setModal] = useState(false);
-  const [currentItemId, setCurrentItemId] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+export default function Home({
+  params,
+}: {
+  params: { slug: string; planId: string };
+}) {
+  const [plan, setPlan] = useState<any[]>([]);
+  const [modal, setModal] = useState<boolean>(false);
+  const [currentItemId, setCurrentItemId] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useAuthRedirect();
 
@@ -33,7 +33,7 @@ export default function Home({ params }) {
     });
   }, [params.slug, params.planId]);
 
-  const openDeleteModal = (id) => {
+  const openDeleteModal = (id: string) => {
     setCurrentItemId(id);
     toggleModal();
   };
@@ -43,7 +43,7 @@ export default function Home({ params }) {
   };
 
   //delete plan data
-  const deleteData = async (id) => {
+  const deleteData = async (id: string) => {
     const docRef = doc(db, "trip", params.slug, "plan", id);
     deleteDoc(docRef).then(() => {
       setPlan((prevItems) => prevItems.filter((item) => id !== item.id));
