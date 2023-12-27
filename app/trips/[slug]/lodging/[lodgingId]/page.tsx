@@ -11,11 +11,15 @@ import LoadingEffect from "components/Common/Loading/LoadingEffect";
 import useAuthRedirect from "hooks/useAuthRedirect";
 import LodgingInfo from "components/Common/DataDisplay/LodgingInfo";
 
-export default function Page({ params }) {
-  const [plan, setPlan] = useState([]);
-  const [modal, setModal] = useState(false);
-  const [currentItemId, setCurrentItemId] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+export default function Page({
+  params,
+}: {
+  params: { slug: string; lodgingId: string };
+}) {
+  const [plan, setPlan] = useState<any[]>([]);
+  const [modal, setModal] = useState<boolean>(false);
+  const [currentItemId, setCurrentItemId] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useAuthRedirect();
 
@@ -29,7 +33,7 @@ export default function Page({ params }) {
     });
   }, [params.slug, params.lodgingId]);
 
-  const openDeleteModal = (id) => {
+  const openDeleteModal = (id: string) => {
     setCurrentItemId(id);
     toggleModal();
   };
@@ -39,7 +43,7 @@ export default function Page({ params }) {
   };
 
   //delete plan data
-  const deleteData = async (id) => {
+  const deleteData = async (id: string) => {
     const docRef = doc(db, "trip", params.slug, "plan", id);
     deleteDoc(docRef).then(() => {
       setPlan((prevItems) => prevItems.filter((item) => id !== item.id));

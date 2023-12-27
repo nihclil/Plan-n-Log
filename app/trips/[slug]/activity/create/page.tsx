@@ -1,31 +1,41 @@
 "use client";
+
 import styled from "styled-components";
-import Link from "next/link";
-import { useState } from "react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { db } from "lib/firebase";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { UserAuth } from "hooks/authContext";
 import { useRouter } from "next/navigation";
 import useAuthRedirect from "hooks/useAuthRedirect";
 import FormInput from "components/Common/Form/FormInput";
 import FormConfirmArea from "components/Common/Form/FormConfirmArea";
 
-export default function Page({ params }) {
+type Inputs = {
+  eventName: string;
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
+  confirmation: string;
+  venue: string;
+  address: string;
+  phone: string;
+  website: string;
+  email: string;
+};
+
+export default function Page({ params }: { params: { slug: string } }) {
+  useAuthRedirect();
+
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
-  } = useForm();
-
+  } = useForm<Inputs>();
   const router = useRouter();
   const { user } = UserAuth();
 
-  useAuthRedirect();
-
-  //Add data to firebase
-  const addActivity = async (formData) => {
+  const addActivity: SubmitHandler<Inputs> = async (formData) => {
     const ref = collection(db, "trip", params.slug, "plan");
     addDoc(ref, {
       planName: "activity",
