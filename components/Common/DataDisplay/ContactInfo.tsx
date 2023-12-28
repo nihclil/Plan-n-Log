@@ -1,7 +1,17 @@
 import styled from "styled-components";
 import Image from "next/image";
 
-export default function ContactInfo({ contactContent, imageSrc, imageAlt }) {
+interface Props {
+  contactContent: string;
+  imageSrc: string;
+  imageAlt: string;
+}
+
+export default function ContactInfo({
+  contactContent,
+  imageSrc,
+  imageAlt,
+}: Props) {
   return (
     <ContactInfoContainer>
       <Image src={imageSrc} width={16} height={16} alt={imageAlt} />

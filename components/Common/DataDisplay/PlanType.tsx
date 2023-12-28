@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export default function PlanType({ item }) {
+interface Props {
+  item: { [key: string]: string };
+}
+
+export default function PlanType({ item }: Props) {
   return <PlanTypeContainer>{item.planName}</PlanTypeContainer>;
 }
 

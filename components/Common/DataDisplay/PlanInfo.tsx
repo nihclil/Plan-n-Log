@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
-export default function PlanInfo({ type, infoContent }) {
+interface Props {
+  type: string;
+  infoContent: string;
+}
+
+export default function PlanInfo({ type, infoContent }: Props) {
   return (
     <PlanInfoContainer>
       {infoContent}

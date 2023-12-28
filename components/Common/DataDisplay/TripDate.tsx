@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import formatDate from "utils/formatDate";
 
-export default function TripDate({ item }) {
+interface Props {
+  item: { [key: string]: string };
+}
+
+export default function TripDate({ item }: Props) {
   return (
     <TripDateContainer>
       {formatDate(item.startDate)} - {formatDate(item.endDate)}

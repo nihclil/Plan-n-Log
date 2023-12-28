@@ -3,7 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import formatDate from "utils/formatDate";
 
-export default function PlanList({ plan, params }) {
+interface Props {
+  plan: { [key: string]: string };
+  params: { slug: string };
+}
+
+export default function PlanList({ plan, params }: Props) {
   return (
     <PlanContainer>
       <DateColumn>

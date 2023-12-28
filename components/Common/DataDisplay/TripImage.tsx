@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import Image from "next/image";
 
-export default function TripImage({ item }) {
+interface Props {
+  item: { [key: string]: string };
+}
+
+export default function TripImage({ item }: Props) {
   return (
     <TripImageContainer>
       <ImageWrapper>

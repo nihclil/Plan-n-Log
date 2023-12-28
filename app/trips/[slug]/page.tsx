@@ -23,17 +23,21 @@ import CurrentPlansButton from "components/Common/Buttons/CurrentPlansButton";
 import PlanList from "components/Common/DataDisplay/PlanList";
 import LoadingEffect from "components/Common/Loading/LoadingEffect";
 
-export default function Page({ params }) {
-  const [items, setItems] = useState([]);
-  const { user } = UserAuth();
-  const [plans, setPlans] = useState([]);
-  const [planButton, setPlanButton] = useState(false);
-  const [modal, setModal] = useState(false);
-  const [currentItemId, setCurrentItemId] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
+type Plan = {
+  [key: string]: string;
+};
 
+export default function Page({ params }: { params: { slug: string } }) {
   useAuthRedirect();
+
+  const [items, setItems] = useState<any[]>([]);
+  const { user } = UserAuth();
+  const [plans, setPlans] = useState<any[]>([]);
+  const [planButton, setPlanButton] = useState<boolean>(false);
+  const [modal, setModal] = useState<boolean>(false);
+  const [currentItemId, setCurrentItemId] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const router = useRouter();
 
   // Read trip data from database
   useEffect(() => {
@@ -59,7 +63,7 @@ export default function Page({ params }) {
         orderBy("startTime")
       );
       getDocs(q).then((querySnapshot) => {
-        const plansData = [];
+        const plansData: Plan[] = [];
         querySnapshot.forEach((doc) => {
           plansData.push({ ...doc.data(), id: doc.id });
         });
@@ -73,7 +77,7 @@ export default function Page({ params }) {
   }
 
   //delete trip data
-  const deleteData = async (id) => {
+  const deleteData = async (id: string) => {
     const docRef = doc(db, "trip", id);
     deleteDoc(docRef).then(() => {
       setItems((prevItems) => prevItems.filter((item) => id !== item.id));
@@ -81,7 +85,7 @@ export default function Page({ params }) {
     router.push("/trips");
   };
 
-  const openDeleteModal = (id) => {
+  const openDeleteModal = (id: string) => {
     setCurrentItemId(id);
     toggleModal();
   };

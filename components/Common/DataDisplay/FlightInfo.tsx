@@ -8,7 +8,14 @@ import PlanInfo from "components/Common/DataDisplay/PlanInfo";
 import DeleteButton from "components/Common/Buttons/DeleteButton";
 import calculateTimeUntil from "utils/calculateTimeUntil";
 
-export default function FlightInfo({ item, onDelete }) {
+interface Props {
+  item: {
+    [key: string]: string;
+  };
+  onDelete: (id: string) => void;
+}
+
+export default function FlightInfo({ item, onDelete }: Props) {
   return (
     <PlanContainer>
       <PlanTitle item={item} />

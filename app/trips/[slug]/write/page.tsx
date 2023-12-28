@@ -9,44 +9,31 @@ import LoadingEffect from "components/Common/Loading/LoadingEffect";
 import useAuthRedirect from "hooks/useAuthRedirect";
 import TripColumn from "components/Common/DataDisplay/TripColumn";
 
-export default function Home({ params }) {
-  const [content, setContent] = useState("");
-  const [tripDetails, setTripDetails] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+export default function Home({ params }: { params: { slug: string } }) {
+  const [content, setContent] = useState<string>("");
+  const [tripDetails, setTripDetails] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const getTiptapContent = (data) => {
+  const getTiptapContent = (data: string) => {
     setContent(data);
   };
 
   useAuthRedirect();
 
-  //獲取過往文章內容
+  //獲取文章&行程內容
   useEffect(() => {
     const docRef = doc(db, "trip", params.slug);
     getDoc(docRef).then((docSnapshot) => {
       if (docSnapshot.exists()) {
-        const docData = docSnapshot.data();
-        setContent(docData.storyContent);
-        setTripDetails(docData);
+        setContent(docSnapshot.data().storyContent);
+        setTripDetails([{ ...docSnapshot.data(), id: docSnapshot.id }]);
       }
       setIsLoading(false);
     });
   }, [params.slug]);
 
-  //獲取行程資料
-  useEffect(() => {
-    const docRef = doc(db, "trip", params.slug);
-    getDoc(docRef).then((docSnapshot) => {
-      if (docSnapshot.exists()) {
-        const tripData = docSnapshot.data();
-        setTripDetails({ ...tripData, id: docSnapshot.id });
-      }
-    });
-  }, [params.slug]);
-
   //存取文章資料
   const saveData = () => {
-    // if(editor)
     const docRef = doc(db, "trip", params.slug);
     updateDoc(docRef, { storyContent: content })
       .then(() => {
@@ -64,7 +51,10 @@ export default function Home({ params }) {
   return (
     <Main>
       <FlexContainer>
-        <TripColumn item={tripDetails} />
+        {tripDetails.map((item) => (
+          <TripColumn item={item} key={item.id} />
+        ))}
+
         <Tiptap
           onEditorUpdate={getTiptapContent}
           initialContent={content}
