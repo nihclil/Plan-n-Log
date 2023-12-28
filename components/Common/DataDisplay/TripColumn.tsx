@@ -5,7 +5,11 @@ import TripDate from "components/Common/DataDisplay/TripDate";
 import TripTitle from "components/Common/DataDisplay/TripTitle";
 import Link from "next/link";
 
-export default function TripColumn({ item }) {
+interface Props {
+  item: { [key: string]: string };
+}
+
+export default function TripColumn({ item }: Props) {
   return (
     <TripColumnContainer>
       <Title>Your Trip Details</Title>
