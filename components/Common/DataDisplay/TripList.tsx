@@ -6,7 +6,12 @@ import TripImage from "components/Common/DataDisplay/TripImage";
 import TripTaskButton from "components/Common/Buttons/TripTaskButton";
 import DeleteButton from "components/Common/Buttons/DeleteButton";
 
-export default function TripList({ item, onDelete }) {
+interface Props {
+  item: { [key: string]: string };
+  onDelete: (id: string) => void;
+}
+
+export default function TripList({ item, onDelete }: Props) {
   return (
     <TripListContainer>
       <TripInfo>
