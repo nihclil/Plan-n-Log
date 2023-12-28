@@ -9,7 +9,14 @@ import PlanDuration from "components/Common/DataDisplay/PlanDuration";
 import PlanDetailsTitle from "components/Common/DataDisplay/PlanDetailsTitle";
 import DeleteButton from "components/Common/Buttons/DeleteButton";
 
-export default function ActivityInfo({ item, onDelete }) {
+interface ActivityInfoProps {
+  item: {
+    [key: string]: string;
+  };
+  onDelete: (id: string) => void;
+}
+
+export default function ActivityInfo({ item, onDelete }: ActivityInfoProps) {
   return (
     <PlanContainer>
       <PlanTitle item={item} />
