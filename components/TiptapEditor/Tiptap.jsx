@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import Placeholder from "@tiptap/extension-placeholder";
 
-const Tiptap = ({ onEditorUpdate, initialContent, params, onFileChange }) => {
+const Tiptap = ({ onEditorUpdate, initialContent, params }) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -23,7 +23,7 @@ const Tiptap = ({ onEditorUpdate, initialContent, params, onFileChange }) => {
       },
     },
 
-    onUpdate({ editor }) {
+    onBlur({ editor }) {
       const htmlContent = editor.getHTML();
       onEditorUpdate(htmlContent);
     },
