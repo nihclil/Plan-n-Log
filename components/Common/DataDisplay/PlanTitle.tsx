@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export default function PlanTitle({ item }) {
+interface Props {
+  item: { [key: string]: string };
+}
+
+export default function PlanTitle({ item }: Props) {
   return <PlanTitleContainer>{item.eventName}</PlanTitleContainer>;
 }
 
