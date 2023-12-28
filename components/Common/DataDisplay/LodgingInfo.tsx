@@ -9,7 +9,14 @@ import PlanDuration from "components/Common/DataDisplay/PlanDuration";
 import DeleteButton from "components/Common/Buttons/DeleteButton";
 import ContactInfo from "components/Common/DataDisplay/ContactInfo";
 
-export default function LodgingInfo({ item, onDelete }) {
+interface Props {
+  item: {
+    [key: string]: string;
+  };
+  onDelete: (id: string) => void;
+}
+
+export default function LodgingInfo({ item, onDelete }: Props) {
   return (
     <PlanContainer>
       <PlanTitle item={item} />
