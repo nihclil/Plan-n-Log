@@ -26,7 +26,7 @@ export default function Home({ params }: { params: { slug: string } }) {
     getDoc(docRef).then((docSnapshot) => {
       if (docSnapshot.exists()) {
         setContent(docSnapshot.data().storyContent);
-        setTripDetails({ ...docSnapshot.data(), id: docSnapshot.id });
+        setTripDetails([{ ...docSnapshot.data(), id: docSnapshot.id }]);
       }
       setIsLoading(false);
     });
@@ -51,7 +51,10 @@ export default function Home({ params }: { params: { slug: string } }) {
   return (
     <Main>
       <FlexContainer>
-        <TripColumn item={tripDetails} />
+        {tripDetails.map((item) => (
+          <TripColumn item={item} key={item.id} />
+        ))}
+
         <Tiptap
           onEditorUpdate={getTiptapContent}
           initialContent={content}
