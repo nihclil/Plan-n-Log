@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export default function TripCity({ item }) {
+interface Props {
+  item: { [key: string]: string };
+}
+
+export default function TripCity({ item }: Props) {
   return <TripCityContainer>{item.cityName}</TripCityContainer>;
 }
 
