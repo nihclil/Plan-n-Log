@@ -3,7 +3,6 @@ import TripImage from "components/Common/DataDisplay/TripImage";
 import TripCity from "components/Common/DataDisplay/TripCity";
 import TripDate from "components/Common/DataDisplay/TripDate";
 import TripTitle from "components/Common/DataDisplay/TripTitle";
-import Link from "next/link";
 
 interface Props {
   item: { [key: string]: string };
