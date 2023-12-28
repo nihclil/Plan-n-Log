@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export default function PlanTime({ time }) {
+interface Props {
+  time: string;
+}
+
+export default function PlanTime({ time }: Props) {
   return <PlanTimeContainer>{time}</PlanTimeContainer>;
 }
 
