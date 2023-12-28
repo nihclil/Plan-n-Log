@@ -6,7 +6,7 @@ import styled from "styled-components";
 import useAuthRedirect from "hooks/useAuthRedirect";
 import PlanTypeButton from "components//Common/Buttons/PlanTypeButton";
 
-export default function Home({ params }) {
+export default function Home({ params }: { params: { slug: string } }) {
   useAuthRedirect();
 
   return (
