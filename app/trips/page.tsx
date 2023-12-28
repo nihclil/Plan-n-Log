@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import {
   collection,
   query,
-  onSnapshot,
   where,
   orderBy,
   deleteDoc,
   doc,
+  getDocs,
 } from "firebase/firestore";
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
@@ -19,14 +19,18 @@ import TripList from "components/Common/DataDisplay/TripList";
 import LoadingEffect from "components/Common/Loading/LoadingEffect";
 import useAuthRedirect from "hooks/useAuthRedirect";
 
+type Trip = {
+  [key: string]: string;
+};
+
 export default function Home() {
-  const [items, setItems] = useState([]);
   const { user } = UserAuth();
-  const [modal, setModal] = useState(false);
-  const [currentItemId, setCurrentItemId] = useState(null);
-  const [displayedTrips, setDisplayedTrips] = useState([]);
-  const [selectedButton, setSelectedButton] = useState("upcoming");
-  const [isLoading, setIsLoading] = useState(true);
+  const [items, setItems] = useState<any[]>([]);
+  const [modal, setModal] = useState<boolean>(false);
+  const [currentItemId, setCurrentItemId] = useState<string>("");
+  const [displayedTrips, setDisplayedTrips] = useState<any[]>([]);
+  const [selectedButton, setSelectedButton] = useState<string>("upcoming");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useAuthRedirect();
   // Read items from database
@@ -37,28 +41,26 @@ export default function Home() {
         where("uid", "==", user.uid),
         orderBy("buildTime", "desc")
       );
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let itemsArr = [];
-
+      getDocs(q).then((querySnapshot) => {
+        const itemsArr: Trip[] = [];
         querySnapshot.forEach((doc) => {
           itemsArr.push({ ...doc.data(), id: doc.id });
         });
-
         setItems(itemsArr);
-        setIsLoading(false);
       });
+      setIsLoading(false);
     }
   }, [user]);
 
   //delete trip data
-  const deleteData = async (id) => {
+  const deleteData = async (id: string) => {
     const docRef = doc(db, "trip", id);
     deleteDoc(docRef).then(() => {
       setItems((prevItems) => prevItems.filter((item) => id !== item.id));
     });
   };
 
-  const openDeleteModal = (id) => {
+  const openDeleteModal = (id: string) => {
     setCurrentItemId(id);
     toggleModal();
   };
