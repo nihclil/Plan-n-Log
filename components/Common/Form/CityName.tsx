@@ -11,11 +11,25 @@ import { useGoogleMapsScript } from "use-google-maps-script";
 import styled from "styled-components";
 import { useEffect } from "react";
 
-const libraries = ["places"];
+interface Props {
+  onSelectCity: (city: string) => void;
+  defaultValue: string;
+}
 
-export function CityName({ onSelectCity, defaultValue }) {
+type Library =
+  | "drawing"
+  | "geometry"
+  | "localContext"
+  | "places"
+  | "visualization";
+
+const libraries: Library[] = ["places"];
+const googleMapsApiKey: string = process.env
+  .NEXT_PUBLIC_GOOGLE_API_KEY as string;
+
+export function CityName({ onSelectCity, defaultValue }: Props) {
   const { isLoaded, loadError } = useGoogleMapsScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+    googleMapsApiKey,
     libraries,
   });
   if (!isLoaded) return null;
