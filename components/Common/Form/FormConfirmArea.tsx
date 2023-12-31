@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import Link from "next/link";
 
-export default function FormConfirmArea({ cancelLink }) {
+interface Props {
+  cancelLink: string;
+}
+
+export default function FormConfirmArea({ cancelLink }: Props) {
   return (
     <ConfirmContainer>
       <Link href={cancelLink}>
