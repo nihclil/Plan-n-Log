@@ -1,43 +1,12 @@
 import styled from "styled-components";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 
-interface FormValues {
-  airline: string;
-  departureDate: string;
-  departureTime: string;
-  arrivalDate: string;
-  arrivalTime: string;
-  confirmation: string;
-  departureAirport: string;
-  departureGate: string;
-  departureTerminal: string;
-  flightNumber: string;
-  seats: string;
-  arrivalAirport: string;
-  arrivalTerminal: string;
-  arrivalGate: string;
-}
-
 interface Props {
   label: string;
-  name:
-    | "airline"
-    | "departureDate"
-    | "departureTime"
-    | "arrivalDate"
-    | "arrivalTime"
-    | "confirmation"
-    | "departureAirport"
-    | "departureGate"
-    | "departureTerminal"
-    | "flightNumber"
-    | "seats"
-    | "arrivalAirport"
-    | "arrivalTerminal"
-    | "arrivalGate";
+  name: any;
   type: string;
-  register: UseFormRegister<FormValues>;
-  errors: FieldErrors<FormValues>;
+  register: UseFormRegister<any>;
+  errors: FieldErrors<any>;
   width: string;
   isRequired: boolean;
 }
