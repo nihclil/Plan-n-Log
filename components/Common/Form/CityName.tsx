@@ -23,6 +23,10 @@ type Library =
   | "places"
   | "visualization";
 
+interface City {
+  label: string;
+}
+
 const libraries: Library[] = ["places"];
 const googleMapsApiKey: string = process.env
   .NEXT_PUBLIC_GOOGLE_API_KEY as string;
@@ -43,7 +47,7 @@ export function CityName({ onSelectCity, defaultValue }: Props) {
   );
 }
 
-function CitySearchBox({ onSelectCity, defaultValue }) {
+function CitySearchBox({ onSelectCity, defaultValue }: Props) {
   const {
     ready,
     value,
@@ -60,13 +64,13 @@ function CitySearchBox({ onSelectCity, defaultValue }) {
     setValue(defaultValue || "", false);
   }, [defaultValue, setValue]);
 
-  const handleSelect = (city) => {
+  const handleSelect = (city: string) => {
     setValue(city, false);
     clearSuggestions();
-    onSelectCity({ label: city });
+    onSelectCity(city);
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
 
