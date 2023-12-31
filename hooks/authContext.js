@@ -2,7 +2,7 @@
 
 import { useContext, createContext, useState, useEffect } from "react";
 import {
-  signInWithRedirect,
+  signInWithPopup,
   signOut,
   onAuthStateChanged,
   GoogleAuthProvider,
@@ -17,7 +17,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
-    signInWithRedirect(auth, provider);
+    signInWithPopup(auth, provider);
   };
 
   const googleSignOut = () => {

@@ -2,8 +2,17 @@
 
 import styled from "styled-components";
 import TripStatusButton from "components/Common/Buttons/TripStatusButton";
+import { Dispatch, SetStateAction } from "react";
 
-export default function TripsFilter({ selectedButton, setSelectedButton }) {
+interface Props {
+  selectedButton: string;
+  setSelectedButton: Dispatch<SetStateAction<string>>;
+}
+
+export default function TripsFilter({
+  selectedButton,
+  setSelectedButton,
+}: Props) {
   return (
     <TripsButtonContainer>
       <TripStatusButton
