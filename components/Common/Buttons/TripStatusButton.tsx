@@ -1,6 +1,16 @@
 import styled from "styled-components";
 
-export default function TripStatusButton({ children, isSelected, onClick }) {
+interface Props {
+  isSelected: boolean;
+  onClick: () => void;
+  children: string;
+}
+
+export default function TripStatusButton({
+  children,
+  isSelected,
+  onClick,
+}: Props) {
   return (
     <TripButton isSelected={isSelected} onClick={onClick}>
       {children}
@@ -8,7 +18,9 @@ export default function TripStatusButton({ children, isSelected, onClick }) {
   );
 }
 
-const TripButton = styled(({ isSelected, ...props }) => <button {...props} />)`
+const TripButton = styled(({ isSelected, ...props }: Props) => (
+  <button {...props} />
+))`
   border: ${(props) => (props.isSelected ? "2px solid #928677" : "0")};
   border-radius: 20px;
   padding: 10px 20px;

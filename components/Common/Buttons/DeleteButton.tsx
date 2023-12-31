@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import Image from "next/image";
 
-export default function DeleteButton({ onClick }) {
+interface Props {
+  onClick: () => void;
+}
+
+export default function DeleteButton({ onClick }: Props) {
   return (
     <DeleteButtonContainer onClick={onClick}>
       <Image

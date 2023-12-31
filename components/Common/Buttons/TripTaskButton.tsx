@@ -2,7 +2,14 @@ import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function TripTaskLink({ tripId, text, iconSrc, linkTo }) {
+interface Props {
+  tripId: string;
+  text: string;
+  iconSrc: string;
+  linkTo: string;
+}
+
+export default function TripTaskLink({ tripId, text, iconSrc, linkTo }: Props) {
   return (
     <TripEditContainer>
       <Link href={`/trips/${tripId}/${linkTo}`}>

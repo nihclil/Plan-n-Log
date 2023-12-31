@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import Link from "next/link";
 
-export default function TripTitle({ item }) {
+interface Props {
+  item: { [key: string]: string };
+}
+
+export default function TripTitle({ item }: Props) {
   return (
     <Link href={`/trips/${item.id}`}>
       <TripTitleContainer>{item.tripName}</TripTitleContainer>
