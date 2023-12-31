@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import Image from "next/image";
 
-export default function CurrentPlansButton({ isOpen, onClick }) {
+interface Props {
+  isOpen: boolean;
+  onClick: () => void;
+}
+
+export default function CurrentPlansButton({ isOpen, onClick }: Props) {
   return (
     <CurrentPlansButtonContainer onClick={onClick}>
       <ButtonSpan>Current Plans</ButtonSpan>
