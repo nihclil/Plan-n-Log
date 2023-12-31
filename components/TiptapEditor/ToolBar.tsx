@@ -6,27 +6,35 @@ import { storage } from "lib/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { UserAuth } from "hooks/authContext";
 import { v4 } from "uuid";
+import { Editor } from "@tiptap/react";
 
-export default function ToolBar({ editor, params }) {
+interface Props {
+  editor: Editor;
+  params: { slug: string };
+}
+
+export default function ToolBar({ editor, params }: Props) {
   if (!editor) {
     return null;
   }
 
   const { user } = UserAuth();
   //上傳照片到資料庫
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    const imageRef = ref(
-      storage,
-      `trip/${user.uid}/${params.slug}/write/${file.name + v4()}`
-    );
-    uploadBytes(imageRef, file).then(() => {
-      getDownloadURL(imageRef).then((url) => {
-        if (editor) {
-          editor.chain().focus().setImage({ src: url }).run();
-        }
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const file = event.target.files[0];
+      const imageRef = ref(
+        storage,
+        `trip/${user.uid}/${params.slug}/write/${file.name + v4()}`
+      );
+      uploadBytes(imageRef, file).then(() => {
+        getDownloadURL(imageRef).then((url) => {
+          if (editor) {
+            editor.chain().focus().setImage({ src: url }).run();
+          }
+        });
       });
-    });
+    }
   };
 
   return (
@@ -73,7 +81,7 @@ export default function ToolBar({ editor, params }) {
 
       <ToolBarButton onChange={handleFileChange}>
         <label htmlFor="file">
-          <Image className="h-4 w-4" alt="image" />
+          <Image className="h-4 w-4" />
           <input id="file" type="file" style={{ display: "none" }} />
         </label>
       </ToolBarButton>
@@ -89,7 +97,7 @@ const ToolBarContainer = styled.div`
   z-index: 1;
 `;
 
-const ToolBarButton = styled.button`
+const ToolBarButton = styled.div`
   border: 1px solid #ddd;
   background-color: #f4f4f4;
   padding: 5px 10px;
