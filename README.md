@@ -5,25 +5,28 @@
 ![image](https://github.com/nihclil/Plan-n-Log/assets/129505187/39306141-670b-44ab-bb61-ee32695f74bd)
 
 
-## Technology Stack
+## Technology Stack 
+### Frontend
+* React
+* TypeScript
+* styled-components
+* Next.js
 
-* **React**
-  * React Hooks
-  * React Context
-
-* **TypeScript**
-* **Next.js**
-* **Vercel**
-* **Firebase**
+### Backend
+* Firebase
   * Firebase Authentication
   * Firestore
   * Storage
-* **styled-components**
-* **Third-party Library**
+
+### Deployment
+* Vercel
+
+### Third-party Library
   * Tiptap
   * React Hook Form
   * Lucide React
-* **External Service**
+
+### Cloud Service
   * Google Autocomplete API
 
 ## Features
