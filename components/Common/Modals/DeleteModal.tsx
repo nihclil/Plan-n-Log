@@ -2,7 +2,19 @@
 
 import styled from "styled-components";
 
-export default function DeleteModal({ toggleModal, deleteData, id, caption }) {
+interface Props {
+  toggleModal: () => void;
+  deleteData: (id: string) => void;
+  id: string;
+  caption: string;
+}
+
+export default function DeleteModal({
+  toggleModal,
+  deleteData,
+  id,
+  caption,
+}: Props) {
   const handleDelete = () => {
     deleteData(id);
     toggleModal();

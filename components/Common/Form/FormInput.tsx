@@ -1,4 +1,19 @@
 import styled from "styled-components";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+
+interface Props {
+  label: string;
+  name: any;
+  type: string;
+  register: UseFormRegister<any>;
+  errors: FieldErrors<any>;
+  width: string;
+  isRequired: boolean;
+}
+
+interface InputContainerProps {
+  width: string;
+}
 
 export default function FormInput({
   label,
@@ -8,7 +23,7 @@ export default function FormInput({
   errors,
   width,
   isRequired,
-}) {
+}: Props) {
   return (
     <InputContainer width={width}>
       <Label>
@@ -22,7 +37,7 @@ export default function FormInput({
   );
 }
 
-const InputContainer = styled.div`
+const InputContainer = styled.div<InputContainerProps>`
   width: ${({ width }) => width};
   margin-bottom: 40px;
   margin-right: 10px;

@@ -11,16 +11,25 @@ import { storage } from "lib/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
 import FormInput from "components/Common/Form/FormInput";
 import FormConfirmArea from "components/Common/Form/FormConfirmArea";
 
+type FormValues = {
+  tripName: string;
+  cityName: string;
+  startDate: string;
+  endDate: string;
+  imageUrl: string;
+  buildTime: string;
+};
+
 export default function Page() {
-  const [cityName, setCityName] = useState("");
-  const [imageUpload, setImageUpload] = useState(null);
-  const [uploadStatus, setUploadStatus] = useState("");
-  const [currentImage, setCurrentImage] = useState(
+  useAuthRedirect();
+  const [imageUpload, setImageUpload] = useState<File | null>(null);
+  const [uploadStatus, setUploadStatus] = useState<string>("");
+  const [currentImage, setCurrentImage] = useState<string>(
     "https://firebasestorage.googleapis.com/v0/b/plannlog-a64d2.appspot.com/o/duong-chung--cItKmBrXN8-unsplash.jpg?alt=media&token=60017cd9-4215-4e2d-85af-6135517b951b"
   );
   const router = useRouter();
@@ -30,45 +39,48 @@ export default function Page() {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormValues>();
 
   const uploadImage = () => {
     if (imageUpload == null) return;
-    const imageRef = ref(
-      storage,
-      `trip/${user.uid}/${imageUpload.name + v4()}`
-    );
-    uploadBytes(imageRef, imageUpload)
-      .then(() => {
-        getDownloadURL(imageRef).then((url) => {
-          setCurrentImage(url);
+    if (imageUpload !== null) {
+      const imageRef = ref(
+        storage,
+        `trip/${user.uid}/${imageUpload.name + v4()}`
+      );
+      uploadBytes(imageRef, imageUpload)
+        .then(() => {
+          getDownloadURL(imageRef).then((url) => {
+            setCurrentImage(url);
+          });
+          setUploadStatus("Upload successful");
+          setImageUpload(null);
+        })
+        .catch(() => {
+          setUploadStatus("Upload failed");
         });
-        setUploadStatus("Upload successful");
-        setImageUpload(null);
-      })
-      .catch(() => {
-        setUploadStatus("Upload failed");
-      });
-  };
-
-  const addItem = async (formData) => {
-    try {
-      await addDoc(collection(db, "trip"), {
-        uid: user.uid,
-        tripName: formData.tripName,
-        cityName: formData.cityName,
-        startDate: formData.startDate,
-        endDate: formData.endDate,
-        imageUrl: currentImage,
-        buildTime: serverTimestamp(),
-      });
-      router.push("/trips");
-    } catch (error) {
-      console.error("Error adding document:", error);
     }
   };
 
-  useAuthRedirect();
+  const addItem: SubmitHandler<FormValues> = async (formData) => {
+    const ref = collection(db, "trip");
+    addDoc(ref, {
+      uid: user.uid,
+      tripName: formData.tripName,
+      cityName: formData.cityName,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+
+      imageUrl: currentImage,
+      buildTime: serverTimestamp(),
+    })
+      .then(() => {
+        router.push("/trips");
+      })
+      .catch((error) => {
+        console.error("Error adding document:", error);
+      });
+  };
 
   return (
     <Main>
@@ -98,7 +110,7 @@ export default function Page() {
                     name="cityName"
                     render={({ field }) => (
                       <CityName
-                        onSelectCity={(city) => field.onChange(city.label)}
+                        onSelectCity={(city) => field.onChange(city)}
                         defaultValue={field.value}
                       />
                     )}
@@ -134,19 +146,14 @@ export default function Page() {
                 />
                 <ImageLabel>
                   Change Photo
-                  <Controller
-                    control={control}
-                    name="tripImage"
-                    render={({ field }) => (
-                      <ImageInput
-                        type="file"
-                        onChange={(event) => {
-                          setImageUpload(event.target.files[0]);
-                          setUploadStatus("");
-                          field.onChange(event.target.files[0]);
-                        }}
-                      />
-                    )}
+                  <ImageInput
+                    type="file"
+                    onChange={(event) => {
+                      if (event.target.files && event.target.files.length > 0) {
+                        setImageUpload(event.target.files[0]);
+                        setUploadStatus("");
+                      }
+                    }}
                   />
                 </ImageLabel>
                 {imageUpload && !uploadStatus && (

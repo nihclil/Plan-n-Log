@@ -11,11 +11,29 @@ import { useGoogleMapsScript } from "use-google-maps-script";
 import styled from "styled-components";
 import { useEffect } from "react";
 
-const libraries = ["places"];
+interface Props {
+  onSelectCity: (city: string) => void;
+  defaultValue: string;
+}
 
-export function CityName({ onSelectCity, defaultValue }) {
+type Library =
+  | "drawing"
+  | "geometry"
+  | "localContext"
+  | "places"
+  | "visualization";
+
+interface City {
+  label: string;
+}
+
+const libraries: Library[] = ["places"];
+const googleMapsApiKey: string = process.env
+  .NEXT_PUBLIC_GOOGLE_API_KEY as string;
+
+export function CityName({ onSelectCity, defaultValue }: Props) {
   const { isLoaded, loadError } = useGoogleMapsScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+    googleMapsApiKey,
     libraries,
   });
   if (!isLoaded) return null;
@@ -29,7 +47,7 @@ export function CityName({ onSelectCity, defaultValue }) {
   );
 }
 
-function CitySearchBox({ onSelectCity, defaultValue }) {
+function CitySearchBox({ onSelectCity, defaultValue }: Props) {
   const {
     ready,
     value,
@@ -46,13 +64,13 @@ function CitySearchBox({ onSelectCity, defaultValue }) {
     setValue(defaultValue || "", false);
   }, [defaultValue, setValue]);
 
-  const handleSelect = (city) => {
+  const handleSelect = (city: string) => {
     setValue(city, false);
     clearSuggestions();
-    onSelectCity({ label: city });
+    onSelectCity(city);
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
 

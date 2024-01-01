@@ -1,7 +1,12 @@
-import { useState } from "react";
 import styled from "styled-components";
 
-export function SignUpForm({ onClose, toggleForm, handleSignIn }) {
+interface Props {
+  onClose: () => void;
+  toggleForm: () => void;
+  handleSignIn: () => Promise<void>;
+}
+
+export function SignUpForm({ onClose, toggleForm, handleSignIn }: Props) {
   return (
     <Container>
       <Overlay onClick={onClose}></Overlay>
@@ -18,7 +23,7 @@ export function SignUpForm({ onClose, toggleForm, handleSignIn }) {
   );
 }
 
-export function SignInForm({ onClose, toggleForm, handleSignIn }) {
+export function SignInForm({ onClose, toggleForm, handleSignIn }: Props) {
   return (
     <Container>
       <Overlay onClick={onClose}></Overlay>

@@ -8,7 +8,13 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import Placeholder from "@tiptap/extension-placeholder";
 
-const Tiptap = ({ onEditorUpdate, initialContent, params }) => {
+interface Props {
+  onEditorUpdate: (htmlContent: string) => void;
+  initialContent: string;
+  params: { slug: string };
+}
+
+const Tiptap = ({ onEditorUpdate, initialContent, params }: Props) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
