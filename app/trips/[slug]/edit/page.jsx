@@ -3,20 +3,17 @@
 import styled from "styled-components";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { collection, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "lib/firebase";
 import { UserAuth } from "hooks/authContext";
 import { CityName } from "components/Common/Form/CityName";
 import useAuthRedirect from "hooks/useAuthRedirect";
 
 import { storage } from "lib/firebase";
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject,
-} from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
+import LoadingEffect from "components/Common/Loading/LoadingEffect";
+import Image from "next/image";
 
 export default function Page({ params }) {
   const [imageUpload, setImageUpload] = useState(null);
@@ -31,7 +28,7 @@ export default function Page({ params }) {
     endDate: "",
     imageUrl: "",
   });
-
+  const [isLoading, setIsLoading] = useState(true);
   const { user } = UserAuth();
 
   useAuthRedirect();
@@ -51,6 +48,7 @@ export default function Page({ params }) {
           imageUrl: tripData.imageUrl,
         });
       }
+      setIsLoading(false);
     });
   }, [params.slug]);
 
@@ -67,8 +65,6 @@ export default function Page({ params }) {
         });
         setUploadStatus("Upload successful");
         setImageUpload(null);
-
-        // deleteOldImage();
       })
       .catch(() => {
         setUploadStatus("Upload failed");
@@ -86,17 +82,6 @@ export default function Page({ params }) {
       });
   };
 
-  // const deleteOldImage = () => {
-  //   const imageRef = ref(storage, `trip/${user.uid}`);
-  //   deleteObject(imageRef)
-  //     .then(() => {
-  //       console.log("Old image deleted successfully");
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error deleting old image:", error);
-  //     });
-  // };
-
   const handleTripNameChange = (e) => {
     setCurrentData({ ...currentData, tripName: e.target.value });
   };
@@ -113,12 +98,16 @@ export default function Page({ params }) {
     setCurrentData({ ...currentData, cityName: city.label });
   };
 
+  if (isLoading) {
+    return <LoadingEffect />;
+  }
+
   return (
     <Main>
       <AddArea>
-        <Title>Add trip</Title>
-        <PlanArea>
+        <FormArea>
           <TripInfo>
+            <Title>Add trip</Title>
             <Caption>
               Add a trip manually below, and we&apos;ll create the trip for you.
             </Caption>
@@ -156,8 +145,12 @@ export default function Page({ params }) {
             </DateColumn>
           </TripInfo>
           <ImageInfo>
-            <Image src={currentData.imageUrl} alt="Current image" />
-
+            <Image
+              src={currentData.imageUrl}
+              alt="Current image"
+              width={200}
+              height={200}
+            />
             <ImageLabel>
               Change Photo
               <ImageInput
@@ -174,7 +167,7 @@ export default function Page({ params }) {
             {uploadStatus && <ImagePrompt>{uploadStatus}</ImagePrompt>}
             <PhotoButton onClick={uploadImage}>Upload image</PhotoButton>
           </ImageInfo>
-        </PlanArea>
+        </FormArea>
 
         <ConfirmArea>
           <Link href="/trips">
@@ -192,38 +185,73 @@ export default function Page({ params }) {
 const Main = styled.main`
   margin: 50px auto;
   width: 1000px;
+  @media (max-width: 1200px) {
+    width: auto;
+  }
 `;
 
 const AddArea = styled.div`
   background-color: #fff;
   border-radius: 18px;
   padding: 50px;
+  @media (min-width: 900px) and (max-width: 1200px) {
+    width: 800px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  @media (min-width: 360px) and (max-width: 900px) {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const FormArea = styled.div`
+  display: flex;
+  flex-direction: row;
+  @media (min-width: 360px) and (max-width: 1200px) {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+`;
+
+const TripInfo = styled.div`
+  margin-right: 50px;
+  @media (min-width: 360px) and (max-width: 900px) {
+    width: auto;
+    margin: auto;
+  }
 `;
 
 const Title = styled.div`
-  display: flex;
   color: #6d5b48;
   font-size: 24px;
   margin-bottom: 20px;
   font-weight: 600;
+  @media (min-width: 360px) and (max-width: 1200px) {
+    width: auto;
+  }
 `;
 
 const Caption = styled.div`
   margin-bottom: 30px;
   color: #6d5b48;
-`;
-
-const PlanArea = styled.div`
-  display: flex;
-`;
-
-const TripInfo = styled.div`
-  margin-right: 50px;
+  @media (min-width: 360px) and (max-width: 1200px) {
+    width: 80%;
+  }
 `;
 
 const Column = styled.div`
   margin-bottom: 40px;
   margin-right: 10px;
+  @media (min-width: 360px) and (max-width: 1200px) {
+    width: auto;
+  }
 `;
 
 const InputName = styled.div`
@@ -239,6 +267,9 @@ const Input = styled.input`
   font-size: 20px;
   border: 1px solid #e4ddd6;
   border-radius: 4px;
+  @media (min-width: 360px) and (max-width: 1200px) {
+    width: 100%;
+  }
 `;
 
 const DateInput = styled.input`
@@ -248,10 +279,16 @@ const DateInput = styled.input`
   font-size: 18px;
   border: 1px solid #e4ddd6;
   border-radius: 4px;
+  @media (min-width: 360px) and (max-width: 900px) {
+    width: 100%;
+  }
 `;
 
 const DateColumn = styled.div`
   display: flex;
+  @media (min-width: 360px) and (max-width: 900px) {
+    flex-direction: column;
+  }
 `;
 
 const ImageInfo = styled.div`
@@ -259,13 +296,6 @@ const ImageInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-
-const Image = styled.img`
-  width: 200px;
-  height: 200px;
-  margin-bottom: 30px;
-  object-fit: contain;
 `;
 
 const ConfirmArea = styled.div`
@@ -281,6 +311,12 @@ const CancelButton = styled.button`
   color: #d1bea9;
   padding: 10px 20px;
   border-radius: 20px;
+  @media (min-width: 900px) and (max-width: 1200px) {
+    margin-right: 20px;
+  }
+  @media (min-width: 360px) and (max-width: 900px) {
+    margin-right: 10px;
+  }
 `;
 
 const SaveButton = styled.button`
@@ -292,6 +328,9 @@ const SaveButton = styled.button`
   border-radius: 20px;
   border: 0;
   color: #6d5b48;
+  @media (min-width: 360px) and (max-width: 400px) {
+    padding: 10px 10px;
+  }
 `;
 
 const PhotoButton = styled.button`
@@ -312,6 +351,7 @@ const ImageLabel = styled.label`
   color: #c88756;
   font-weight: 600;
   cursor: pointer;
+  margin-top: 30px;
 `;
 
 const ImageInput = styled.input`
