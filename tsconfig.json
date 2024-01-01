@@ -30,7 +30,7 @@
     ".next/types/**/*.ts",
     "components/AuthForm.jsx",
     "app/layout.tsx",
-    "app/plan/page.jsx"
+    "app/plan/page.tsx"
   ],
   "exclude": ["node_modules"]
 }
