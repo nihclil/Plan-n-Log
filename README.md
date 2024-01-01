@@ -42,4 +42,6 @@
 
 ![log](https://github.com/nihclil/Plan-n-Log/assets/129505187/cc23f8d7-aafb-4054-b04a-b3cf83797cda)
 
-
+## Contact
+🙋‍♀️Yi-Chin, Ho
+📧Email:oxx921@gmail.com
