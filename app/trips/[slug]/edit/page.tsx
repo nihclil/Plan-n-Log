@@ -15,12 +15,12 @@ import { v4 } from "uuid";
 import LoadingEffect from "components/Common/Loading/LoadingEffect";
 import Image from "next/image";
 
-export default function Page({ params }) {
-  const [imageUpload, setImageUpload] = useState(null);
-  const [uploadStatus, setUploadStatus] = useState("");
-  const [currentImage, setCurrentImage] = useState(
-    "https://firebasestorage.googleapis.com/v0/b/plannlog-a64d2.appspot.com/o/duong-chung--cItKmBrXN8-unsplash.jpg?alt=media&token=60017cd9-4215-4e2d-85af-6135517b951b"
-  );
+export default function Page({ params }: { params: { slug: string } }) {
+  const [imageUpload, setImageUpload] = useState<File | null>(null);
+  const [uploadStatus, setUploadStatus] = useState<string>("");
+  // const [currentImage, setCurrentImage] = useState(
+  //   "https://firebasestorage.googleapis.com/v0/b/plannlog-a64d2.appspot.com/o/duong-chung--cItKmBrXN8-unsplash.jpg?alt=media&token=60017cd9-4215-4e2d-85af-6135517b951b"
+  // );
   const [currentData, setCurrentData] = useState({
     tripName: "",
     cityName: "",
@@ -28,7 +28,7 @@ export default function Page({ params }) {
     endDate: "",
     imageUrl: "",
   });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { user } = UserAuth();
 
   useAuthRedirect();
@@ -82,20 +82,20 @@ export default function Page({ params }) {
       });
   };
 
-  const handleTripNameChange = (e) => {
+  const handleTripNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentData({ ...currentData, tripName: e.target.value });
   };
 
-  const handleStartDateChange = (e) => {
+  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentData({ ...currentData, startDate: e.target.value });
   };
 
-  const handleEndDateChange = (e) => {
+  const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentData({ ...currentData, endDate: e.target.value });
   };
 
-  const handleCitySelect = (city) => {
-    setCurrentData({ ...currentData, cityName: city.label });
+  const handleCitySelect = (city: string) => {
+    setCurrentData({ ...currentData, cityName: city });
   };
 
   if (isLoading) {
@@ -156,8 +156,10 @@ export default function Page({ params }) {
               <ImageInput
                 type="file"
                 onChange={(event) => {
-                  setImageUpload(event.target.files[0]);
-                  setUploadStatus("");
+                  if (event.target.files && event.target.files.length > 0) {
+                    setImageUpload(event.target.files[0]);
+                    setUploadStatus("");
+                  }
                 }}
               />
             </ImageLabel>
