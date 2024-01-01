@@ -30,3 +30,5 @@
   * Google Autocomplete API
 
 ## Features
+![動畫](https://github.com/nihclil/Plan-n-Log/assets/129505187/e6521607-3877-41d3-b0af-d9765d6c493c)
+
