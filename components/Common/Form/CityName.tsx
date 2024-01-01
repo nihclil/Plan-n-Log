@@ -23,10 +23,6 @@ type Library =
   | "places"
   | "visualization";
 
-interface City {
-  label: string;
-}
-
 const libraries: Library[] = ["places"];
 const googleMapsApiKey: string = process.env
   .NEXT_PUBLIC_GOOGLE_API_KEY as string;
