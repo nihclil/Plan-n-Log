@@ -21,6 +21,9 @@
 ### Deployment
 * Vercel
 
+### Unit Test
+* Jest
+
 ### Third-party Library
   * Tiptap
   * React Hook Form
