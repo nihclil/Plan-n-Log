@@ -1,3 +1,5 @@
+### This project is no longer maintained.
+
 # [PlanNLog Project](<https://plannlog.vercel.app/>)
 
 **PlanNLog is a website for managing travel plans and writing travel diaries.**
